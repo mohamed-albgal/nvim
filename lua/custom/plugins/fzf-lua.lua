@@ -41,7 +41,11 @@ return {
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
     vim.keymap.set('n', '<leader>fs', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
     vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').lgrep_curbuf()<cr>", { silent = true, desc = 'Current buffer' })
-    vim.keymap.set('n', '<leader>fc', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
+    vim.keymap.set('n', '<leader>fl', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
+    vim.keymap.set('n', '<leader>f.', ":lua require('fzf-lua').grep_cword()<cr>", { silent = true, desc = 'Grep word under cursor' })
+    vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })
+    vim.keymap.set('n', '<leader>fv', ":lua require('fzf-lua').grep_visual()<cr>", { silent = true, desc = 'Grep visual block' })
+    vim.keymap.set('n', '<leader>gs', ":lua require('fzf-lua').git_status()<cr>", { silent = true, desc = 'fzf git status' })
     vim.keymap.set('n', '<leader>x', ":lua require('fzf-lua').builtin({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen = false, height=0.50,width=0.45,row=0.09,col=0.47, preview = { hidden = 'hidden' } }})<cr>", { silent = true, desc = 'FZF builtins' })
   end,
 }

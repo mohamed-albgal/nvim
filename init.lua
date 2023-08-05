@@ -419,7 +419,7 @@ local servers = {
         },
       },
     },
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'erb' } },
 
   lua_ls = {
     Lua = {
@@ -478,14 +478,10 @@ cmp.setup {
       select = true,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      local copilot_keys = vim.fn['copilot#Accept']()
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
-        --maybe this will allow copilot to work alongside cmp for tab?
-      elseif copilot_keys ~= '' and type(copilot_keys) == 'string' then
-        vim.api.nvim_feedkeys(copilot_keys, 'i', true)
       else
         fallback()
       end
