@@ -8,3 +8,4 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>t;', ":FloatermPrev<CR>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('t', '<ESC>', "<C-\\><C-n>", { noremap=true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
