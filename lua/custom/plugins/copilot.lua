@@ -7,7 +7,7 @@ return {
         keymap = {
           jump_prev = "[[",
           jump_next = "]]",
-          accept = "<CR>",
+          accept = false,
           refresh = "gr",
           open = "<M-CR>"
        },
@@ -17,8 +17,6 @@ return {
         auto_trigger = true,
       },
       filetypes = {
-        yaml = false,
-        markdown = false,
         help = false,
         gitcommit = false,
         gitrebase = false,
@@ -30,5 +28,6 @@ return {
       copilot_node_command = 'node', -- Node.js version must be > 16.x
       server_opts_overrides = {},
     })
+
   end,
 }
