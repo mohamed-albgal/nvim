@@ -1,7 +1,26 @@
-local fzf_opts =
-  {
-    'borderless_full',
-    fzf_opts = {
+local fzf_opts = {
+
+    'fzf-native',
+
+  winopts = {
+    height           = 0.85,            -- window height
+    width            = 0.80,            -- window width
+    row              = 0.35,            -- window row position (0=top, 1=bottom)
+    col              = 0.50,            -- window col position (0=left, 1=right)
+    border           = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+    fullscreen       = false,           -- start fullscreen?
+    preview = {
+      border         = 'border',        -- border|noborder, applies only to
+      wrap           = 'wrap',        -- wrap|nowrap
+      hidden         = 'nohidden',      -- hidden|nohidden
+      vertical       = 'down:45%',      -- up|down:size
+      horizontal     = 'right:60%',     -- right|left:size
+      layout         = 'flex',          -- horizontal|vertical|flex
+      flip_columns   = 120,             -- #cols to switch to horizontal on flex
+    },
+  },
+  fzf_opts = {
+
       ['--ansi']        = '',
       --['--info']        = 'inline',
       ['--height']      = '100%',
@@ -11,19 +30,47 @@ local fzf_opts =
       ['--color'] = 'fg:#d9d9d9,bg:#001010,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#cecece,info:#afaf87,prompt:#d7005f,pointer:#afdfff,marker:#87ff00,spinner:#af5fff,header:#87afaf',
       ['--preview'] = { default = "bat" },
       ['--preview-window'] =  'nowrap,56%',
+  },
+  previewers = {
+    bat = {
+      cmd             = "bat",
+      args            = "--color=always --style=numbers,changes,header,grid",
+      theme           = '1337',
     },
-    winopts = {
-      --fullscreen = true,
-      height=0.75,
-      width=0.75,
-    },
-    files = {
-      previewer = false,
-      rg_opts           = "--color=never --files --hidden --follow -g '!.git' -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}'",
-    },
-    grep = {
-      rg_opts =  "--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e",
-    },
+  },
+  files = {
+    -- previewer      = "bat",          -- uncomment to override previewer
+                                        -- (name from 'previewers' table)
+                                        -- set to 'false' to disable
+    previewer = false,
+    rg_opts           = "--color=never --files --hidden --follow -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}'",
+    prompt            = 'Files❯ ',
+  },
+  grep = {
+    rg_opts =  "--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e",
+    prompt            = '❯ ',
+    input_prompt      = 'Grep For❯ ',
+    multiprocess      = true,           -- run command in a separate process
+    git_icons         = true,           -- show git icons?
+    file_icons        = true,           -- show file icons?
+    color_icons       = true,           -- colorize file|git icons
+    grep_opts         = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
+    -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
+    -- search strings will be split using the 'glob_separator' and translated
+    -- to '--iglob=' arguments, requires 'rg'
+    -- can still be used when 'false' by calling 'live_grep_glob' directly
+    rg_glob           = true,        -- default to glob parsing?
+    glob_flag         = "--iglob",    -- for case sensitive globs use '--glob'
+    glob_separator    = "%s%-%-",     -- query separator pattern (lua): ' --'
+    -- advanced usage: for custom argument parsing define
+    -- 'rg_glob_fn' to return a pair:
+    --   first returned argument is the new search query
+    --   second returned argument are addtional rg flags
+    -- rg_glob_fn = function(query, opts)
+    --   ...
+    --   return new_query, flags
+    -- end,
+  },
 }
 
 return {
