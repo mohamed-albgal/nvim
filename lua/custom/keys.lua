@@ -9,3 +9,4 @@ vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, s
 vim.api.nvim_set_keymap('n', '<leader>t;', ":FloatermPrev<CR>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('t', '<ESC>', "<C-\\><C-n>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
+--vim.api.nvim_set_keymap('n', '<D-/>', ":<cr>", { silent = true, desc = 'Comment like in vscode' })

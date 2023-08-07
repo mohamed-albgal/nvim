@@ -24,12 +24,38 @@ return {
 
   { "EdenEast/nightfox.nvim",
     priority = 1000,
+    options = {
+      transparent = true,
+      inverse = {
+        match_paren = true,
+        search = true,
+        search_count = true,
+        visual = true,
+      },
+
+    },
     config = function()
-      vim.cmd.colorscheme 'carbonfox'
+      vim.cmd.colorscheme 'nightfox'
     end,
   },
 
   { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+
+  -- zen mode
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      window = {
+        width = 160,
+        options = {
+          number = false,
+        }
+      }
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
 
   {
     -- Set lualine as statusline
