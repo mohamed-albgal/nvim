@@ -1,6 +1,6 @@
 local fzf_opts = {
 
-    'default',
+    'fzf-native',
   winopts = {
     height           = 0.85,            -- window height
     width            = 0.80,            -- window width
@@ -28,12 +28,12 @@ local fzf_opts = {
       ['--delimiter']      = ':',
       ['--color'] = 'fg:#d9d9d9,bg:#001010,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#cecece,info:#afaf87,prompt:#d7005f,pointer:#afdfff,marker:#87ff00,spinner:#af5fff,header:#87afaf',
       ['--preview'] = { default = "bat" },
-      ['--preview-window'] =  'nowrap,56%',
+      ['--preview-window'] =  'nowrap,56%,+{2}+3/3,~3' ,
   },
   previewers = {
     bat = {
       cmd             = "bat",
-      args            = "--color=always --style=numbers,changes,header,grid",
+      args            = "--color=always --style=numbers,changes,header,grid ",
       theme           = '1337',
     },
   },
@@ -69,7 +69,6 @@ return {
   "ibhagwan/fzf-lua",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
-    require('fzf-lua').setup(fzf_opts)
 
     vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:45%', height=0.50,width=0.55,row=0.09,col=0.47,  }, })<cr>", { silent = true, desc = 'FZF Files' })
     -- vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ cmd = '--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e' })<cr>", { silent = true, desc = 'FZF Files' })
@@ -80,15 +79,18 @@ return {
     vim.keymap.set('n', '<leader>ff', ":lua require('fzf-lua').grep_project({winopts = { height = 0.95, width = 0.95 }})<cr>", { silent = true, desc = 'FZF grep' })
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
     vim.keymap.set('n', '<leader>fs', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
-    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf()<cr>", { silent = true, desc = 'Current buffer' })
+    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = ''}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
     vim.keymap.set('n', '<leader>fl', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
     vim.keymap.set('n', '<leader>f.', ":lua require('fzf-lua').grep_cword()<cr>", { silent = true, desc = 'Grep word under cursor' })
     vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })
     vim.keymap.set('n', '<leader>fv', ":lua require('fzf-lua').grep_visual()<cr>", { silent = true, desc = 'Grep visual block' })
     vim.keymap.set('n', '<leader>bb', ":FzfLua buffers<cr>", { silent = true, desc = 'Show open buffers' })
-    vim.keymap.set('n', '<leader>fo', ":FzfLua oldfiles<cr>", { silent = true, desc = 'Show open buffers' })
+    vim.keymap.set('n', '<leader>ob', ":FzfLua oldfiles<cr>", { silent = true, desc = '[o]ld [b]uffers' })
+    vim.keymap.set('n', '<leader>os', ":FzfLua search_history<cr>", { silent = true, desc = '[o]ld [s]earches' })
     vim.keymap.set('n', '<leader>gs', ":lua require('fzf-lua').git_status()<cr>", { silent = true, desc = 'fzf git status' })
     vim.keymap.set('n', '<leader>x', ":lua require('fzf-lua').builtin({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen = false, height=0.50,width=0.45,row=0.09,col=0.47, preview = { hidden = 'hidden' } }})<cr>", { silent = true, desc = 'FZF builtins' })
+    vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>", function() require("fzf-lua").complete_path() end, { silent = true, desc = "Fuzzy complete path" })
+    require('fzf-lua').setup(fzf_opts)
   end,
 }
 
