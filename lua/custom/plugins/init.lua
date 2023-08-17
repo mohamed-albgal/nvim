@@ -24,22 +24,14 @@ return {
 
   { "EdenEast/nightfox.nvim",
     priority = 1000,
-    options = {
-      transparent = true,
-      inverse = {
-        match_paren = true,
-        search = true,
-        search_count = true,
-        visual = true,
-      },
-
-    },
     config = function()
-      vim.cmd.colorscheme 'nightfox'
     end,
   },
 
   { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+
+  -- floating window for git stuff
+  { 'rhysd/git-messenger.vim' },
 
   -- zen mode
   {

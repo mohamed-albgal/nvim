@@ -2,7 +2,7 @@ vim.api.nvim_set_keymap('n', '<leader>w', '<C-w>', { noremap=true, silent = fals
 vim.api.nvim_set_keymap('n', '<leader>a', '<C-w>h', { noremap=true, silent = false})
 vim.api.nvim_set_keymap('n', '<leader>l', '<C-w>l', { noremap=true, silent = false})
 vim.api.nvim_set_keymap('n', '<leader>d', ':bd!<CR>', { noremap=true, silent = true})
-vim.api.nvim_set_keymap('n', '<leader>w/', ':vsplit<CR>', { noremap=true, silent = false})
+vim.api.nvim_set_keymap('n', '<leader>w/', ':vertical sb<CR>', { noremap=true, silent = false})
 vim.api.nvim_set_keymap('n', '<leader>w-', ':split<CR>', { noremap=true, silent = false})
 vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true})

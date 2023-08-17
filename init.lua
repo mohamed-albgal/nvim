@@ -60,13 +60,11 @@ if vim.fn.exists("g:vscode") ~= 0 then
   vim.o.ignorecase = true
   vim.o.smartcase = true
   vim.o.clipboard = 'unnamedplus'
-  vim.keymap.set('n', '<leader>', "<cmd>call VSCodeNotify('whichkey.show')<CR>", { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-  vim.keymap.set('n', 'gD', "<cmd>VSCodeNotify('editor.action.revealDefinitionAside')<CR>", { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+  vim.keymap.set('n', '<leader>', "<cmd>call VSCodeNotify('whichkey.show')<CR>")
+  vim.keymap.set('n', 'gD', "<cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>")
   require('lazy').setup({
     {'ggandor/lightspeed.nvim'},
   })
-
-    
 
 else
 
@@ -76,7 +74,6 @@ else
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('custom.keys')
-require('custom.setup_config')
 vim.o.ignorecase = true
 vim.o.smartcase = true
 require('lazy').setup({
@@ -162,7 +159,8 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   { import = 'custom.plugins' },
-}, {})
+}, { defaults = { version = nil, lazy = false } })
+require('custom.setup_config')
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
