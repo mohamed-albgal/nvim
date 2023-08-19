@@ -49,6 +49,8 @@ return {
     }
   },
 
+  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',

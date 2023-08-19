@@ -79,7 +79,7 @@ return {
     vim.keymap.set('n', '<leader>ff', ":lua require('fzf-lua').grep_project({winopts = { height = 0.95, width = 0.95 }})<cr>", { silent = true, desc = 'FZF grep' })
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
     vim.keymap.set('n', '<leader>fs', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
-    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = ''}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
+    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
     vim.keymap.set('n', '<leader>fl', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
     vim.keymap.set('n', '<leader>f.', ":lua require('fzf-lua').grep_cword()<cr>", { silent = true, desc = 'Grep word under cursor' })
     vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })

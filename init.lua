@@ -167,6 +167,8 @@ require('custom.setup_config')
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
+vim.opt.termguicolors = true
+require("bufferline").setup{}
 
 -- Set highlight on search
 vim.o.hlsearch = true
@@ -201,7 +203,7 @@ vim.wo.signcolumn = 'yes'
 
 -- Decrease update time
 vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+--vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
