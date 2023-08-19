@@ -11,7 +11,7 @@ vim.api.nvim_set_keymap('t', 'kj', "<C-\\><C-n>", { noremap=true, silent = true}
 vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true})
-vim.keymap.set({'n','v','i'}, '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true})
+vim.keymap.set('n', '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
 vim.api.nvim_set_keymap('n', '<leader>wt', ':exe "resize " . (winheight(0) * 3/2)<cr>', { silent = true, desc = 'increase window width' })
 --vim.api.nvim_set_keymap('n', '<D-/>', ":<cr>", { silent = true, desc = 'Comment like in vscode' })
