@@ -63,6 +63,11 @@ local fzf_opts = {
     --   return new_query, flags
     -- end,
   },
+  git = {
+    status = {
+      preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS delta --color-only --features=interactive",
+    }
+  },
 }
 
 return {
@@ -87,7 +92,7 @@ return {
     vim.keymap.set('n', '<leader>bb', ":FzfLua buffers<cr>", { silent = true, desc = 'Show open buffers' })
     vim.keymap.set('n', '<leader>ob', ":FzfLua oldfiles<cr>", { silent = true, desc = '[o]ld [b]uffers' })
     vim.keymap.set('n', '<leader>os', ":FzfLua search_history<cr>", { silent = true, desc = '[o]ld [s]earches' })
-    vim.keymap.set('n', '<leader>gs', ":lua require('fzf-lua').git_status()<cr>", { silent = true, desc = 'fzf git status' })
+    vim.keymap.set('n', '<leader>gs', ":lua require('fzf-lua').git_status( { fzf_opts = { ['--layout']='reverse-list' } })<cr>", { silent = true, desc = 'fzf git status' })
     vim.keymap.set('n', '<leader>x', ":lua require('fzf-lua').builtin({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen = false, height=0.50,width=0.45,row=0.09,col=0.47, preview = { hidden = 'hidden' } }})<cr>", { silent = true, desc = 'FZF builtins' })
     vim.keymap.set("n", "<C-x><C-f>", function() require("fzf-lua").complete_path() end, { silent = true, desc = "Fuzzy complete path" })
     require('fzf-lua').setup(fzf_opts)
