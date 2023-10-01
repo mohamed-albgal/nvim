@@ -79,12 +79,22 @@ return {
     -- vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ cmd = '--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e' })<cr>", { silent = true, desc = 'FZF Files' })
 
     -- this works but is too hacky! the old stuff would work, maybe go slow?
-    --vim.keymap.set('n', '<leader>ff', "[[:lua require'fzf-lua'.fzf_exec(\"rg --column --line-number -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --no-heading  -- ''\",{ fzf_opts = {['--layout']= 'default', ['--preview'] = vim.fn.shellescape(\"bat -f --highlight-line={2} {1} --theme='1337'\"), ['--preview'] = \"--border -m --color=fg:#d9d9d9,bg:#000000,hl:#fff000 --color=fg+:#49a6fd,bg+:#000000,hl+:#ffffff  --color=info:#afaf87,prompt:#d7005f,pointer:#afdfff --color=marker:#87ff00,spinner:#af5fff,header:#87afaf --preview-window 'wrap,56%,+{2}+3/3,~3'\", ['--delimiter'] = ':', ['--preview-window'] = 'nohidden,56%', }, }) <cr>]]", { silent = true, desc = 'FZF grep' })
+    -- vim.keymap.set('n', '<leader>fs', "[[:lua require'fzf-lua'.fzf_exec(\" rg --column --line-number --no-heading -g \'{spec/**}\'  -g \'!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}\' --color=always --smart-case --max-columns=4096 -- ''\",{ fzf_opts = { ['--with-nth']= '1,4..',['--layout']= 'default', ['--preview'] = vim.fn.shellescape(\"bat -f --highlight-line={2} {1} --theme='1337'\"), ['--preview'] = \"--border -m --color=fg:#d9d9d9,bg:#000000,hl:#fff000 --color=fg+:#49a6fd,bg+:#000000,hl+:#ffffff  --color=info:#afaf87,prompt:#d7005f,pointer:#afdfff --color=marker:#87ff00,spinner:#af5fff,header:#87afaf --preview-window 'wrap,56%,+{2}+3/3,~3'\", ['--delimiter'] = ':', ['--preview-window'] = 'nohidden,56%', }, }) <cr>", { silent = true, desc = 'FZF specs' })
+
+    -- end hacky stuff
 
     vim.keymap.set('n', '<leader>ff', ":lua require('fzf-lua').grep_project({winopts = { height = 0.95, width = 0.95 }})<cr>", { silent = true, desc = 'FZF grep' })
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
-    vim.keymap.set('n', '<leader>fs', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
-    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
+    vim.keymap.set('n', '<leader>fg', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
+
+    vim.keymap.set('n', '<leader>fs', ":lua require('fzf-lua').grep({search = ' --*spec*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF specs' })
+    vim.keymap.set('n', '<leader>fj', ":lua require('fzf-lua').grep({search = ' --*.js*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF js' })
+    vim.keymap.set('n', '<leader>fc', ":lua require('fzf-lua').grep({search = ' --*.scss*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF css' })
+    vim.keymap.set('n', '<leader>fh', ":lua require('fzf-lua').grep({search = ' --*.html*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF html' })
+    vim.keymap.set('n', '<leader>fr', ":lua require('fzf-lua').grep({search = ' --*.rb*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF ruby' })
+
+    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').lgrep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'exact find in buffer' })
+    vim.keymap.set('n', '<leader>fB', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
     vim.keymap.set('n', '<leader>fl', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
     vim.keymap.set('n', '<leader>f.', ":lua require('fzf-lua').grep_cword()<cr>", { silent = true, desc = 'Grep word under cursor' })
     vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })
