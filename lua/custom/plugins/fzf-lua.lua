@@ -37,9 +37,8 @@ local fzf_opts = {
       theme           = '1337',
     },
   },
-  files = { previewer = false, rg_opts           = "--color=never --files --hidden --follow -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}'", prompt            = 'Files❯ ', },
+  files = { previewer = false, rg_opts           = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,**/config/initializers/rdebug.rb}'", prompt            = 'Files❯ ', },
   grep = {
-    rg_opts =  "--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e",
     prompt            = '❯ ',
     input_prompt      = 'Grep For❯ ',
     multiprocess      = true,           -- run command in a separate process
@@ -47,6 +46,7 @@ local fzf_opts = {
     file_icons        = true,           -- show file icons?
     color_icons       = true,           -- colorize file|git icons
     grep_opts         = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
+    rg_opts = "--column --line-number --no-heading  -g '!{public/**,**/node_modules/**,vendor/**,**/config/initializers/rdebug.rb }' --color=always --smart-case --max-columns=4096 -e",
     -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
     -- search strings will be split using the 'glob_separator' and translated
     -- to '--iglob=' arguments, requires 'rg'
@@ -116,13 +116,6 @@ return {
   -- ['--layout'] = 'default',
   -- ['--delimiter'] = ':',
   -- ['--preview-window'] = 'nohidden,56%', }, 
-
-
-
-
-
-
-
 
 
 
