@@ -37,7 +37,7 @@ local fzf_opts = {
       theme           = '1337',
     },
   },
-  files = { previewer = false, rg_opts           = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,**/config/initializers/rdebug.rb}'", prompt            = 'Files❯ ', },
+  files = { rg_opts = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,**/config/initializers/rdebug.rb}'", prompt = 'Files❯ ', },
   grep = {
     prompt            = '❯ ',
     input_prompt      = 'Grep For❯ ',
@@ -75,14 +75,7 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
 
-    vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:45%', height=0.50,width=0.55,row=0.09,col=0.47,  }, })<cr>", { silent = true, desc = 'FZF Files' })
-    -- vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ cmd = '--column --line-number --no-heading  -g '!{**/node_modules/**,**/vendor/**,**/config/initializers/rdebug.rb,**/vendor/assets/**}' --color=always --smart-case --max-columns=4096 -e' })<cr>", { silent = true, desc = 'FZF Files' })
-
-    -- this works but is too hacky! the old stuff would work, maybe go slow?
-    vim.keymap.set('n', '<leader>jf', "[[:lua require'fzf-lua'.fzf_exec(\" rg --column --line-number --no-heading -g \'{spec/**}\'  -g \'{~/VSCodeJournal/**}\' --color=always --smart-case --max-columns=4096 -- ''\",{ fzf_opts = { ['--with-nth']= '1,4..',['--layout']= 'default', ['--preview'] = vim.fn.shellescape(\"bat -f --highlight-line={2} {1} --theme='1337'\"), ['--preview'] = \"--border -m --color=fg:#d9d9d9,bg:#000000,hl:#fff000 --color=fg+:#49a6fd,bg+:#000000,hl+:#ffffff  --color=info:#afaf87,prompt:#d7005f,pointer:#afdfff --color=marker:#87ff00,spinner:#af5fff,header:#87afaf --preview-window 'wrap,56%,+{2}+3/3,~3'\", ['--delimiter'] = ':', ['--preview-window'] = 'nohidden,56%', }, }) <cr>", { silent = true, desc = 'FZF specs' })
-
-    -- end hacky stuff
-
+    vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:45%', height=0.50,width=0.55,row=0.09,col=0.47 }})<cr>", { silent = true, desc = 'FZF Files' })
     vim.keymap.set('n', '<leader>ff', ":lua require('fzf-lua').grep_project({winopts = { height = 0.95, width = 0.95 }})<cr>", { silent = true, desc = 'FZF grep' })
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
     vim.keymap.set('n', '<leader>fg', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
@@ -100,6 +93,7 @@ return {
     vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })
     vim.keymap.set('n', '<leader>fv', ":lua require('fzf-lua').grep_visual()<cr>", { silent = true, desc = 'Grep visual block' })
     vim.keymap.set('n', '<leader>bb', ":FzfLua buffers<cr>", { silent = true, desc = 'Show open buffers' })
+    vim.keymap.set('n', '<leader>fp', ":lua require('fzf-lua').files({winopts={ height=0.98, width=0.95}})<cr>", { silent = true, desc = 'File Preview' })
     vim.keymap.set('n', '<leader>ob', ":FzfLua oldfiles<cr>", { silent = true, desc = '[o]ld [b]uffers' })
     vim.keymap.set('n', '<leader>os', ":FzfLua search_history<cr>", { silent = true, desc = '[o]ld [s]earches' })
     vim.keymap.set('n', '<leader>gs', ":lua require('fzf-lua').git_status( { fzf_opts = { ['--layout']='reverse-list' } })<cr>", { silent = true, desc = 'fzf git status' })
