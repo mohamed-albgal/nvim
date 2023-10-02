@@ -3,6 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 
+
 vim.api.nvim_set_keymap('n', '<leader>r.', ":w!<cr>:terminal rspec %:<C-r>=line('.')<cr><cr>", { noremap=true, silent = false})
 return {
   {
