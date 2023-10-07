@@ -5,11 +5,17 @@
 local equalize_enabled = false
 -- Define a function to make windows equal width and increase buffer width
 function equalize_windows_and_increase_width()
+    -- Get the number of windows (splits)
+    local num_windows = vim.fn.winnr("$")
+
+    -- Calculate the dynamic width
+    local width = 80 / (num_windows - 1)
+
     -- Make windows equal width
     vim.cmd("wincmd =")
 
-    -- Increase buffer width by 40 columns
-    vim.cmd("vertical resize +80")
+    -- Increase buffer width by the calculated width
+    vim.cmd("vertical resize +" .. width)
 end
 
 
@@ -24,17 +30,26 @@ vim.api.nvim_set_keymap('n', '<leader>/', 'g*', { noremap = true, silent = true,
 vim.api.nvim_set_keymap('n', '<leader>d', ':bd!<CR>', { noremap=true, silent = true, desc="Close buffer" })
 vim.api.nvim_set_keymap('n', '<leader>w/', ':vertical sb<CR>', { noremap=true, silent = false, desc="Open vertical split" })
 vim.api.nvim_set_keymap('n', '<leader>w-', ':split<CR>', { noremap=true, silent = false, desc="Open horizontal split" })
+
 vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
-vim.api.nvim_set_keymap('n', '<leader>t;', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
-vim.api.nvim_set_keymap('t', 'kj', "<C-\\><C-n>", { noremap=true, silent = true, desc = "Exit terminal" })
+vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
+
 vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
 vim.keymap.set('n', '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true, desc = "Close other buffers"})
+
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua if equalize_enabled then equalize_windows_and_increase_width() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })
---
+
+-- rspec mappings
+vim.api.nvim_set_keymap('n', '<leader>r.', ":w!<CR>:rightbelow vsplit | terminal rspec %:<C-r>=line('.')<CR><CR>:setlocal nonumber<CR>", { noremap=true, silent = false })
+vim.api.nvim_set_keymap('n', '<leader>rw', ":w!<CR>:rightbelow vsplit | terminal rspec %:p<CR>:setlocal nonumber<CR>", { noremap=true, silent = false, desc="Run rspec on whole file" })
+vim.api.nvim_set_keymap('n', '<Leader>ry', ":let @+ = 'rspec ' . expand('%') . ':' . line('.')<CR>", { noremap = true, silent = true, desc = "[y]ank rspec line signature" })
+vim.api.nvim_set_keymap('n', '<Leader>rf', ":let @+ = 'rspec ' . expand('%')<CR>", { noremap = true, silent = true , desc = "copy rspec [f]ile signature" })
+
+vim.api.nvim_set_keymap('t', 'kj', "<C-\\><C-n><cr>", { noremap=true, silent = true, desc = "Exit terminal" })
 --
 -- revisit this, i tried to create a M.{} in another file and require it here but it didn't work, so for now im waving the white flag
 function get_current_date(format)

@@ -75,7 +75,7 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
 
-    vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:45%', height=0.50,width=0.55,row=0.09,col=0.47 }})<cr>", { silent = true, desc = 'FZF Files' })
+    vim.keymap.set('n', '<leader>k', ":lua require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>", { silent = true, desc = 'FZF Files' })
     vim.keymap.set('n', '<leader>ff', ":lua require('fzf-lua').grep_project({winopts = { height = 0.95, width = 0.95 }})<cr>", { silent = true, desc = 'FZF grep' })
     vim.keymap.set('n', '<leader>fk', ":lua require('fzf-lua').live_grep_native()<cr>", { silent = true, desc = 'Native live grep (more performant)' })
     vim.keymap.set('n', '<leader>fg', ":lua require('fzf-lua').live_grep_glob()<cr>", { silent = true, desc = 'Glob support' })
