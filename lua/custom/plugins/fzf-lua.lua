@@ -26,7 +26,7 @@ local fzf_opts = {
       ['--border']      = 'none',
       ['--layout']      = 'default',
       ['--delimiter']      = ':',
-      ['--color'] = 'fg:#d9d9d9,bg:#001010,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#cecece,info:#afaf87,prompt:#d7005f,pointer:#afdfff,marker:#87ff00,spinner:#af5fff,header:#87afaf',
+      -- ['--color'] = 'fg:#d9d9d9,bg:#001010,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#cecece,info:#afaf87,prompt:#d7005f,pointer:#afdfff,marker:#87ff00,spinner:#af5fff,header:#87afaf',
       ['--preview'] = { default = "bat" },
       ['--preview-window'] =  'nowrap,56%,+{2}+3/3,~3' ,
   },
