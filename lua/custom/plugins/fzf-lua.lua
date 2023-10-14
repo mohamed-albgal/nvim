@@ -86,8 +86,8 @@ return {
     vim.keymap.set('n', '<leader>fh', ":lua require('fzf-lua').grep({search = ' --*.html*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF html' })
     vim.keymap.set('n', '<leader>fr', ":lua require('fzf-lua').grep({search = ' --*.rb*', fzf_opts = { ['--nth'] = '2..' }})<cr>", { silent = true, desc = 'FZF ruby' })
 
-    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').lgrep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'exact find in buffer' })
-    vim.keymap.set('n', '<leader>fB', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
+    vim.keymap.set('n', '<leader>fb', ":lua require('fzf-lua').grep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'fuzzy find in buffer' })
+    vim.keymap.set('n', '<leader>fB', ":lua require('fzf-lua').lgrep_curbuf({fzf_opts = {['--no-sort'] = '', ['--layout']='reverse-list'}})<cr>", { silent = true, desc = 'exact find in buffer' })
     vim.keymap.set('n', '<leader>fl', ":lua require('fzf-lua').grep_last()<cr>", { silent = true, desc = 'Continue most recent search' })
     vim.keymap.set('n', '<leader>f.', ":lua require('fzf-lua').grep_cword()<cr>", { silent = true, desc = 'Grep word under cursor' })
     vim.keymap.set('n', '<leader>fC', ":lua require('fzf-lua').grep_cWORD()<cr>", { silent = true, desc = 'Grep WORD  under cursor' })

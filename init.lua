@@ -140,19 +140,10 @@ else
         end,
       },
     },
-
-
-    {
       -- Add indentation guides even on blank lines
-      'lukas-reineke/indent-blankline.nvim',
       -- Enable `lukas-reineke/indent-blankline.nvim`
       -- See `:help indent_blankline.txt`
-      opts = {
-        char = '┊',
-        show_trailing_blankline_indent = false,
-      },
-    },
-
+    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
     --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
     --    up-to-date with whatever is in the kickstart repo.
@@ -162,12 +153,15 @@ else
     { import = 'custom.plugins' },
   }, {})
   require('custom.setup_config')
+  require'luasnip'.filetype_extend("ruby", {"rails"})
+  require("ibl").setup()
 
   -- [[ Setting options ]]
   -- See `:help vim.o`
   -- NOTE: You can change these options as you wish!
   vim.opt.termguicolors = true
-  require("bufferline").setup {}
+  -- for tabline
+  -- require("bufferline").setup {}
 
   -- Set highlight on search
   vim.o.hlsearch = true
@@ -418,7 +412,7 @@ else
   -- See `:help cmp`
   local cmp = require 'cmp'
   local luasnip = require 'luasnip'
-  require('luasnip.loaders.from_vscode').lazy_load()
+  require('luasnip.loaders.from_vscode').lazy_load({ path = { "~/.config/nvim/console.code-snippets"} })
   luasnip.config.setup {}
 
   cmp.setup {

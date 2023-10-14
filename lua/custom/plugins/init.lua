@@ -32,7 +32,6 @@ return {
 
   -- floating window for git stuff
   { 'rhysd/git-messenger.vim' },
-
   -- zen mode
   {
     "folke/zen-mode.nvim",
@@ -49,7 +48,8 @@ return {
     }
   },
 
-  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+  -- for tabline
+  -- {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
 
   {
     -- Set lualine as statusline
