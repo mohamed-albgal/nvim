@@ -28,6 +28,13 @@ return {
     end,
   },
 
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+
   { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 
   -- floating window for git stuff
@@ -62,7 +69,7 @@ return {
         component_separators = { left = '', right = ''},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {
-          statusline = {},
+          statusline = {'.md'},
           winbar = {},
         },
         ignore_focus = {},
@@ -72,7 +79,39 @@ return {
           statusline = 1000,
           tabline = 1000,
           winbar = 1000,
-        }
+        },
+      },
+      winbar = {
+        lualine_a = {},
+        lualine_b = {},
+        -- lualine_b = {
+        --   {
+        --   
+        --     'filename',
+        --     path = 1,
+        --     separators = { left = '', right = ''},
+        --     color = {fg = '#ffffff', bg = '#000000', gui = 'bold'},
+        --   }
+        -- },
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {}
+      },
+      inactive_winbar = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {}
+      },
+      sections= {
+        lualine_c = {{
+          'filename',
+          path=4,
+          -- color = {fg = '#ffffff', bg = '#000000', gui = 'bold'},
+        }},
       },
     },
   },

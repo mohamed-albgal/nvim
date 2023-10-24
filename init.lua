@@ -154,7 +154,6 @@ else
   }, {})
   require('custom.setup_config')
   require'luasnip'.filetype_extend("ruby", {"rails"})
-  require("ibl").setup()
 
   -- [[ Setting options ]]
   -- See `:help vim.o`
@@ -162,6 +161,20 @@ else
   vim.opt.termguicolors = true
   -- for tabline
   -- require("bufferline").setup {}
+  require("ibl").setup()
+  local highlight = {
+      -- "CursorColumn",
+      "Whitespace",
+  }
+  require("ibl").setup {
+      indent = { highlight = highlight, char = "" },
+      whitespace = {
+          highlight = highlight,
+          remove_blankline_trail = false,
+      },
+      scope = { enabled = false },
+  }
+
 
   -- Set highlight on search
   vim.o.hlsearch = true
