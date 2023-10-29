@@ -17,6 +17,36 @@ function equalize_windows_and_increase_width()
     -- Increase buffer width by the calculated width
     vim.cmd("vertical resize +" .. width)
 end
+--
+-- Define the RunRSpec function
+function RunRSpec(wholeFile)
+    -- Get the current file and line number
+    local current_file = vim.fn.expand('%')
+    local current_line = vim.fn.line('.')
+
+    -- Construct the "rspec" command
+
+    local rspec_command = 'rspec ' .. current_file
+  -- if wholeFile is false then append the : and current_line
+    if not wholeFile then
+      rspec_command = rspec_command .. ':' .. current_line
+    end
+
+    -- Delete existing rspec terminal buffers
+    local term_buffers = vim.fn.getbufinfo({ buftype = 'terminal' })
+    for _, buf in ipairs(term_buffers) do
+        local buffer_name = vim.fn.bufname(buf.bufnr)
+        if string.match(buffer_name, "term://.*rspec .*") then
+            vim.cmd(':bdelete!' .. buf.bufnr)
+        end
+    end
+
+    -- Open a new terminal buffer in a horizontal split to the right
+    vim.cmd(':rightbelow vsplit')
+  -- set no line numbers
+    vim.cmd(':setlocal nonumber')
+    vim.cmd(':term ' .. rspec_command)
+end
 
 
 vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true })
@@ -35,6 +65,11 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
 
+-- quickfix list
+vim.api.nvim_set_keymap('n', '<leader>cc', ":cc<enter>", { noremap=true, silent = true, desc = "quickfix list toggle"})
+vim.api.nvim_set_keymap('n', '<leader>cp', ":cp<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
+vim.api.nvim_set_keymap('n', '<leader>cn', ":cn<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
+
 vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
@@ -44,8 +79,12 @@ vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua if equalize_enabled then equalize_windows_and_increase_width() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })
 
 -- rspec mappings
-vim.api.nvim_set_keymap('n', '<leader>r.', ":w!<CR>:rightbelow vsplit | terminal rspec %:<C-r>=line('.')<CR><CR>:setlocal nonumber<CR>", { noremap=true, silent = false })
-vim.api.nvim_set_keymap('n', '<leader>rw', ":w!<CR>:rightbelow vsplit | terminal rspec %:p<CR>:setlocal nonumber<CR>", { noremap=true, silent = false, desc="Run rspec on whole file" })
+-- Open a new terminal buffer in a horizontal split to the right
+
+-- vim.api.nvim_set_keymap('n', '<leader>r.', ":w!<CR>:rightbelow vsplit | terminal rspec %:<C-r>=line('.')<CR><CR>:setlocal nonumber<CR>", { noremap=true, silent = false })
+-- vim.api.nvim_set_keymap('n', '<leader>rw', ":w!<CR>:rightbelow vsplit | terminal rspec %:p<CR>:setlocal nonumber<CR>", { noremap=true, silent = false, desc="Run rspec on whole file" })
+vim.api.nvim_set_keymap('n', '<leader>r.', [[:lua RunRSpec(false)<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>rw', [[:lua RunRSpec(true)<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>ry', ":let @+ = 'rspec ' . expand('%') . ':' . line('.')<CR>", { noremap = true, silent = true, desc = "[y]ank rspec line signature" })
 vim.api.nvim_set_keymap('n', '<Leader>rf', ":let @+ = 'rspec ' . expand('%')<CR>", { noremap = true, silent = true , desc = "copy rspec [f]ile signature" })
 
