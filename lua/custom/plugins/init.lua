@@ -18,6 +18,8 @@ return {
   { 'folke/which-key.nvim', opts = {} },
 
   {'tpope/vim-sleuth'},
+  {'tpope/vim-dispatch'},
+  {'radenling/vim-dispatch-neovim'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
   {'ggandor/lightspeed.nvim'},
@@ -57,7 +59,6 @@ return {
 
   -- for tabline
   -- {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',

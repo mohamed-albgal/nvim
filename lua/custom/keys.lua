@@ -9,7 +9,7 @@ function equalize_windows_and_increase_width()
     local num_windows = vim.fn.winnr("$")
 
     -- Calculate the dynamic width
-    local width = 80 / (num_windows - 1)
+    local width = 70 / (num_windows - 1)
 
     -- Make windows equal width
     vim.cmd("wincmd =")
@@ -44,7 +44,7 @@ function RunRSpec(wholeFile)
     -- Open a new terminal buffer in a horizontal split to the right
     vim.cmd(':rightbelow vsplit')
   -- set no line numbers
-    vim.cmd(':setlocal nonumber')
+  -- vim.cmd(':setlocal nonumber')
     vim.cmd(':term ' .. rspec_command)
 end
 
@@ -65,15 +65,15 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
 
--- quickfix list
-vim.api.nvim_set_keymap('n', '<leader>cc', ":cc<enter>", { noremap=true, silent = true, desc = "quickfix list toggle"})
-vim.api.nvim_set_keymap('n', '<leader>cp', ":cp<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
-vim.api.nvim_set_keymap('n', '<leader>cn', ":cn<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
-
 vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
 vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
 vim.keymap.set('n', '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true, desc = "Close other buffers"})
+
+-- next/prev/new TAB
+vim.api.nvim_set_keymap('n', '<C-h>', ':tabnext<CR>', { noremap=true, silent = true, desc = "Previous buffer"})
+vim.api.nvim_set_keymap('n', '<C-l>', ':tabprevious<CR>', { noremap=true, silent = true, desc = "Next buffer"})
+vim.api.nvim_set_keymap('n', '<leader>T', ':tabnew<CR>', { noremap=true, silent = true, desc = "Next buffer"})
 
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua if equalize_enabled then equalize_windows_and_increase_width() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })

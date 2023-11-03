@@ -76,6 +76,9 @@ else
   require('custom.keys')
   vim.o.ignorecase = true
   vim.o.smartcase = true
+
+  -- trying out dispatch (need vim plug for it, but it's not working)
+  -- source ~/.vim/init.vim
   require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
@@ -305,7 +308,16 @@ else
     },
   })
 
-  -- Diagnostic keymaps
+  -- Diagnostics
+  vim.diagnostic.config({
+    underline = true,
+    virtual_text = false,
+    signs = {
+      severity_limit = 'Warning',
+
+    },
+  })
+  -- keymaps
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
   vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
@@ -417,10 +429,11 @@ else
         on_attach = on_attach,
         settings = servers[server_name],
         filetypes = (servers[server_name] or {}).filetypes,
+        root_dir = function() return vim.loop.cwd() end
       }
     end
   }
-
+  --
   -- [[ Configure nvim-cmp ]]
   -- See `:help cmp`
   local cmp = require 'cmp'
@@ -474,4 +487,5 @@ else
 end -- end of if/else for vscode vs neovim
 
 -- The line beneath this is called `modeline`. See `:help modeline`
+--
 -- vim: ts=2 sts=2 sw=2 et
