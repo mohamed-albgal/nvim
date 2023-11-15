@@ -183,9 +183,9 @@ else
   vim.o.hlsearch = true
 
   -- Make line numbers default
-  vim.wo.number = true
+  vim.wo.number = false
 
-  -- Enable mouse mode
+  -- enable mouse mode
   vim.o.mouse = 'a'
   --
   -- set timeoutlen

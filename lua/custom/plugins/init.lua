@@ -23,7 +23,6 @@ return {
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
   {'ggandor/lightspeed.nvim'},
-
   { "EdenEast/nightfox.nvim",
     priority = 1000,
     config = function()

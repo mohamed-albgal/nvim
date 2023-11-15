@@ -48,6 +48,18 @@ function RunRSpec(wholeFile)
     vim.cmd(':term ' .. rspec_command)
 end
 
+function Story()
+  local num = vim.fn.input("Enter number: ")
+  local title = vim.fn.input("Enter the story title: ")
+  local branch_name = vim.fn.input("Enter the branch name: ")
+
+  local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
+
+  vim.fn.setreg(3, formatted_output)
+  print("Story information placed in register 3")
+end
+
+vim.cmd('command! Story lua Story()')
 
 vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>wt', '<cmd>lua if equalize_enabled then equalize_enabled = false vim.cmd("wincmd = | echom \'equalize_enabled is true\'") else equalize_enabled=true equalize_windows_and_increase_width() vim.cmd("echom \'equalize_enabled is false\'") end<cr>', { noremap = true, silent = true, desc = "vscode's buffer width switch toggle" })
@@ -133,6 +145,19 @@ function open_or_create_journal()
   vim.cmd("e " .. journal_path)
 end
 
+function open_yesterdays_journal()
+  local yesterday_day = get_current_date("%d") - 1
+  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
+  local journal_filename = string.format("%s.md", yesterday_day)
+  local journal_path = journal_directory .. journal_filename
+  -- abort if file doesn't exist
+  if vim.fn.filereadable(journal_path) == 0 then
+    print("yesterday's journal doesn't exist")
+    return
+  end
+  vim.cmd("e " .. journal_path)
+end
+
 -- Function to add a task to today's journal
 function add_task_to_journal ()
   local journal_path = create_or_open_journal()
@@ -174,4 +199,5 @@ function add_task_to_journal ()
 end
 -- Map the journal function to <leader>j
 vim.api.nvim_set_keymap('n', '<leader>jt', ":lua open_or_create_journal()<CR>", { noremap = true, silent = true, desc = "Open today's journal" })
+vim.api.nvim_set_keymap('n', '<leader>jy', ":lua open_yesterdays_journal()<CR>", { noremap = true, silent = true, desc = "Open yesterday's journal" })
 vim.api.nvim_set_keymap('n', '<leader>ja', ":lua add_task_to_journal()<CR>", { noremap = true, silent = true, desc = "Add task to journal" })
