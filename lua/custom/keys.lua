@@ -5,11 +5,8 @@
 local equalize_enabled = false
 -- Define a function to make windows equal width and increase buffer width
 function equalize_windows_and_increase_width()
-    -- Get the number of windows (splits)
-    local num_windows = vim.fn.winnr("$")
 
-    -- Calculate the dynamic width
-    local width = 80 / (num_windows - 1)
+    local width = vim.fn.winwidth(0) * .5
 
     -- Make windows equal width
     vim.cmd("wincmd =")
@@ -32,22 +29,38 @@ function RunRSpec(wholeFile)
       rspec_command = rspec_command .. ':' .. current_line
     end
 
-    -- Delete existing rspec terminal buffers
+    -- Delete existing rspec terminal buffers (buffers whose name is like  "term://.*rspec .*")
     local term_buffers = vim.fn.getbufinfo({ buftype = 'terminal' })
     for _, buf in ipairs(term_buffers) do
         local buffer_name = vim.fn.bufname(buf.bufnr)
+        if buffer_name == '' then
+            goto continue
+        end
         if string.match(buffer_name, "term://.*rspec .*") then
             vim.cmd(':bdelete!' .. buf.bufnr)
         end
+      ::continue::
     end
 
     -- Open a new terminal buffer in a horizontal split to the right
     vim.cmd(':rightbelow vsplit')
   -- set no line numbers
-    vim.cmd(':setlocal nonumber')
+  -- vim.cmd(':setlocal nonumber')
     vim.cmd(':term ' .. rspec_command)
 end
 
+function Story()
+  local num = vim.fn.input("Enter number: ")
+  local title = vim.fn.input("Enter the story title: ")
+  local branch_name = vim.fn.input("Enter the branch name: ")
+
+  local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
+
+  vim.fn.setreg(3, formatted_output)
+  print("Story information placed in register 3")
+end
+
+vim.cmd('command! Story lua Story()')
 
 vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>wt', '<cmd>lua if equalize_enabled then equalize_enabled = false vim.cmd("wincmd = | echom \'equalize_enabled is true\'") else equalize_enabled=true equalize_windows_and_increase_width() vim.cmd("echom \'equalize_enabled is false\'") end<cr>', { noremap = true, silent = true, desc = "vscode's buffer width switch toggle" })
@@ -65,15 +78,14 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
 
--- quickfix list
-vim.api.nvim_set_keymap('n', '<leader>cc', ":cc<enter>", { noremap=true, silent = true, desc = "quickfix list toggle"})
-vim.api.nvim_set_keymap('n', '<leader>cp', ":cp<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
-vim.api.nvim_set_keymap('n', '<leader>cn', ":cn<enter>", { noremap=true, silent = true, desc = "quickfix list previous " })
-
-vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
-vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
-vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
-vim.keymap.set('n', '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true, desc = "Close other buffers"})
+-- vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
+-- vim.keymap.set({'n','v','i'}, '<C-h>', ":BufferLineCycleNext<cr>", { noremap=true, silent = true, desc = "Next buffer"})
+-- vim.keymap.set('n', '<leader>bD', ":BufferLineCloseOthers<cr>", { noremap=true, silent = true, desc = "Close other buffers"})
+--
+-- next/prev/new TAB
+vim.api.nvim_set_keymap('n', '<C-l>', ':tabnext<CR>', { noremap=true, silent = true, desc = "Previous buffer"})
+vim.api.nvim_set_keymap('n', '<C-h>', ':tabprevious<CR>', { noremap=true, silent = true, desc = "Next buffer"})
+vim.api.nvim_set_keymap('n', '<leader>T', ':tabnew<CR>', { noremap=true, silent = true, desc = "Next buffer"})
 
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua if equalize_enabled then equalize_windows_and_increase_width() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })
@@ -116,7 +128,8 @@ function create_or_open_journal()
   if vim.fn.filereadable(journal_path) == 0 then
     -- If the file doesn't exist, create it with default content
     vim.fn.mkdir(journal_directory, "p")  -- Create the directory if it doesn't exist
-    local initial_content = string.format("# %s\n\n:::mermaid\nflowchart RL\nid1>Tasks]\n::: \n\n\n:::mermaid\nflowchart RL\nid1>Notes]\n:::  \n\n\n", current_date)
+    -- vscode mermaid uses triple colon ':::' to separate tasks and notes, while neovim mermaid uses triple backtick '```' keep this in mind in case I need to port this to vscode
+    local initial_content = string.format("# %s\n\n```mermaid\nflowchart RL\nid1>Tasks]\n``` \n\n\n```mermaid\nflowchart RL\nid1>Notes]\n```  \n\n\n", current_date)
     local file = io.open(journal_path, "w")
     file:write(initial_content)
     file:close()
@@ -133,6 +146,19 @@ function open_or_create_journal()
   vim.cmd("e " .. journal_path)
 end
 
+function open_yesterdays_journal()
+  local yesterday_day = get_current_date("%d") - 1
+  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
+  local journal_filename = string.format("%s.md", yesterday_day)
+  local journal_path = journal_directory .. journal_filename
+  -- abort if file doesn't exist
+  if vim.fn.filereadable(journal_path) == 0 then
+    print("yesterday's journal doesn't exist")
+    return
+  end
+  vim.cmd("e " .. journal_path)
+end
+
 -- Function to add a task to today's journal
 function add_task_to_journal ()
   local journal_path = create_or_open_journal()
@@ -141,6 +167,9 @@ function add_task_to_journal ()
   local my_input = vim.fn.input("Enter your task: ")
   if my_input == "" then
     return
+  else
+    -- append the name of the current file to the input in markdown <sub> tags
+    my_input = my_input .. " --< " .. vim.fn.expand("%:t")
   end
 
   -- Read the contents of the journal file
@@ -152,7 +181,7 @@ function add_task_to_journal ()
   -- Find the line with ":::" and insert the task after it
   local found = false
   for i, line in ipairs(file_contents) do
-    if line:match("^::: $") then
+    if line:match("``` $") then
       table.insert(file_contents, i + 1, "- [ ] " .. my_input)
       found = true
       break
@@ -174,4 +203,6 @@ function add_task_to_journal ()
 end
 -- Map the journal function to <leader>j
 vim.api.nvim_set_keymap('n', '<leader>jt', ":lua open_or_create_journal()<CR>", { noremap = true, silent = true, desc = "Open today's journal" })
+vim.api.nvim_set_keymap('n', '<leader>jp', ":lua open_or_create_journal(); vim.cmd('MarkdownPreview');<CR>", { noremap = true, silent = true, desc = "Open buffer and browser tab - focuses in browser" })
+vim.api.nvim_set_keymap('n', '<leader>jy', ":lua open_yesterdays_journal()<CR>", { noremap = true, silent = true, desc = "Open yesterday's journal" })
 vim.api.nvim_set_keymap('n', '<leader>ja', ":lua add_task_to_journal()<CR>", { noremap = true, silent = true, desc = "Add task to journal" })

@@ -17,11 +17,21 @@ return {
 
   { 'folke/which-key.nvim', opts = {} },
 
+
+-- install without yarn or npm
+  {
+      "iamcco/markdown-preview.nvim",
+      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      ft = { "markdown" },
+      build = function() vim.fn["mkdp#util#install"]() end,
+  },
+
   {'tpope/vim-sleuth'},
+  {'tpope/vim-dispatch'},
+  {'radenling/vim-dispatch-neovim'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
   {'ggandor/lightspeed.nvim'},
-
   { "EdenEast/nightfox.nvim",
     priority = 1000,
     config = function()
@@ -57,7 +67,6 @@ return {
 
   -- for tabline
   -- {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
