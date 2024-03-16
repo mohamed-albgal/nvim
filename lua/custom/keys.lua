@@ -57,7 +57,13 @@ function Story()
   local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
 
   vim.fn.setreg(3, formatted_output)
-  print("Story information placed in register 3")
+  -- place the contents of register 3 into today's journal file entry that is named like ~/VSCodeJournal/<current_year>/<current_month>/<current_day>.md
+  local journal_path = create_or_open_journal()
+  journal_file = io.open(journal_path, "a")
+  -- a newline before and after the formatted_output
+  journal_file:write("\n" .. formatted_output .. "\n")
+  journal_file:close()
+  print("Story information placed in register 3 and in today's journal file.")
 end
 
 vim.cmd('command! Story lua Story()')

@@ -27,12 +27,12 @@ local fzf_opts = {
       ['--layout']      = 'default',
       ['--delimiter']      = ':',
       -- ['--color'] = 'fg:#d9d9d9,bg:#001010,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#cecece,info:#afaf87,prompt:#d7005f,pointer:#afdfff,marker:#87ff00,spinner:#af5fff,header:#87afaf',
+      ['--color'] = 'fg:#d9d9d9,hl:#fff000,fg+:#49a6fd,bg+:#000000,hl+:#49a6fd,info:#afaf87,prompt:#d7005f,pointer:#49a6fd,marker:#87ff00,spinner:#af5fff,header:#87afaf',
       ['--preview'] = { default = "bat" },
       ['--preview-window'] =  'nowrap,56%,+{2}+3/3,~3' ,
   },
   previewers = {
     bat = {
-      cmd             = "bat",
       args            = "--color=always --style=numbers,changes,header,grid ",
       theme           = '1337',
     },
@@ -64,8 +64,20 @@ local fzf_opts = {
     -- end,
   },
   git = {
-    status = { preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS delta --color-only --features=interactive" },
-    commits = { preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS" }
+    -- status = { preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS delta --color-only --features=interactive" },
+    bcommits = {
+      prompt        = 'BUFFER_Commits❯ ',
+      preview = "git show --color $(echo {1} | cut -d ' ' -f 1)"
+    },
+    commits = {
+      prompt        = 'Commits❯❯❯ ',
+      -- cmd           = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
+      -- preview       = "git show --color -- {1}",
+
+      preview = "git show --color $(echo {1} | cut -d ' ' -f 1)"
+      -- git-delta is automatically detected as pager, uncomment to disable
+      -- preview_pager = false,    }
+    }
   }
 }
 
@@ -100,6 +112,7 @@ return {
     vim.keymap.set('n', '<leader>gc', ":FzfLua changes<cr>", { silent = true, desc = 'open changes made to buffer' })
     vim.keymap.set('n', '<leader>bl', ":lua require('fzf-lua').lines({previewer=false})<cr>", { silent = true, desc = '[o]pen buffer lines' })
     vim.keymap.set('n', '<leader>qs', ":FzfLua quickfix_stack<cr>", { silent = true, desc = '[q]uickfix [s]tack' })
+    vim.keymap.set('n', '<leader>qc', ":cexpr []<cr>", { silent = true, desc = '[q]uickfix [c]lear' })
     vim.keymap.set('n', '<leader>qn', ":cn<cr>", { silent = true, desc = 'next entry of quickfix list' })
     vim.keymap.set('n', '<leader>qp', ":cp<cr>", { silent = true, desc = 'previous entry of quickfix list' })
     vim.keymap.set('n', '<leader>qu', ":FzfLua quickfix<cr>", { silent = true, desc = '[qu]ick fix list' })
@@ -112,14 +125,4 @@ return {
     require('fzf-lua').setup(fzf_opts)
   end,
 }
-
-
-
-
---  fzf_opts = {
-  -- ['--layout'] = 'default',
-  -- ['--delimiter'] = ':',
-  -- ['--preview-window'] = 'nohidden,56%', }, 
-
-
 

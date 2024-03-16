@@ -15,7 +15,14 @@ return {
   { 'numToStr/Comment.nvim', opts = {} },
   -- maq lightspeed
 
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',
+    event= "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 2000
+    end,
+    opts = { },
+  },
 
 
 -- install without yarn or npm
