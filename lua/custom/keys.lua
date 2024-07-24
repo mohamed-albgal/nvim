@@ -52,48 +52,46 @@ end
 function Story()
   local num = vim.fn.input("Enter number: ")
   local title = vim.fn.input("Enter the story title: ")
-  -- local branch_name = vim.fn.input("Enter the branch name: ")
-
   -- early return if num or title is empty
   if num == "" or title == "" then
     -- print("num, title, or branch name is empty")
-    print("num and title can't be empty")
+    print("Story number or title can't be empty")
     return
   end
 
-  -- if branch name is empty, use the title as the branch name, but replace spaces with dashes and skip any non-alphanumeric characters or numbers
-  -- if branch_name == "" then
-    -- change all numbers to empty string
     branch_name = string.gsub(title, "%d", "")
     -- change all non-alphanumeric characters to empty string
     branch_name = string.gsub(branch_name, "%W", "")
+    branch_name = string.gsub(branch_name, "|", "")
     -- change all spaces to dashes
     branch_name = string.gsub(title, "%s+", "-")
     -- remove any trailing dashes
     branch_name = string.gsub(branch_name, "-$", "")
     -- remove any leading dashes
     branch_name = string.gsub(branch_name, "^-", "")
-    -- remove any dash that is followed by another dash
-    branch_name = string.gsub(branch_name, "-+", "-")
     -- make it lowercase
     branch_name = string.lower(branch_name)
-  -- end
+    -- ignore any text in brackets or parentheses
+    branch_name = string.gsub(branch_name, "%b()", "")
+    branch_name = string.gsub(branch_name, "%b[]", "")
+    -- remove any dash that is followed by another dash
+    branch_name = string.gsub(branch_name, "-+", "-")
 
   local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
 
-  vim.fn.setreg(3, formatted_output)
-  -- place the contents of register 3 into today's journal file entry that is named like ~/VSCodeJournal/<current_year>/<current_month>/<current_day>.md
   local journal_path = create_or_open_journal()
   journal_file = io.open(journal_path, "a")
-  -- a newline before and after the formatted_output
   journal_file:write("\n" .. formatted_output .. "\n")
   journal_file:close()
-  print("-----------------------Story information placed in register 3 and in today's journal file.")
+  print(" |-----------------------Success")
+  -- open the journal file as a vertical split
+  vim.cmd("vsplit " .. journal_path)
 end
 
 vim.cmd('command! Story lua Story()')
 
-vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true, desc = "Toggle line numbers" })
+vim.api.nvim_set_keymap('n', '<leader>wr', ':set relativenumber<cr>', { noremap = true, silent = true, desc = "Toggle relative line numbers" })
 vim.api.nvim_set_keymap('n', '<leader>wt', '<cmd>lua if equalize_enabled then equalize_enabled = false vim.cmd("wincmd = | echom \'equalize_enabled is true\'") else equalize_enabled=true equalize_windows_and_increase_width() vim.cmd("echom \'equalize_enabled is false\'") end<cr>', { noremap = true, silent = true, desc = "vscode's buffer width switch toggle" })
 vim.api.nvim_set_keymap('n', '<leader>w', '<C-w>', { noremap=true, silent = false, desc="Window navigation" })
 vim.api.nvim_set_keymap('n', '<leader>a', ':wincmd h<cr>:lua if equalize_enabled then equalize_windows_and_increase_width() end<cr>', { noremap = true, silent = true })
@@ -131,7 +129,7 @@ vim.api.nvim_set_keymap('n', '<leader>rw', [[:lua RunRSpec(true)<CR>]], { norema
 vim.api.nvim_set_keymap('n', '<Leader>ry', ":let @+ = 'rspec ' . expand('%') . ':' . line('.')<CR>", { noremap = true, silent = true, desc = "[y]ank rspec line signature" })
 vim.api.nvim_set_keymap('n', '<Leader>rf', ":let @+ = 'rspec ' . expand('%')<CR>", { noremap = true, silent = true , desc = "copy rspec [f]ile signature" })
 
-vim.api.nvim_set_keymap('t', 'kj', "<C-\\><C-n><cr>", { noremap=true, silent = true, desc = "Exit terminal" })
+vim.api.nvim_set_keymap('t', 'df', "<C-\\><C-n><cr>", { noremap=true, silent = true, desc = "Exit terminal" })
 --
 -- revisit this, i tried to create a M.{} in another file and require it here but it didn't work, so for now im waving the white flag
 function get_current_date(format)
@@ -237,3 +235,12 @@ vim.api.nvim_set_keymap('n', '<leader>jt', ":lua open_or_create_journal()<CR>", 
 vim.api.nvim_set_keymap('n', '<leader>jp', ":lua open_or_create_journal(); vim.cmd('MarkdownPreview');<CR>", { noremap = true, silent = true, desc = "Open buffer and browser tab - focuses in browser" })
 vim.api.nvim_set_keymap('n', '<leader>jy', ":lua open_yesterdays_journal()<CR>", { noremap = true, silent = true, desc = "Open yesterday's journal" })
 vim.api.nvim_set_keymap('n', '<leader>ja', ":lua add_task_to_journal()<CR>", { noremap = true, silent = true, desc = "Add task to journal" })
+
+-- diagnostics toggle
+vim.keymap.set('n', '<leader>wd', function()
+  if vim.diagnostic.is_disabled() then
+    vim.diagnostic.enable()
+  else
+    vim.diagnostic.disable()
+  end
+end, { desc = 'Toggle diagnostics' })

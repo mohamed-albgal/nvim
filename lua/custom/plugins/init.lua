@@ -33,9 +33,7 @@ return {
       build = function() vim.fn["mkdp#util#install"]() end,
   },
 
-  {'tpope/vim-sleuth'},
-  {'tpope/vim-dispatch'},
-  {'radenling/vim-dispatch-neovim'},
+  {'nmac427/guess-indent.nvim'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
   {'ggandor/lightspeed.nvim'},
@@ -65,10 +63,13 @@ return {
         options = {
           number = false,
         }
-      }
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
+      },
+      on_open = function()
+        vim.fn.system('kitty @ set-tab-bar visible no')
+      end,
+      on_close = function()
+        vim.fn.system('kitty @ set-tab-bar visible yes')
+      end,
     }
   },
 
@@ -122,12 +123,24 @@ return {
         lualine_y = {},
         lualine_z = {}
       },
-      sections= {
-        lualine_c = {{
-          'filename',
-          path=4,
-          -- color = {fg = '#ffffff', bg = '#000000', gui = 'bold'},
-        }},
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = { { 'filename', path = 4,
+          color = {fg = '#8b8b8b', bg = '#000000', gui = 'bold'},
+          }
+        },
+      },
+      sections = {
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = { { 'filename', path = 4,
+          color = {fg = '#a7c7e7', bg = '#000000', gui = 'bold'},
+          }
+        },
       },
     },
   },
