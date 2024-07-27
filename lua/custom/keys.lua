@@ -106,7 +106,7 @@ vim.api.nvim_set_keymap('n', '<leader>d', ':bd!<CR>', { noremap=true, silent = t
 vim.api.nvim_set_keymap('n', '<leader>w/', ':vertical sb<CR>', { noremap=true, silent = false, desc="Open vertical split" })
 vim.api.nvim_set_keymap('n', '<leader>w-', ':split<CR>', { noremap=true, silent = false, desc="Open horizontal split" })
 
-vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal" })
+vim.api.nvim_set_keymap('n', '<leader>;', ":FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNext<CR>", { noremap=true, silent = true, desc = "Next terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tT', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
