@@ -82,10 +82,6 @@ else
   require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
-    -- Git related plugins
-
-    -- Detect tabstop and shiftwidth automatically
-
     -- NOTE: This is where your plugins related to LSP can be installed.
     --  The configuration is done below. Search for lspconfig to find it below.
     {
@@ -120,6 +116,7 @@ else
         'rafamadriz/friendly-snippets',
       },
     },
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
     -- Useful plugin to show you pending keybinds.
 
@@ -189,7 +186,7 @@ else
   vim.o.mouse = 'a'
   --
   -- set timeoutlen
-  vim.o.timeoutlen = 50
+  vim.o.timeoutlen = 550
 
 
   -- Sync clipboard between OS and Neovim.
@@ -199,6 +196,12 @@ else
 
   -- Enable break indent
   vim.o.breakindent = true
+  vim.o.shiftwidth = 2
+  vim.o.tabstop = 2
+  vim.o.softtabstop = 2
+  vim.o.cindent = true
+  vim.o.expandtab = true
+  vim.o.smartindent = true
 
   -- Save undo history
   vim.o.undofile = true
@@ -308,13 +311,18 @@ else
     },
   })
 
-  -- Diagnostics
+  -- Define custom diagnostic signs
+  vim.fn.sign_define('DiagnosticSignError', { text = 'E', texthl = 'DiagnosticSignError' })
+  vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+  vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+  vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+
+  -- Diagnostics configuration
   vim.diagnostic.config({
     underline = true,
     virtual_text = false,
     signs = {
-      severity_limit = 'Warning',
-
+      severity = { min = vim.diagnostic.severity.ERROR },
     },
   })
   -- keymaps
