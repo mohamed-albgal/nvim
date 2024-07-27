@@ -51,17 +51,16 @@ vim.api.nvim_set_keymap('n', '<leader>T', ':tabnew<CR>', { noremap=true, silent 
 vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc = 'LazyGit window' })
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua if equalize_enabled then equalize_windows_and_increase_width() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })
 
--- rspec mappings
--- Open a new terminal buffer in a horizontal split to the right
-
--- vim.api.nvim_set_keymap('n', '<leader>r.', ":w!<CR>:rightbelow vsplit | terminal rspec %:<C-r>=line('.')<CR><CR>:setlocal nonumber<CR>", { noremap=true, silent = false })
--- vim.api.nvim_set_keymap('n', '<leader>rw', ":w!<CR>:rightbelow vsplit | terminal rspec %:p<CR>:setlocal nonumber<CR>", { noremap=true, silent = false, desc="Run rspec on whole file" })
-vim.api.nvim_set_keymap('n', '<leader>r.', [[:lua RunRSpec(false)<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>rw', [[:lua RunRSpec(true)<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>ry', ":let @+ = 'rspec ' . expand('%') . ':' . line('.')<CR>", { noremap = true, silent = true, desc = "[y]ank rspec line signature" })
-vim.api.nvim_set_keymap('n', '<Leader>rf', ":let @+ = 'rspec ' . expand('%')<CR>", { noremap = true, silent = true , desc = "copy rspec [f]ile signature" })
-
+vim.api.nvim_set_keymap('t', '<leader><ESC>', "<C-\\><C-n>", { noremap=true, silent = true, desc = "Exit normal mode" })
 vim.api.nvim_set_keymap('t', '<leader>;', "<C-\\><C-n>:FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal in terminal mode" })
+vim.api.nvim_set_keymap('t', '<leader>\\', "<C-\\><C-n>:FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal in terminal mode" })
+vim.api.nvim_set_keymap('t', '<leader>]', "<C-\\><C-n>:FloatermNext<CR>", { noremap=true, silent = true, desc = "Next terminal in terminal mode" })
+vim.api.nvim_set_keymap('t', '<leader>[', "<C-\\><C-n>:FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal in terminal mode" })
+vim.api.nvim_set_keymap('t', '<leader><BS>', "<C-\\><C-n>:FloatermKill<CR>", { noremap=true, silent = true, desc = "Kill terminal in terminal mode" })
+
+vim.api.nvim_set_keymap('t', '<leader>tt', "", { noremap=true, silent = true, desc = "Toggle terminal" })
+vim.api.nvim_set_keymap('t', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
+vim.api.nvim_set_keymap('t', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
 --
 -- revisit this, i tried to create a M.{} in another file and require it here but it didn't work, so for now im waving the white flag
 function get_current_date(format)
@@ -107,22 +106,106 @@ function open_or_create_journal()
   vim.cmd("e " .. journal_path)
 end
 
-function open_yesterdays_journal()
-  local yesterday_day = get_current_date("%d") - 1
-  local current_year = get_current_date("%Y")
-  local current_month = get_current_date("%m")
-  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
-  local journal_filename = string.format("%s.md", yesterday_day)
-  local journal_path = journal_directory .. journal_filename
-  -- abort if file doesn't exist
-  if vim.fn.filereadable(vim.fn.fnameescape(vim.fn.expand(journal_path))) == 0 then
-    print("could not find file: " .. journal_path)
-    print("value of journal_filename: " .. journal_filename)
-    print("value of journal_directory: " .. journal_directory)
-    print("path tried: " .. journal_path)
+function open_previous_journal_entry(max_days_back)
+  max_days_back = tonumber(max_days_back) or 365  -- Default to 365 days if not provided
+  local current_buffer = vim.fn.expand('%:p')
+  local journal_pattern = "VSCodeJournal/(%d+)/(%d+)/(%d+)%.md"
+
+  -- Extract the current journal entry date from the buffer name
+  local year, month, day = current_buffer:match(journal_pattern)
+  if not year or not month or not day then
+    print("No journal entry buffer is open")
     return
   end
-  vim.cmd("e " .. vim.fn.fnameescape(vim.fn.expand(journal_path)))
+
+  local current_date = { year = tonumber(year), month = tonumber(month), day = tonumber(day) }
+
+  -- Function to get the previous journal file path with leading zeros for the day
+  local function get_journal_path(date_table)
+    local journal_directory = string.format("~/VSCodeJournal/%d/%02d/", date_table.year, date_table.month)
+    return journal_directory .. string.format("%02d.md", date_table.day)
+  end
+
+  -- Check if the journal buffer is already open
+  local function buffer_exists(path)
+    return vim.fn.bufnr(path) ~= -1
+  end
+
+  while max_days_back > 0 do
+    -- Move to the previous day
+    current_date.day = current_date.day - 1
+    if current_date.day < 1 then
+      current_date.month = current_date.month - 1
+      if current_date.month < 1 then
+        current_date.month = 12
+        current_date.year = current_date.year - 1
+      end
+      current_date.day = os.date("*t", os.time{year=current_date.year, month=current_date.month+1, day=0}).day
+    end
+
+    local journal_path = get_journal_path(current_date)
+    if buffer_exists(journal_path) then
+      vim.cmd("buffer " .. vim.fn.bufnr(journal_path))
+      return
+    elseif vim.fn.filereadable(vim.fn.expand(journal_path)) == 1 then
+      vim.cmd("e " .. vim.fn.expand(journal_path))
+      return
+    end
+
+    max_days_back = max_days_back - 1
+  end
+end
+
+
+function open_next_journal_entry(max_days_forward)
+  max_days_forward = tonumber(max_days_forward) or 365  -- Default to 365 days if not provided
+  local current_buffer = vim.fn.expand('%:p')
+  local journal_pattern = "VSCodeJournal/(%d+)/(%d+)/(%d+)%.md"
+
+  -- Extract the current journal entry date from the buffer name
+  local year, month, day = current_buffer:match(journal_pattern)
+  if not year or not month or not day then
+    print("No journal entry buffer is open")
+    return
+  end
+
+  local current_date = { year = tonumber(year), month = tonumber(month), day = tonumber(day) }
+
+  -- Function to get the next journal file path with leading zeros for the day
+  local function get_journal_path(date_table)
+    local journal_directory = string.format("~/VSCodeJournal/%d/%02d/", date_table.year, date_table.month)
+    return journal_directory .. string.format("%02d.md", date_table.day)
+  end
+
+  -- Check if the journal buffer is already open
+  local function buffer_exists(path)
+    return vim.fn.bufnr(path) ~= -1
+  end
+
+  while max_days_forward > 0 do
+    -- Move to the next day
+    current_date.day = current_date.day + 1
+    local days_in_month = os.date("*t", os.time{year=current_date.year, month=current_date.month+1, day=0}).day
+    if current_date.day > days_in_month then
+      current_date.day = 1
+      current_date.month = current_date.month + 1
+      if current_date.month > 12 then
+        current_date.month = 1
+        current_date.year = current_date.year + 1
+      end
+    end
+
+    local journal_path = get_journal_path(current_date)
+    if buffer_exists(journal_path) then
+      vim.cmd("buffer " .. vim.fn.bufnr(journal_path))
+      return
+    elseif vim.fn.filereadable(vim.fn.expand(journal_path)) == 1 then
+      vim.cmd("e " .. vim.fn.expand(journal_path))
+      return
+    end
+
+    max_days_forward = max_days_forward - 1
+  end
 end
 
 -- Function to add a task to today's journal
@@ -171,6 +254,8 @@ end
 vim.api.nvim_set_keymap('n', '<leader>jt', ":lua open_or_create_journal()<CR>", { noremap = true, silent = true, desc = "Open today's journal" })
 vim.api.nvim_set_keymap('n', '<leader>jp', ":lua open_or_create_journal(); vim.cmd('MarkdownPreview');<CR>", { noremap = true, silent = true, desc = "Open buffer and browser tab - focuses in browser" })
 vim.api.nvim_set_keymap('n', '<leader>jy', ":lua open_yesterdays_journal()<CR>", { noremap = true, silent = true, desc = "Open yesterday's journal" })
+vim.api.nvim_set_keymap('n', '<leader>jh', ':lua open_previous_journal_entry()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>jl', ':lua open_next_journal_entry(365)<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>ja', ":lua add_task_to_journal()<CR>", { noremap = true, silent = true, desc = "Add task to journal" })
 
 -- diagnostics toggle
