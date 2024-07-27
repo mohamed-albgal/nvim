@@ -129,7 +129,7 @@ vim.api.nvim_set_keymap('n', '<leader>rw', [[:lua RunRSpec(true)<CR>]], { norema
 vim.api.nvim_set_keymap('n', '<Leader>ry', ":let @+ = 'rspec ' . expand('%') . ':' . line('.')<CR>", { noremap = true, silent = true, desc = "[y]ank rspec line signature" })
 vim.api.nvim_set_keymap('n', '<Leader>rf', ":let @+ = 'rspec ' . expand('%')<CR>", { noremap = true, silent = true , desc = "copy rspec [f]ile signature" })
 
-vim.api.nvim_set_keymap('t', 'df', "<C-\\><C-n><cr>", { noremap=true, silent = true, desc = "Exit terminal" })
+vim.api.nvim_set_keymap('t', '<leader>;', "<C-\\><C-n>:FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal in terminal mode" })
 --
 -- revisit this, i tried to create a M.{} in another file and require it here but it didn't work, so for now im waving the white flag
 function get_current_date(format)
