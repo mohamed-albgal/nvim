@@ -16,79 +16,7 @@ function equalize_windows_and_increase_width()
 end
 --
 -- Define the RunRSpec function
-function RunRSpec(wholeFile)
-    -- Get the current file and line number
-    local current_file = vim.fn.expand('%')
-    local current_line = vim.fn.line('.')
 
-    -- Construct the "rspec" command
-
-    local rspec_command = 'rspec ' .. current_file
-  -- if wholeFile is false then append the : and current_line
-    if not wholeFile then
-      rspec_command = rspec_command .. ':' .. current_line
-    end
-
-    -- Delete existing rspec terminal buffers (buffers whose name is like  "term://.*rspec .*")
-    local term_buffers = vim.fn.getbufinfo({ buftype = 'terminal' })
-    for _, buf in ipairs(term_buffers) do
-        local buffer_name = vim.fn.bufname(buf.bufnr)
-        if buffer_name == '' then
-            goto continue
-        end
-        if string.match(buffer_name, "term://.*rspec .*") then
-            vim.cmd(':bdelete!' .. buf.bufnr)
-        end
-      ::continue::
-    end
-
-    -- Open a new terminal buffer in a horizontal split to the right
-    vim.cmd(':rightbelow vsplit')
-  -- set no line numbers
-  -- vim.cmd(':setlocal nonumber')
-    vim.cmd(':term ' .. rspec_command)
-end
-
-function Story()
-  local num = vim.fn.input("Enter number: ")
-  local title = vim.fn.input("Enter the story title: ")
-  -- early return if num or title is empty
-  if num == "" or title == "" then
-    -- print("num, title, or branch name is empty")
-    print("Story number or title can't be empty")
-    return
-  end
-
-    branch_name = string.gsub(title, "%d", "")
-    -- change all non-alphanumeric characters to empty string
-    branch_name = string.gsub(branch_name, "%W", "")
-    branch_name = string.gsub(branch_name, "|", "")
-    -- change all spaces to dashes
-    branch_name = string.gsub(title, "%s+", "-")
-    -- remove any trailing dashes
-    branch_name = string.gsub(branch_name, "-$", "")
-    -- remove any leading dashes
-    branch_name = string.gsub(branch_name, "^-", "")
-    -- make it lowercase
-    branch_name = string.lower(branch_name)
-    -- ignore any text in brackets or parentheses
-    branch_name = string.gsub(branch_name, "%b()", "")
-    branch_name = string.gsub(branch_name, "%b[]", "")
-    -- remove any dash that is followed by another dash
-    branch_name = string.gsub(branch_name, "-+", "-")
-
-  local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
-
-  local journal_path = create_or_open_journal()
-  journal_file = io.open(journal_path, "a")
-  journal_file:write("\n" .. formatted_output .. "\n")
-  journal_file:close()
-  print(" |-----------------------Success")
-  -- open the journal file as a vertical split
-  vim.cmd("vsplit " .. journal_path)
-end
-
-vim.cmd('command! Story lua Story()')
 
 vim.api.nvim_set_keymap('n', '<leader>wn', ':tabdo windo set number!<cr>', { noremap = true, silent = true, desc = "Toggle line numbers" })
 vim.api.nvim_set_keymap('n', '<leader>wr', ':set relativenumber<cr>', { noremap = true, silent = true, desc = "Toggle relative line numbers" })
@@ -181,15 +109,20 @@ end
 
 function open_yesterdays_journal()
   local yesterday_day = get_current_date("%d") - 1
+  local current_year = get_current_date("%Y")
+  local current_month = get_current_date("%m")
   local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
   local journal_filename = string.format("%s.md", yesterday_day)
   local journal_path = journal_directory .. journal_filename
   -- abort if file doesn't exist
-  if vim.fn.filereadable(journal_path) == 0 then
-    print("yesterday's journal doesn't exist")
+  if vim.fn.filereadable(vim.fn.fnameescape(vim.fn.expand(journal_path))) == 0 then
+    print("could not find file: " .. journal_path)
+    print("value of journal_filename: " .. journal_filename)
+    print("value of journal_directory: " .. journal_directory)
+    print("path tried: " .. journal_path)
     return
   end
-  vim.cmd("e " .. journal_path)
+  vim.cmd("e " .. vim.fn.fnameescape(vim.fn.expand(journal_path)))
 end
 
 -- Function to add a task to today's journal
