@@ -67,7 +67,10 @@ vim.api.nvim_set_keymap('n', '<leader>wt', '<cmd>lua if equalize_enabled then eq
 vim.api.nvim_set_keymap('n', '<leader>w', '<C-w>', { noremap=true, silent = false, desc="Window navigation" })
 vim.api.nvim_set_keymap('n', '<leader>a', ':wincmd h<cr>:lua if equalize_enabled then equalize_windows_and_increase_width() end<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>z', ':Z<cr>', { noremap = true, silent = true, desc= "Zen mode" })
--- Map <leader>l to navigate right (equivalent to <C-w>l) and trigger equalize if enabled
+-- vertical navigation test
+vim.api.nvim_set_keymap('n', '<leader>K', ':wincmd k<cr>', { noremap = true, silent = true, desc= "Move to Up window" })
+vim.api.nvim_set_keymap('n', '<leader>J', ':wincmd j<cr>', { noremap = true, silent = true, desc= "Move to dowN window" })
+-- Map <leader>l to navigate right (equivalent to <C-w>l) and trigger equalize if --[[ enable ]]d
 vim.api.nvim_set_keymap('n', '<leader>l', ':wincmd l<cr>:lua if equalize_enabled then equalize_windows_and_increase_width() end<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>/', 'g*', { noremap = true, silent = true, desc = "Search for word under cursor" })
 vim.api.nvim_set_keymap('n', '<leader>d', ':bd!<CR>', { noremap=true, silent = true, desc="Close buffer" })
@@ -75,7 +78,8 @@ vim.api.nvim_set_keymap('n', '<leader>w/', ':vertical sb<CR>', { noremap=true, s
 vim.api.nvim_set_keymap('n', '<leader>w-', ':split<CR>', { noremap=true, silent = false, desc="Open horizontal split" })
 
 vim.api.nvim_set_keymap('n', '<leader>tt', ":FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal" })
-vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
+vim.api.nvim_set_keymap('n', '<leader>tn', ":FloatermNext<CR>", { noremap=true, silent = true, desc = "Next terminal" })
+vim.api.nvim_set_keymap('n', '<leader>tT', ":FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal" })
 vim.api.nvim_set_keymap('n', '<leader>tp', ":FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal" })
 
 -- vim.keymap.set({'n','v','i'}, '<C-l>', ":BufferLineCyclePrev<cr>", { noremap=true, silent = true, desc = "Previous buffer"})
