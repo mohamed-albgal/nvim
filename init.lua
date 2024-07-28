@@ -182,7 +182,8 @@ else
   vim.o.mouse = 'a'
   --
   -- set timeoutlen
-  vim.o.timeoutlen = 550
+  vim.o.timeoutlen = 100
+  vim.o.ttimeoutlen = 100
 
 
   -- Sync clipboard between OS and Neovim.

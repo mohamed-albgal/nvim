@@ -21,9 +21,8 @@ vim.api.nvim_set_keymap('n', '<leader>gg', ":LazyGit<cr>", { silent = true, desc
 vim.api.nvim_set_keymap('n', '<C-w>h', ':lua local m=require("custom.widen") if m.isWide then m.widen() else vim.cmd("wincmd h") end<cr>', { noremap = true, silent = true, desc = "Navigate left like vscode full-width" })
 --floaterm
 --set the leader in terminal mode to be <C-leader>
-vim.api.nvim_set_keymap('t', '<C-;>', "<C-\\><C-n>:FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal in terminal mode" })
 vim.api.nvim_set_keymap('t', '<leader><ESC>', "<C-\\><C-n>", { noremap=true, silent = true, desc = "Exit normal mode" })
--- vim.api.nvim_set_keymap('t', '<leader>;', "<C-\\><C-n>:FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal in terminal mode" })
+vim.api.nvim_set_keymap('t', '<leader>;', "<C-\\><C-n>:FloatermToggle<CR>", { noremap=true, silent = true, desc = "Toggle terminal in terminal mode" })
 vim.api.nvim_set_keymap('t', '<leader>\\', "<C-\\><C-n>:FloatermNew<CR>", { noremap=true, silent = true, desc = "New terminal in terminal mode" })
 vim.api.nvim_set_keymap('t', '<leader>]', "<C-\\><C-n>:FloatermNext<CR>", { noremap=true, silent = true, desc = "Next terminal in terminal mode" })
 vim.api.nvim_set_keymap('t', '<leader>[', "<C-\\><C-n>:FloatermPrev<CR>", { noremap=true, silent = true, desc = "Previous terminal in terminal mode" })

@@ -10,12 +10,18 @@ return {
   -- maq lightspeed
 
   { 'folke/which-key.nvim',
-    event= "VeryLazy",
+    event = "VeryLazy",
     init = function()
       vim.o.timeout = true
-      vim.o.timeoutlen = 2000
+      vim.o.timeoutlen = 50
     end,
-    opts = { },
+    opts = {
+      triggers = {
+        { "<leader>", mode = { "n", "v" } },
+      },
+      icons = { mappings = false },
+      delay = 500,
+    },
   },
 
 
