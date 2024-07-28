@@ -182,7 +182,7 @@ else
   vim.o.mouse = 'a'
   --
   -- set timeoutlen
-  vim.o.timeoutlen = 100
+  vim.o.timeoutlen = 500
   vim.o.ttimeoutlen = 100
 
 
