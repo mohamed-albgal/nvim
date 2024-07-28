@@ -57,11 +57,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- set up vscode seperately
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.clipboard = 'unnamedplus'
+
 if vim.fn.exists("g:vscode") ~= 0 then
-  vim.o.ignorecase = true
-  vim.o.smartcase = true
-  vim.o.clipboard = 'unnamedplus'
+  -- set up vscode seperately
   vim.keymap.set({ 'n', 'v' }, '<leader>', "<cmd>call VSCodeNotify('whichkey.show')<CR>")
   vim.keymap.set('n', 'gD', "<cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>")
   require('lazy').setup({
@@ -74,11 +75,6 @@ else
   --  You can also configure plugins after the setup call,
   --    as they will be available in your neovim runtime.
   require('custom.keys')
-  vim.o.ignorecase = true
-  vim.o.smartcase = true
-
-  -- trying out dispatch (need vim plug for it, but it's not working)
-  -- source ~/.vim/init.vim
   require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
@@ -192,8 +188,6 @@ else
   -- Sync clipboard between OS and Neovim.
   --  Remove this option if you want your OS clipboard to remain independent.
   --  See `:help 'clipboard'`
-  vim.o.clipboard = 'unnamedplus'
-
   -- Enable break indent
   vim.o.breakindent = true
   vim.o.shiftwidth = 2
