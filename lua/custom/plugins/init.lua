@@ -8,7 +8,7 @@ vim.cmd('command! OpenJournal lua require("custom.jou_funcs").openToday()')
 vim.cmd('command! OpenPrevJournal lua require("custom.jou_funcs").openPrev()')
 vim.cmd('command! OpenNextJournal lua require("custom.jou_funcs").openNext()')
 vim.cmd('command! AddJournalTask lua require("custom.jou_funcs").addTask()')
-
+vim.cmd('command! -nargs=1 RunRspec lua require("custom.run_rspec").runRspec(<f-args>)')
 return {
   {
     -- Highlight, edit, and navigate code
