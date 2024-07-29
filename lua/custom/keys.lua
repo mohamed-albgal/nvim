@@ -5,6 +5,7 @@ end
 map{ key='<leader>wn',     cmd= ':lua require("custom/line_num").toggle()<CR>',         desc = "Toggle line numbers" }
 map{ key='<leader>wr',     cmd= ':lua require("custom/line_num").toggleRelative()<CR>', desc = "Toggle relative line numbers" }
 
+map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>',  desc = "Toggle AutoWidth" }
 map{ key='<leader>wm',     cmd= ':WindowsMaximize<cr>',         desc = "Maximize buffer" }
 map{ key='<leader>w=',     cmd= ':WindowsEqualize<cr>',         desc = "Equalize Buffer sizes" }
