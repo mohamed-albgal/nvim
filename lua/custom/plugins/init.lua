@@ -3,6 +3,11 @@
 --
 -- See the kickstart.nvim README for more information
 
+vim.cmd('command! Story lua require("custom.story").story()')
+vim.cmd('command! OpenJournal lua require("custom.jou_funcs").openToday()')
+vim.cmd('command! OpenPrevJournal lua require("custom.jou_funcs").openPrev()')
+vim.cmd('command! OpenNextJournal lua require("custom.jou_funcs").openNext()')
+vim.cmd('command! AddJournalTask lua require("custom.jou_funcs").addTask()')
 
 return {
   {
@@ -16,21 +21,34 @@ return {
   -- maq lightspeed
 
   { 'folke/which-key.nvim',
-    event= "VeryLazy",
+    event = "VeryLazy",
     init = function()
       vim.o.timeout = true
-      vim.o.timeoutlen = 2000
+      vim.o.timeoutlen = 50
     end,
-    opts = { },
+    opts = {
+      triggers = {
+        { "<leader>", mode = { "n", "v" } },
+      },
+      icons = { mappings = false },
+      delay = 500,
+    },
   },
 
 
--- install without yarn or npm
-  {
-      "iamcco/markdown-preview.nvim",
-      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-      ft = { "markdown" },
-      build = function() vim.fn["mkdp#util#install"]() end,
+  { "anuvyklack/windows.nvim",
+   dependencies = {
+      "anuvyklack/middleclass",
+      "anuvyklack/animation.nvim"
+   },
+   config = function()
+      vim.o.winwidth = 20
+      vim.o.winminwidth = 20
+      vim.o.equalalways = false
+      require('windows').setup({
+        animation = { duration = 250 }
+      })
+   end
   },
 
   {'nmac427/guess-indent.nvim'},
