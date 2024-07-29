@@ -1,14 +1,12 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
-
 vim.cmd('command! Story lua require("custom.story").story()')
 vim.cmd('command! OpenJournal lua require("custom.jou_funcs").openToday()')
 vim.cmd('command! OpenPrevJournal lua require("custom.jou_funcs").openPrev()')
 vim.cmd('command! OpenNextJournal lua require("custom.jou_funcs").openNext()')
 vim.cmd('command! AddJournalTask lua require("custom.jou_funcs").addTask()')
 vim.cmd('command! -nargs=1 RunRspec lua require("custom.run_rspec").runRspec(<f-args>)')
+vim.cmd('command! YankRspecFile lua require("custom.run_rspec").yankFile()')
+vim.cmd('command! YankRspecTest lua require("custom.run_rspec").yankTest()')
+
 return {
   {
     -- Highlight, edit, and navigate code
@@ -16,9 +14,8 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects', },
     build = ':TSUpdate',
   },
-  -- "gc" to comment visual regions/lines
+
   { 'numToStr/Comment.nvim', opts = {} },
-  -- maq lightspeed
 
   { 'folke/which-key.nvim',
     event = "VeryLazy",
@@ -69,10 +66,7 @@ return {
   },
 
   { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-
-  -- floating window for git stuff
   { 'rhysd/git-messenger.vim' },
-  -- zen mode
   {
     "folke/zen-mode.nvim",
     opts = {
@@ -91,8 +85,6 @@ return {
     }
   },
 
-  -- for tabline
-  -- {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',

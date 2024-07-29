@@ -32,4 +32,17 @@ M.runRspec = function(wholeFile)
     vim.cmd(':term ' .. rspec_command)
 end
 
+M.yankFile = function()
+    local file_path = vim.fn.expand('%')
+    local cmd = 'rspec ' .. file_path
+    vim.fn.setreg('+', cmd)
+end
+
+M.yankTest = function()
+    local file_path = vim.fn.expand('%')
+    local line_number = vim.fn.line('.')
+    local cmd = 'rspec ' .. file_path .. ':' .. line_number
+    vim.fn.setreg('+', cmd)
+end
+
 return M
