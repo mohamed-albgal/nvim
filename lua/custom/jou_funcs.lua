@@ -20,7 +20,7 @@ local function get_or_create_journal_path()
     -- If the file doesn't exist, create it with default content
     vim.fn.mkdir(journal_directory, "p")  -- Create the directory if it doesn't exist
     -- vscode mermaid uses triple colon ':::' to separate tasks and notes, while neovim mermaid uses triple backtick '```' keep this in mind in case I need to port this to vscode
-    local initial_content = string.format("# %s\n\n```mermaid\nflowchart RL\nid1>Tasks]\n``` \n\n\n```mermaid\nflowchart RL\nid1>Notes]\n```  \n\n\n", current_date)
+    local initial_content = string.format("# %s\n\n:::mermaid\nflowchart RL\nid1>Tasks]\n::: \n\n\n:::mermaid\nflowchart RL\nid1>Notes]\n:::  \n\n\n", current_date)
     local file = io.open(journal_path, "w")
     file:write(initial_content)
     file:close()
@@ -153,7 +153,7 @@ local function add_task_to_journal ()
   -- Find the line with ":::" and insert the task after it
   local found = false
   for i, line in ipairs(file_contents) do
-    if line:match("``` $") then
+    if line:match("::: $") then
       table.insert(file_contents, i + 1, "- [ ] " .. my_input)
       found = true
       break

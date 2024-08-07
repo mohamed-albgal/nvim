@@ -204,7 +204,7 @@ else
 
   require('nvim-treesitter.configs').setup({
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'lua', 'python', 'javascript', 'tsx', 'typescript', 'ruby', 'vimdoc', 'vim' },
+    ensure_installed = { 'lua', 'python', 'javascript', 'tsx', 'typescript', 'ruby', 'vimdoc', 'vim', 'html' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -284,7 +284,7 @@ else
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
   vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+  vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
   -- [[ Configure LSP ]]
   --  This function gets run when an LSP connects to a particular buffer.

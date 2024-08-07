@@ -29,7 +29,7 @@ return {
       cmd = ":lua require('fzf-lua').grep_project()<cr>",
       desc = 'FZF grep' }
     map{ key = '<leader>fF',
-      cmd = ":lua require('fzf-lua').grep_project({ prompt = 'RAW❯❯ ', fzf_opts= { ['--nth']='1..'})<cr>",
+      cmd = ":lua require('fzf-lua').grep_project({ prompt = 'RAW❯❯ ', fzf_opts= { ['--nth']='1..'}})<cr>",
       desc = 'FZF grep, include path queries' }
     map{ key = '<leader>fK',
       cmd = ":lua require('fzf-lua').live_grep_native({ prompt = 'rg❯❯ '})<cr>",
@@ -38,25 +38,25 @@ return {
       cmd = ":lua require('fzf-lua').live_grep_glob({ prompt = '❯❯ '})<cr>",
       desc = 'Glob support' }
     map{ key = '<leader>fs',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'SPECS❯❯ ', search = ' -- spec/** !*fixtures*', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'SPECS❯❯ ', search = ' -- spec/** !*fixtures*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF specs' }
     map{ key = '<leader>fy',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/** *.yml*', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/** *.yml*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF specs' }
     map{ key = '<leader>fd',
-      cmd = ":lua require('fzf-lua').grep({previewer=false, winopts={height=0.3,width=0.3}, prompt= '❯  ', search = 'debugger -- !*config*', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({previewer=false, winopts={height=0.3,width=0.3}, prompt= '❯  ', search = 'debugger -- !*config*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF specs' }
     map{ key = '<leader>fj',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'JAVASCRIPT❯❯ ', search = ' -- app/assets/javascripts/**', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'JAVASCRIPT❯❯ ', search = ' -- app/assets/javascripts/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF js' }
     map{ key = '<leader>fc',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'CSS❯❯ ', search = ' -- app/assets/stylesheets/**', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'CSS❯❯ ', search = ' -- app/assets/stylesheets/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF css' }
     map{ key = '<leader>fh',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'HTML❯❯ ', search = ' -- app/views/**', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'HTML❯❯ ', search = ' -- app/views/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF html' }
     map{ key = '<leader>fr',
-      cmd = ":lua require('fzf-lua').grep({prompt= 'RUBY❯❯ ', search = ' -- app/** !config/locales/** !*.yml* !app/assets/javascripts/** !app/views/** !app/assets/stylesheets/** !spec/**', fzf_opts = { ['--nth'] = '1..' }})<cr>",
+      cmd = ":lua require('fzf-lua').grep({prompt= 'RUBY❯❯ ', search = ' -- app/** !config/locales/** !*.yml* !app/assets/javascripts/** !app/views/** !app/assets/stylesheets/** !spec/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
       desc = 'FZF ruby (not spec)' }
     map{ key = '<leader>fb',
       cmd = ":lua require('fzf-lua').grep_curbuf({ previewer=false, winopts = { fullscreen = false, height=0.50,width=0.60,row=0.4,col=0.5 }})<cr>",
