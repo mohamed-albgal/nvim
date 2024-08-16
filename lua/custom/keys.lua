@@ -23,8 +23,8 @@ map{ key='<C-h>',          cmd= ':tabprevious<CR>',             desc = "Prev tab
 map{ key='<leader>T',      cmd= ':tabnew<CR>',                  desc = "New tab" }
 map{ key='<leader>gg',     cmd= ":LazyGit<cr>",                 desc = 'LazyGit window' }
 map{ key='<leader>jt',     cmd= ":OpenJournal<cr>",             desc = "Open today's journal" }
-map{ key='<leader>jp',     cmd= ':OpenPrevJournal<cr>',         desc = "Open previous journal entry" }
-map{ key='<leader>jn',     cmd= ':OpenNextJournal<cr>',         desc = "Open next journal entry" }
+map{ key='<leader>jh',     cmd= ':OpenPrevJournal<cr>',         desc = "Open previous journal entry" }
+map{ key='<leader>jl',     cmd= ':OpenNextJournal<cr>',         desc = "Open next journal entry" }
 map{ key='<leader>ja',     cmd= ":AddJournalTask<cr>",          desc = "Add task to journal" }
 map{ key='<leader>r.',     cmd= ':RunRspec false<CR>',          desc = 'Run the test under the cursor' }
 map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the whole test file' }
