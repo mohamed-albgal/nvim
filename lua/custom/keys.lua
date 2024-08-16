@@ -39,10 +39,5 @@ map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",         
 map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",                 desc = "Kill terminal in terminal mode" }
 
 -- diagnostics toggle
-vim.keymap.set('n', '<leader>wd', function()
-  if vim.diagnostic.is_disabled() then
-    vim.diagnostic.enable()
-  else
-    vim.diagnostic.disable()
-  end
-end, { desc = 'Toggle diagnostics' })
+local toggle = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
+vim.keymap.set('n', '<leader>wd', toggle, { desc = 'Toggle diagnostics' })
