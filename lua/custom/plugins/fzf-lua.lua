@@ -7,114 +7,146 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
 
-    map{ key = '<leader>k',
+    map {
+      key = '<leader>k',  desc = 'FZF Files',
       cmd = ":lua require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>ic',
+    }
+    map {
+      key = '<leader>ic',  desc = 'FZF CSS Files',
       cmd = ":lua require('fzf-lua').files({cwd='app/assets/stylesheets', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>ij',
+    }
+    map {
+      key = '<leader>ij',  desc = 'FZF JS Files',
       cmd = ":lua require('fzf-lua').files({cwd='app/assets/javascripts', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>is',
+    }
+    map {
+      key = '<leader>is',  desc = 'FZF Files',
       cmd = ":lua require('fzf-lua').files({cwd='spec/', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>iy',
-      cmd = ":lua require('fzf-lua').files({cwd='config/locales/', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>ih',
+    }
+    map {
+      key = '<leader>ih',  desc = 'FZF HTML Files',
       cmd = ":lua require('fzf-lua').files({cwd='app/views/', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
-      desc = 'FZF Files' }
-    map{ key = '<leader>ff',
+    }
+    map {
+      key = '<leader>ff',  desc = 'FZF grep',
       cmd = ":lua require('fzf-lua').grep_project()<cr>",
-      desc = 'FZF grep' }
-    map{ key = '<leader>fF',
+    }
+    map {
+      key = '<leader>fF',  desc = 'FZF grep, include path queries RAW',
       cmd = ":lua require('fzf-lua').grep_project({ prompt = 'RAW❯❯ ', fzf_opts= { ['--nth']='1..'}})<cr>",
-      desc = 'FZF grep, include path queries' }
-    map{ key = '<leader>fK',
+    }
+    map {
+      key = '<leader>fK',  desc = 'Native live grep (more performant)',
       cmd = ":lua require('fzf-lua').live_grep_native({ prompt = 'rg❯❯ '})<cr>",
-      desc = 'Native live grep (more performant)' }
-    map{ key = '<leader>fk',
+    }
+    map {
+      key = '<leader>fk',  desc = 'Glob support',
       cmd = ":lua require('fzf-lua').live_grep_glob({ prompt = '❯❯ '})<cr>",
-      desc = 'Glob support' }
-    map{ key = '<leader>fs',
+    }
+    map {
+      key = '<leader>fs',  desc = 'FZF specs',
       cmd = ":lua require('fzf-lua').grep({prompt= 'SPECS❯❯ ', search = ' -- spec/** !*fixtures*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF specs' }
-    map{ key = '<leader>fy',
+    }
+    map {
+      key = '<leader>fy',  desc = 'FZF specs',
       cmd = ":lua require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/** *.yml*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF specs' }
-    map{ key = '<leader>fd',
+    }
+    map {
+      key = '<leader>fd',  desc = 'FZF specs',
       cmd = ":lua require('fzf-lua').grep({previewer=false, winopts={height=0.3,width=0.3}, prompt= '❯  ', search = 'debugger -- !*config*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF specs' }
-    map{ key = '<leader>fj',
+    }
+    map {
+      key = '<leader>fj',  desc = 'FZF js',
       cmd = ":lua require('fzf-lua').grep({prompt= 'JAVASCRIPT❯❯ ', search = ' -- app/assets/javascripts/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF js' }
-    map{ key = '<leader>fc',
+    }
+    map {
+      key = '<leader>fc',  desc = 'FZF css',
       cmd = ":lua require('fzf-lua').grep({prompt= 'CSS❯❯ ', search = ' -- app/assets/stylesheets/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF css' }
-    map{ key = '<leader>fh',
+    }
+    map {
+      key = '<leader>fh',  desc = 'FZF html',
       cmd = ":lua require('fzf-lua').grep({prompt= 'HTML❯❯ ', search = ' -- app/views/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF html' }
-    map{ key = '<leader>fr',
+    }
+    map {
+      key = '<leader>fr',   desc = 'FZF ruby (not spec)',
       cmd = ":lua require('fzf-lua').grep({prompt= 'RUBY❯❯ ', search = ' -- app/** !config/locales/** !*.yml* !app/assets/javascripts/** !app/views/** !app/assets/stylesheets/** !spec/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
-      desc = 'FZF ruby (not spec)' }
-    map{ key = '<leader>fb',
+   }
+    map {
+      key = '<leader>fb',  desc = 'fuzzy find in buffer',
       cmd = ":lua require('fzf-lua').grep_curbuf({ previewer=false, winopts = { fullscreen = false, height=0.50,width=0.60,row=0.4,col=0.5 }})<cr>",
-      desc = 'fuzzy find in buffer' }
-    map{ key = '<leader>fB',
+    }
+    map {
+      key = '<leader>fB',  desc = 'fuzzy find in buffer',
       cmd = ":lua require('fzf-lua').lgrep_curbuf({previewer=false,fzf_opts = {['--layout']='reverse-list'}, winopts = { fullscreen = false, height=0.50,width=0.65,row=0.5,col=0.5, preview = { hidden = 'hidden' } }})<cr>",
-      desc = 'fuzzy find in buffer' }
-    map{ key = '<leader>fl',
+    }
+    map {
+      key = '<leader>fl',  desc = 'Continue most recent search',
       cmd = ":lua require('fzf-lua').grep_last()<cr>",
-      desc = 'Continue most recent search' }
-    map{ key = '<leader>f.',
+    }
+    map {
+      key = '<leader>f.',  desc = 'Grep word under cursor',
       cmd = ":lua require('fzf-lua').grep_cword()<cr>",
-      desc = 'Grep word under cursor' }
-    map{ key = '<leader>fC',
+    }
+    map {
+      key = '<leader>fC',  desc = 'Grep WORD  under cursor',
       cmd = ":lua require('fzf-lua').grep_cWORD()<cr>",
-      desc = 'Grep WORD  under cursor' }
-    map{ key = '<leader>fv',
+    }
+    map {
+      key = '<leader>fv',  desc = 'Grep visual block',
       cmd = ":lua require('fzf-lua').grep_visual()<cr>",
-      desc = 'Grep visual block' }
-    map{ key = '<leader>bk',
+    }
+    map {
+      key = '<leader>bk',  desc = 'Show open buffers',
       cmd = ":lua require('fzf-lua').buffers({previewer=false, winopts = { fullscreen = false, height=0.40,width=0.5,row=0.5,col=0.5, preview = { hidden = 'hidden' } }})<cr>",
-      desc = 'Show open buffers' }
-    map{ key = '<leader>fp',
+    }
+    map {
+      key = '<leader>fp',  desc = 'File Preview',
       cmd = ":lua require('fzf-lua').files()<cr>",
-      desc = 'File Preview' }
-    map{ key = '<leader>gc',
+    }
+    map {
+      key = '<leader>gc',  desc = 'open changes made to buffer',
       cmd = ":FzfLua changes<cr>",
-      desc = 'open changes made to buffer' }
-    map{ key = '<leader>bl',
+    }
+    map {
+      key = '<leader>bl',  desc = '[o]pen buffer lines',
       cmd = ":lua require('fzf-lua').lines({previewer=false})<cr>",
-      desc = '[o]pen buffer lines' }
-    map{ key = '<leader>qs',
+    }
+    map {
+      key = '<leader>qs',  desc = '[q]uickfix [s]tack',
       cmd = ":FzfLua quickfix_stack<cr>",
-      desc = '[q]uickfix [s]tack' }
-    map{ key = '<leader>qc',
+    }
+    map {
+      key = '<leader>qc',  desc = '[q]uickfix [c]lear',
       cmd = ":cexpr []<cr>",
-      desc = '[q]uickfix [c]lear' }
-    map{ key = '<leader>qn',
+    }
+    map {
+      key = '<leader>qn',  desc = 'next entry of quickfix list',
       cmd = ":cn<cr>",
-      desc = 'next entry of quickfix list' }
-    map{ key = '<leader>qp',
+    }
+    map {
+      key = '<leader>qp',  desc = 'previous entry of quickfix list',
       cmd = ":cp<cr>",
-      desc = 'previous entry of quickfix list' }
-    map{ key = '<leader>qu',
+    }
+    map {
+      key = '<leader>qu',  desc = '[qu]ick fix list',
       cmd = ":FzfLua quickfix<cr>",
-      desc = '[qu]ick fix list' }
-    map{ key = '<leader>ob',
+    }
+    map {
+      key = '<leader>ob',  desc = '[o]ld [b]uffers',
       cmd = ":FzfLua oldfiles<cr>",
-      desc = '[o]ld [b]uffers' }
-    map{ key = '<leader>os',
+    }
+    map {
+      key = '<leader>os',  desc = '[o]ld [s]earches',
       cmd = ":FzfLua search_history<cr>",
-      desc = '[o]ld [s]earches' }
-    map{key = '<leader>gs',
+    }
+    map {
+      key = '<leader>gs',  desc = 'fzf git status',
       cmd = ":lua require('fzf-lua').git_status()<cr>",
-      desc = 'fzf git status' }
-    map{ key = '<leader>x',
+    }
+    map {
+      key = '<leader>x',  desc = 'FZF builtins',
       cmd = ":lua require('fzf-lua').builtin({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen = false, height=0.50,width=0.45,row=0.09,col=0.47, preview = { hidden = 'hidden' } }})<cr>",
-      desc = 'FZF builtins' }
+    }
 
     require('fzf-lua').setup(require('custom.fzf_custom_opts'))
   end,
