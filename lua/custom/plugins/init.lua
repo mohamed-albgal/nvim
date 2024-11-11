@@ -33,17 +33,6 @@ return {
   },
 
   {"vhyrro/luarocks.nvim"},
-  { "OXY2DEV/markview.nvim",
-      lazy = false,      -- Recommended
-      dependencies = {
-          -- You will not need this if you installed the
-          -- parsers manually
-          -- Or if the parsers are in your $RUNTIMEPATH
-          "nvim-treesitter/nvim-treesitter",
-
-          "nvim-tree/nvim-web-devicons"
-      }
-  },
   { "anuvyklack/windows.nvim",
    dependencies = {
       "anuvyklack/middleclass",
@@ -62,7 +51,11 @@ return {
   {'nmac427/guess-indent.nvim'},
   {'tpope/vim-fugitive'},
   {'tpope/vim-rhubarb'},
-  {'ggandor/lightspeed.nvim'},
+  {'ggandor/leap.nvim',
+    config = function()
+      require('leap').create_default_mappings()
+    end,
+  },
   { "EdenEast/nightfox.nvim",
     priority = 1000,
     config = function()

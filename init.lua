@@ -184,6 +184,13 @@ else
   -- See `:help vim.keymap.set()`
   vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+  -- These allows leap to work on all windows
+  vim.keymap.set('n', 's', function ()
+    require('leap').leap {
+      target_windows = require('leap.user').get_focusable_windows()
+    }
+  end)
+
   -- Remap for dealing with word wrap
   vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
   vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })

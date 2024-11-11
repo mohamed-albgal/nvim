@@ -88,7 +88,7 @@ return {
       cmd = ":lua require('fzf-lua').grep_cword()<cr>",
     }
     map {
-      key = '<leader>fC',  desc = 'Grep WORD  under cursor',
+      key = '<leader>fW',  desc = 'Grep WORD  under cursor',
       cmd = ":lua require('fzf-lua').grep_cWORD()<cr>",
     }
     map {
