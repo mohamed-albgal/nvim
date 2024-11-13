@@ -31,7 +31,7 @@ map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the 
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 -- Terminal mode mappings
-map{ mode='t', key='<leader><ESC>', cmd="<C-\\><C-n>",                                  desc = "Exit normal mode" }
+map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",                         desc = "Exit normal mode" }
 map{ mode='t', key='<leader>;',     cmd="<C-\\><C-n>:FloatermToggle<CR>",               desc = "Toggle terminal in terminal mode" }
 map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",                  desc = "New terminal in terminal mode" }
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",                 desc = "Next terminal in terminal mode" }
