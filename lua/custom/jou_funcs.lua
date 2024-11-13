@@ -140,8 +140,8 @@ local function add_task_to_journal ()
   if my_input == "" then
     return
   else
-    -- append the name of the current file to the input in markdown <sub> tags
-    my_input = my_input .. " --< " .. vim.fn.expand("%:t")
+    -- append the name of the current file and the line number to the task (with a colon separator)
+    my_input = my_input .. " --> " .. vim.fn.expand("%:t") .. ":" .. vim.fn.line(".")
   end
 
   -- Read the contents of the journal file
