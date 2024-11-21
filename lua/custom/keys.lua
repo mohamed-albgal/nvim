@@ -17,6 +17,7 @@ map{ key='<leader>/',      cmd= 'g*',                           desc = "Search f
 map{ key='<leader>d',      cmd= ':bd!<CR>',                     desc = "Close buffer"}
 map{ key='<leader>w/',     cmd= ':vertical sb<CR>',             desc = "Open vertical split" }
 map{ key='<leader>w-',     cmd= ':split<CR>',                   desc = "Open horizontal split"}
+map{ key='<leader>bb',     cmd= ':b#<CR>',                      desc = "Switch between buffers" }
 map{ key='<leader>;',      cmd= ":FloatermToggle<CR>",          desc = "Toggle terminal" }
 map{ key='<C-l>',          cmd= ':tabnext<CR>',                 desc = "Next tab"}
 map{ key='<C-h>',          cmd= ':tabprevious<CR>',             desc = "Prev tab"}
@@ -30,8 +31,9 @@ map{ key='<leader>r.',     cmd= ':RunRspec false<CR>',          desc = 'Run the 
 map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the whole test file' }
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
+
 -- Terminal mode mappings
-map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",                         desc = "Exit normal mode" }
+map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",                          desc = "Exit normal mode" }
 map{ mode='t', key='<leader>;',     cmd="<C-\\><C-n>:FloatermToggle<CR>",               desc = "Toggle terminal in terminal mode" }
 map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",                  desc = "New terminal in terminal mode" }
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",                 desc = "Next terminal in terminal mode" }

@@ -52,7 +52,7 @@ return {
   previewers = {
     bat = {
       args            = "--color=always --style=numbers,changes,header,grid ",
-      theme           = '1337',
+      theme           = 'zenburn',
     },
   },
   files = { rg_opts = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,/config/initializers/**}'", prompt = 'FROGS!❯ ', },
