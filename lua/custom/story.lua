@@ -1,13 +1,28 @@
 return {
-  story = function()
-    local num = vim.fn.input("Enter number: ")
-    local title = vim.fn.input("Enter the story title: ")
-    -- early return if num or title is empty
-    if num == "" or title == "" then
-      -- print("num, title, or branch name is empty")
-      print("Story number or title can't be empty")
-      return
-    end
+    story = function()
+      local details = vim.fn.input("Enter the story details: ")
+      if details == "" then
+        print("Details can't be empty")
+        return
+      end
+
+      -- Extract the ticket number and title
+      local all_numbers = {}
+      for number in string.gmatch(details, "%d+") do
+        table.insert(all_numbers, number)
+      end
+
+      -- Find the longest numeric string
+      table.sort(all_numbers, function(a, b) return #a > #b end)
+      local num = all_numbers[1] or ""
+
+      -- Escape the longest numeric string for use in gsub
+      local num_pattern = num:gsub("([^%w])", "%%%1")
+
+      -- Remove the longest numeric string to get the title
+      local title = details:gsub(num_pattern, "", 1):gsub("^%s+", ""):gsub("%s+$", "")
+
+
 
       local branch_name = string.gsub(title, "%d", "")
       -- change all non-alphanumeric characters to empty string
