@@ -74,6 +74,7 @@ else
       },
     },
     { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+    { 'ntpeters/vim-better-whitespace' },
 
     {
       -- Adds git related signs to the gutter, as well as utilities for managing changes
