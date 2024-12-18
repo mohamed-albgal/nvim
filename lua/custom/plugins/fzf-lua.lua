@@ -52,8 +52,13 @@ return {
       cmd = ":lua require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/** *.yml*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
     }
     map {
-      key = '<leader>fd',  desc = 'FZF specs',
-      cmd = ":lua require('fzf-lua').grep({previewer=false, winopts={height=0.3,width=0.3}, prompt= '❯  ', search = 'debugger -- !*config*', fzf_opts = { ['--nth'] = '3..' }})<cr>",
+      key = '<leader>fd',  desc = 'Grep for "debugger" in changed files',
+      cmd =  ":lua require('fzf-lua').grep({raw_cmd = \"git status -su | rg '^\\\\s*M' | cut -d ' ' -f3 | xargs rg --hidden --column --line-number --no-heading --color=always --with-filename -e 'debugger'\"})<cr>"
+    }
+
+    map {
+      key = '<leader>fS',  desc = 'Grep changed files',
+      cmd =  ":lua require('fzf-lua').grep({ fzf_opts = { ['--nth'] = '3..' }, raw_cmd = \"git status -su | rg '^\\\\s*M' | cut -d ' ' -f3 | xargs rg --hidden --column --line-number --no-heading --color=always --with-filename -e ''\"})<cr>"
     }
     map {
       key = '<leader>fj',  desc = 'FZF js',
