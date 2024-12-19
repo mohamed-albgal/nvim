@@ -23,24 +23,13 @@ return {
       local title = details:gsub(num_pattern, "", 1):gsub("^%s+", ""):gsub("%s+$", "")
 
 
-
-      local branch_name = string.gsub(title, "%d", "")
-      -- change all non-alphanumeric characters to empty string
-      branch_name = string.gsub(branch_name, "%W", "")
-      branch_name = string.gsub(branch_name, "|", "")
-      -- change all spaces to dashes
-      branch_name = string.gsub(title, "%s+", "-")
-      -- remove any trailing dashes
-      branch_name = string.gsub(branch_name, "-$", "")
-      -- remove any leading dashes
-      branch_name = string.gsub(branch_name, "^-", "")
-      -- make it lowercase
-      branch_name = string.lower(branch_name)
-      -- ignore any text in brackets or parentheses
-      branch_name = string.gsub(branch_name, "%b()", "")
-      branch_name = string.gsub(branch_name, "%b[]", "")
-      -- remove any dash that is followed by another dash
-      branch_name = string.gsub(branch_name, "-+", "-")
+      local branch_name = title
+        :gsub("[^%w%s]", "") -- Remove non-alphanumeric and non-space characters
+        :gsub("%s+", "-")    -- Replace spaces with dashes
+        :gsub("[-]+$", "")   -- Remove trailing dashes
+        :gsub("^[-]+", "")   -- Remove leading dashes
+        :gsub("[-]+", "-")   -- Collapse multiple dashes into one
+        :lower()             -- Convert to lowercase
 
     local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
 
