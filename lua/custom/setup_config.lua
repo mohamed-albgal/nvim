@@ -52,5 +52,5 @@ require('nightfox').setup({
     },
   },
 })
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme tokyonight-storm]]
 

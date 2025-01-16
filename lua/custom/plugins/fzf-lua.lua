@@ -12,6 +12,10 @@ return {
       cmd = ":lua require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
     }
     map {
+      key = '<leader>K',  desc = 'FZF Files',
+      cmd = ":lua require('fzf-lua').files({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.97,width=0.6,row=0.09,col=0.47 }})<cr>",
+    }
+    map {
       key = '<leader>ic',  desc = 'FZF CSS Files',
       cmd = ":lua require('fzf-lua').files({cwd='app/assets/stylesheets', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
     }
@@ -53,7 +57,7 @@ return {
     }
     map {
       key = '<leader>fd',  desc = 'Grep for "debugger" in changed files',
-      cmd =  ":lua require('fzf-lua').grep({raw_cmd = \"git status -su | rg '^\\\\s*M' | cut -d ' ' -f3 | xargs rg --hidden --column --line-number --no-heading --color=always --with-filename -e 'debugger'\"})<cr>"
+      cmd =  ":lua require('fzf-lua').grep({raw_cmd = \"git status -su | rg '^\\\\s*M' | cut -d ' ' -f3 | xargs rg --hidden --column --line-number --no-heading --color=always --with-filename -e 'debugger' -e 'save_and_open_page'\"})<cr>"
     }
 
     map {
@@ -82,7 +86,7 @@ return {
     }
     map {
       key = '<leader>fB',  desc = 'fuzzy find in buffer',
-      cmd = ":lua require('fzf-lua').lgrep_curbuf({previewer=false,fzf_opts = {['--layout']='reverse-list'}, winopts = { fullscreen = false, height=0.50,width=0.65,row=0.5,col=0.5, preview = { hidden = 'hidden' } }})<cr>",
+      cmd = ":lua require('fzf-lua').lgrep_curbuf({fzf_opts = {['--layout']='reverse-list'}, winopts = { fullscreen = false, height=0.80,width=0.65,row=0.5,col=0.5 }})<cr>",
     }
     map {
       key = '<leader>fl',  desc = 'Continue most recent search',

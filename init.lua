@@ -99,7 +99,7 @@ else
       -- Add indentation guides even on blank lines
       -- Enable `lukas-reineke/indent-blankline.nvim`
       -- See `:help indent_blankline.txt`
-    { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+    -- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
     --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
     --    up-to-date with whatever is in the kickstart repo.
@@ -117,20 +117,20 @@ else
   vim.opt.termguicolors = true
   -- for tabline
   -- require("bufferline").setup {}
-  require("ibl").setup()
-  local highlight = {
-      -- "CursorColumn",
-      "Whitespace",
-  }
-  require("ibl").setup {
-      indent = { highlight = highlight, char = "" },
-      whitespace = {
-          highlight = highlight,
-          remove_blankline_trail = false,
-      },
-      scope = { enabled = false },
-  }
-
+  -- require("ibl").setup()
+  -- local highlight = {
+  --     -- "CursorColumn",
+  --     "Whitespace",
+  -- }
+  -- require("ibl").setup {
+  --     indent = { highlight = highlight, char = "" },
+  --     whitespace = {
+  --         highlight = highlight,
+  --         remove_blankline_trail = false,
+  --     },
+  --     scope = { enabled = false },
+  -- }
+  --
 
   -- Set highlight on search
   vim.o.hlsearch = true
@@ -352,7 +352,7 @@ else
     -- gopls = {},
     -- pyright = {},
     -- rust_analyzer = {},
-    -- tsserver = {},
+    ts_ls = {},
     solargraph = {
       filetypes = { 'ruby' },
       settings = {
@@ -404,6 +404,15 @@ else
       }
     end
   }
+
+  -- show row line in active window
+  -- local cursorGrp = vim.api.nvim_create_augroup("CursorLine", { clear = true })
+  -- vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, { pattern = "*", command = "set cursorline", group = cursorGrp })
+  -- vim.api.nvim_create_autocmd(
+  --   { "InsertEnter", "WinLeave" },
+  --   { pattern = "*", command = "set nocursorline", group = cursorGrp }
+  -- )
+
   --
   -- [[ Configure nvim-cmp ]]
   -- See `:help cmp`
