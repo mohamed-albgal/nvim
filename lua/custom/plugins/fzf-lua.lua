@@ -76,6 +76,11 @@ return {
       key = '<leader>fh',  desc = 'FZF html',
       cmd = ":lua require('fzf-lua').grep({prompt= 'HTML❯❯ ', search = ' -- app/views/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
     }
+
+    map {
+      key = '<leader>fq',  desc = 'Find files containing query',
+      cmd = ":lua require('fzf-lua').live_grep_native({ rg_opts = '--files-with-matches', prompt= 'Find Files Containing❯❯ ', fzf_opts = { ['--nth'] = '3..' }})<cr>",
+    }
     map {
       key = '<leader>fr',   desc = 'FZF ruby (not spec)',
       cmd = ":lua require('fzf-lua').grep({prompt= 'RUBY❯❯ ', search = ' -- app/** !config/locales/** !*.yml* !app/assets/javascripts/** !app/views/** !app/assets/stylesheets/** !spec/**', fzf_opts = { ['--nth'] = '3..' }})<cr>",
