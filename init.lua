@@ -483,8 +483,11 @@ else
       end, { 'i', 's' }),
     },
     sources = {
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' },
+      { name = "copilot", group_index = 1 },
+      -- Other Sources
+      { name = "nvim_lsp", group_index = 2 },
+      { name = "path", group_index = 2 },
+      { name = "luasnip", group_index = 2 },
     },
   }
 end -- end of if/else for vscode vs neovim
