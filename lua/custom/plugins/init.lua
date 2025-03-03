@@ -32,7 +32,18 @@ return {
     },
   },
 
-  {"vhyrro/luarocks.nvim"},
+  {"vhyrro/luarocks.nvim",
+    priority = 1001,
+    opts = {
+      rocks = { "magick" }
+    }
+  },
+  { "3rd/image.nvim",
+    dependencies = { "vhyrro/luarocks.nvim" },
+    config = function()
+      require('image').setup()
+    end
+  },
   { "anuvyklack/windows.nvim",
    dependencies = {
       "anuvyklack/middleclass",
@@ -96,9 +107,6 @@ return {
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'auto',
-        component_separators = { left = '', right = ''},
-        section_separators = { left = '', right = ''},
         disabled_filetypes = {
           statusline = {'.md'},
           winbar = {},
@@ -117,7 +125,6 @@ return {
         lualine_b = {},
         -- lualine_b = {
         --   {
-        --   
         --     'filename',
         --     path = 1,
         --     separators = { left = '', right = ''},
@@ -149,6 +156,9 @@ return {
         },
       },
       sections = {
+        lualine_a = {''},
+        lualine_b = { { 'branch' }
+        },
         lualine_c = {},
         lualine_x = {},
         lualine_y = { { 'filename', path = 4,

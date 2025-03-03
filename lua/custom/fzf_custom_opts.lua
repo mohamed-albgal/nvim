@@ -68,6 +68,9 @@ return {
     rg_glob           = true,        -- default to glob parsing?
     glob_flag         = "--iglob",    -- for case sensitive globs use '--glob'
     glob_separator    = "%s%-%-",     -- query separator pattern (lua): ' --'
+    actions = {
+      ["ctrl-o"]      = { require('fzf-lua').actions.grep_lgrep }
+    },
   },
   git = {
     bcommits = {
