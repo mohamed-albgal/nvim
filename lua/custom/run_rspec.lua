@@ -4,6 +4,17 @@ M.runRspec = function(wholeFile)
     local current_file = vim.fn.expand('%')
     local current_line = vim.fn.line('.')
 
+  -- if current_file has _spec.rb then proceed, otherwise find the corresponding _spec.rb file in /Users/mohamedalbgal/dev/health-teams/spec/
+    if not string.match(current_file, '_spec.rb') then
+      local spec_file = string.gsub(current_file, 'app', 'spec')
+      spec_file = string.gsub(spec_file, '.rb', '_spec.rb')
+      if vim.fn.filereadable(spec_file) == 1 then
+        current_file = spec_file
+      else
+        print('No spec file found for ' .. current_file)
+        return
+      end
+    end
     -- Construct the "rspec" command
 
     local rspec_command = 'rspec ' .. current_file

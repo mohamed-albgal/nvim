@@ -10,15 +10,6 @@ local selected_text = 'fg+:'
 local selected_bg = 'bg+:'
 local pointer = 'pointer:'
 local cyan = '#00ffff'
-local color_string = table.concat({
-  text_color .. white,
-  -- bg .. black,
-  highlight .. yellow,
-  selected_text .. yellow,
-  selected_bg .. black,
-  pointer .. cyan,
-  selected_highlight .. other_blue,
-}, ',')
 
 return {
     'telescope',
@@ -47,7 +38,14 @@ return {
       ['--pointer']     = '❯',
       ['--marker']      = '❯ ',
       ['--delimiter']      = ':',
-      ['--color'] =  color_string
+      ['--color'] = table.concat({
+        text_color .. white,               -- Normal text color
+        highlight .. yellow,               -- Highlighted match color
+        selected_highlight .. other_blue,  -- Highlighted match in selected item
+        selected_text .. white,            -- Selected item text color
+        selected_bg .. black,              -- Selected item background color
+        pointer .. cyan                    -- Pointer color
+      }, ',')
   },
   previewers = {
     bat = {
