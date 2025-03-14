@@ -79,7 +79,7 @@ return {
 
     map {
       key = '<leader>fq',  desc = 'Find files containing query',
-      cmd = ":lua require('fzf-lua').live_grep_native({ rg_opts = '--files-with-matches', prompt= 'Find Files Containing❯❯ ', fzf_opts = { ['--nth'] = '3..' }})<cr>",
+      cmd = ":lua require('fzf-lua').live_grep_native({ rg_opts = '--files-with-matches --column --line-number', prompt= 'Find Files Containing❯❯ ', fzf_opts = { ['--nth'] = '1..' }})<cr>",
     }
     map {
       key = '<leader>fr',   desc = 'FZF ruby (not spec)',
