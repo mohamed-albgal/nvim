@@ -29,7 +29,7 @@ local function get_or_create_journal_path()
   return journal_path
 end
 
-local function open_previous_journal_entry()
+local function open_previous_journal_entry(just_return_path)
   local max_days_back = 90
   local current_buffer = vim.fn.expand('%:p')
   local journal_pattern = "VSCodeJournal/(%d+)/(%d+)/(%d+)%.md"
@@ -67,6 +67,9 @@ local function open_previous_journal_entry()
     end
 
     local journal_path = get_journal_path(current_date)
+    if just_return_path then
+      return journal_path
+    end
     if buffer_exists(journal_path) then
       vim.cmd("buffer " .. vim.fn.bufnr(journal_path))
       return
@@ -76,6 +79,36 @@ local function open_previous_journal_entry()
     end
 
     max_days_back = max_days_back - 1
+  end
+end
+
+-- resume this when i have time.........
+local function get_previous_todos()
+  -- if a journal entry has todos, they are marked with '- [ ]' in the journal file
+  -- check the last journal, and extract the todos from it, and append them to today's journal todos
+  -- todos are always located after the first line that starts with '::: ' (triple colon and a space) when the line that starts with :::mermaid is encountered, the todos are over
+  local last_journal_path = open_previous_journal_entry(true)
+  local todos = {}
+  local in_todos = false
+  for line in io.lines(last_journal_path) do
+    if in_todos then
+      if line:match(":::mermaid") then
+        break
+      end
+      if line:match("- %[%s%]") then
+        table.insert(todos, line)
+      end
+    end
+    if line:match("::: $") then
+      in_todos = true
+    end
+  end
+
+  -- append the todos to today's journal (there may already be todos in today's journal, so prepend lines as needed and insert them after the first line that starts with '::: ')
+  local journal_path = get_or_create_journal_path()
+  local file_contents = {}
+  for line in io.lines(journal_path) do
+    table.insert(file_contents, line)
   end
 end
 
@@ -141,7 +174,7 @@ local function add_task_to_journal ()
     return
   else
     -- append the name of the current file and the line number to the task (with a colon separator)
-    my_input = my_input .. " --> " .. vim.fn.expand("%:t") .. ":" .. vim.fn.line(".")
+    my_input = my_input .. " --> " .. vim.fn.expand("%") .. ":" .. vim.fn.line(".")
   end
 
   -- Read the contents of the journal file
@@ -187,5 +220,6 @@ return {
   openPrev = open_previous_journal_entry,
   openToday = open_or_create_journal,
   addTask = add_task_to_journal,
-  journalPath = get_or_create_journal_path
+  journalPath = get_or_create_journal_path,
+  getPrevTodos = get_previous_todos
 }

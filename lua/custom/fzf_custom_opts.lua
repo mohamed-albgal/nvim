@@ -12,13 +12,12 @@ local pointer = 'pointer:'
 local cyan = '#00ffff'
 
 return {
-    'telescope',
+    'fzf-native',
   winopts = {
-    height           = 0.9,            -- window height
-    width            = 0.75,            -- window width
+    height           = 0.95,            -- window height
+    width            = 0.98,            -- window width
     row              = 0.35,            -- window row position (0=top, 1=bottom)
     col              = 0.50,            -- window col position (0=left, 1=right)
-    border           = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
     fullscreen       = false,           -- start fullscreen?
     preview = {
       border         = 'border',        -- border|noborder, applies only to
@@ -50,7 +49,7 @@ return {
   previewers = {
     bat = {
       args            = "--color=always --style=numbers,changes,header,grid ",
-      theme           = 'zenburn',
+      theme           = '1337',
     },
   },
   files = { rg_opts = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,/config/initializers/**}'", prompt = 'FROGS!❯ ', },

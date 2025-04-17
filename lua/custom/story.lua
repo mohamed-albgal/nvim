@@ -6,22 +6,14 @@ return {
         return
       end
 
-      -- Extract the ticket number and title
-      local all_numbers = {}
-      for number in string.gmatch(details, "%d+") do
-        table.insert(all_numbers, number)
+      -- Extract the story number it always begins with PRD- (case insensitive)
+      local num = details:match("PRD%-%d+")
+      if num == nil then
+        print("Invalid story number format. It should start with PRD-")
+        return
       end
 
-      -- Find the longest numeric string
-      table.sort(all_numbers, function(a, b) return #a > #b end)
-      local num = all_numbers[1] or ""
-
-      -- Escape the longest numeric string for use in gsub
-      local num_pattern = num:gsub("([^%w])", "%%%1")
-
-      -- Remove the longest numeric string to get the title
-      local title = details:gsub(num_pattern, "", 1):gsub("^%s+", ""):gsub("%s+$", "")
-
+      local title = details:gsub("PRD%-%d+", "") -- Remove the story number
 
       local branch_name = title
         :gsub("[^%w%s]", "") -- Remove non-alphanumeric and non-space characters
@@ -31,7 +23,7 @@ return {
         :gsub("[-]+", "-")   -- Collapse multiple dashes into one
         :lower()             -- Convert to lowercase
 
-    local formatted_output = string.format("%s - %s\n[Story](https://www.pivotaltracker.com/story/show/%s)\nwip/%s-%s", num, title, num, branch_name, num)
+    local formatted_output = string.format("%s - %s\n[Story](https://myhealthteam.atlassian.net/browse/%s)\nwip/%s-%s", num, title, num, branch_name, num)
 
     local journal_path = require("custom.jou_funcs").journalPath()
     local journal_file = io.open(journal_path, "a")

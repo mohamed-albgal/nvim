@@ -51,6 +51,16 @@ end
 
 M.yankTest = function()
     local file_path = vim.fn.expand('%')
+    if not string.match(file_path, '_spec.rb') then
+        local spec_file = string.gsub(file_path, 'app', 'spec')
+        spec_file = string.gsub(spec_file, '.rb', '_spec.rb')
+        if vim.fn.filereadable(spec_file) == 1 then
+            file_path = spec_file
+        else
+            print('No spec file found for ' .. file_path)
+            return
+        end
+    end
     local line_number = vim.fn.line('.')
     local cmd = 'rspec ' .. file_path .. ':' .. line_number
     vim.fn.setreg('+', cmd)

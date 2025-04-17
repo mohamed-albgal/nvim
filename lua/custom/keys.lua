@@ -33,6 +33,9 @@ map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the 
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 
+-- create a keymap so that yf will yank the file path into the paste buffer
+map{ key='<Leader>yf', cmd=':let @+=expand("%")<CR>', desc='Yank file path' }
+
 -- Terminal mode mappings
 map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",                          desc = "Exit normal mode" }
 map{ mode='t', key='<leader>;',     cmd="<C-\\><C-n>:FloatermToggle<CR>",               desc = "Toggle terminal in terminal mode" }
