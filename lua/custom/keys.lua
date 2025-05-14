@@ -33,6 +33,10 @@ map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the 
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 
+-- mapping for page up and page down
+map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }
+map{ key='<Leader>sb', cmd='<C-b>', desc = 'Scroll half page down' }
+
 -- create a keymap so that yf will yank the file path into the paste buffer
 map{ key='<Leader>yf', cmd=':let @+=expand("%")<CR>', desc='Yank file path' }
 

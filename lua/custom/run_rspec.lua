@@ -17,7 +17,7 @@ M.runRspec = function(wholeFile)
     end
     -- Construct the "rspec" command
 
-    local rspec_command = 'rspec ' .. current_file
+    local rspec_command = 'bundle exec rspec ' .. current_file
   -- if wholeFile is false then append the : and current_line
     if wholeFile == 'false' then
       rspec_command = rspec_command .. ':' .. current_line
@@ -45,7 +45,7 @@ end
 
 M.yankFile = function()
     local file_path = vim.fn.expand('%')
-    local cmd = 'rspec ' .. file_path
+    local cmd = 'bundle exec rspec ' .. file_path
     vim.fn.setreg('+', cmd)
 end
 
@@ -62,7 +62,7 @@ M.yankTest = function()
         end
     end
     local line_number = vim.fn.line('.')
-    local cmd = 'rspec ' .. file_path .. ':' .. line_number
+    local cmd = 'bundle exec rspec ' .. file_path .. ':' .. line_number
     vim.fn.setreg('+', cmd)
 end
 

@@ -73,7 +73,7 @@ else
         'rafamadriz/friendly-snippets',
       },
     },
-    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+    { "catppuccin/nvim",               name = "catppuccin", priority = 1000 },
     { 'ntpeters/vim-better-whitespace' },
 
     {
@@ -96,9 +96,9 @@ else
         end,
       },
     },
-      -- Add indentation guides even on blank lines
-      -- Enable `lukas-reineke/indent-blankline.nvim`
-      -- See `:help indent_blankline.txt`
+    -- Add indentation guides even on blank lines
+    -- Enable `lukas-reineke/indent-blankline.nvim`
+    -- See `:help indent_blankline.txt`
     -- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
     -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
     --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
@@ -109,7 +109,7 @@ else
     { import = 'custom.plugins' },
   }, {})
   require('custom.setup_config')
-  require'luasnip'.filetype_extend("ruby", {"rails"})
+  require 'luasnip'.filetype_extend("ruby", { "rails" })
 
   -- [[ Setting options ]]
   -- See `:help vim.o`
@@ -184,13 +184,6 @@ else
   -- Keymaps for better default experience
   -- See `:help vim.keymap.set()`
   vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
-  -- These allows leap to work on all windows
-  vim.keymap.set('n', 's', function ()
-    require('leap').leap {
-      target_windows = require('leap.user').get_focusable_windows()
-    }
-  end)
 
   -- Remap for dealing with word wrap
   vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -314,12 +307,13 @@ else
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
     nmap('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences')
     nmap('<leader>bs', require('fzf-lua').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>Ws', require('fzf-lua').lsp_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>ws', require('fzf-lua').lsp_live_workspace_symbols, '[W]orkspace [S]ymbols')
     nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    nmap('<leader>bf', vim.lsp.buf.format, '[b]uffer [F]efinition')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -353,21 +347,28 @@ else
     -- pyright = {},
     -- rust_analyzer = {},
     ts_ls = {},
-    solargraph = {
-      filetypes = { 'ruby' },
+    ruby_lsp = {
       settings = {
-        solargraph = {
-          diagnostics = true,
-          completion = true,
-          definitions = true,
-          hover = true,
-          references = true,
-          rename = true,
-          symbols = true,
-          formatting = true,
-        },
-      },
+        rubyLsp = {
+          formatter = "rubocop"
+        }
+      }
     },
+    -- solargraph = {
+    --   filetypes = { 'ruby' },
+    --   settings = {
+    --     solargraph = {
+    --       diagnostics = true,
+    --       completion = true,
+    --       definitions = true,
+    --       hover = true,
+    --       references = true,
+    --       rename = true,
+    --       symbols = true,
+    --       formatting = true,
+    --     },
+    --   },
+    -- },
     eslint = {},
     html = { filetypes = { 'html', 'erb' } },
 
@@ -391,6 +392,7 @@ else
 
   mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
+    automatic_installation = true,
   }
 
   mason_lspconfig.setup_handlers {
@@ -418,7 +420,7 @@ else
   -- See `:help cmp`
   local cmp = require 'cmp'
   local luasnip = require 'luasnip'
-  require('luasnip.loaders.from_vscode').lazy_load({ path = { "~/.config/nvim/console.code-snippets"} })
+  require('luasnip.loaders.from_vscode').lazy_load({ path = { "~/.config/nvim/console.code-snippets" } })
   luasnip.config.setup {}
 
   cmp.setup {

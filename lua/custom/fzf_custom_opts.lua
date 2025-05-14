@@ -12,7 +12,7 @@ local pointer = 'pointer:'
 local cyan = '#00ffff'
 
 return {
-    'fzf-native',
+    'telescope',
   winopts = {
     height           = 0.95,            -- window height
     width            = 0.98,            -- window width
@@ -52,7 +52,7 @@ return {
       theme           = '1337',
     },
   },
-  files = { rg_opts = "--color=never --files --hidden --follow -g '!{**/node_modules/**,vendor/**,/config/initializers/**}'", prompt = 'FROGS!❯ ', },
+  files = { rg_opts = [[--color=never --hidden --files -g "!.git"]] },
   grep = {
     prompt            = '❯❯❯  ',
     input_prompt      = 'Grep For❯ ',
@@ -61,7 +61,7 @@ return {
     file_icons        = true,           -- show file icons?
     color_icons       = true,           -- colorize file|git icons
     grep_opts         = "--binary-files=without-match --line-number --recursive --color=auto --perl-regexp -e",
-    rg_opts           = "--column --line-number --no-heading  -g '!{public/**,**/node_modules/**,vendor/**,config/initializers/** }' --no-column --color=always --colors 'column:fg:cyan'  --colors 'path:style:bold' --colors 'path:fg:blue' --colors 'line:fg:green' --colors 'match:fg:0xFF,0xFF,0x0' --smart-case --max-columns=4096 -e",
+    rg_opts           = "--line-number --no-heading  -g '!{public/**,.git/,**/node_modules/**,vendor/**,config/initializers/** }' --no-column --color=always --colors 'column:fg:cyan'  --colors 'path:style:bold' --colors 'path:fg:blue' --colors 'line:fg:green' --colors 'match:fg:0xFF,0xFF,0x0' --smart-case --max-columns=4096 -e",
     rg_glob           = true,        -- default to glob parsing?
     glob_flag         = "--iglob",    -- for case sensitive globs use '--glob'
     glob_separator    = "%s%-%-",     -- query separator pattern (lua): ' --'
