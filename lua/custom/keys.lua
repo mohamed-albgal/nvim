@@ -32,6 +32,8 @@ map{ key='<leader>r.',     cmd= ':RunRspec false<CR>',          desc = 'Run the 
 map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the whole test file' }
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
+map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',             desc = "Open/create side note" }
+map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',             desc = "Open/create side note" }
 
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }
