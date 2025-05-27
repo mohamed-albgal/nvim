@@ -10,6 +10,12 @@ vim.cmd('command! -nargs=1 RunRspec lua require("custom.run_rspec").runRspec(<f-
 vim.cmd('command! YankRspecFile lua require("custom.run_rspec").yankFile()')
 vim.cmd('command! YankRspecTest lua require("custom.run_rspec").yankTest()')
 
+vim.cmd('command! PinBuffer lua require("custom.pins").pinThis()')
+vim.cmd('command! -nargs=1 GoToPinned lua require("custom.pins").GoToPinned(tonumber(<f-args>))')
+vim.cmd('command! ClearPinned lua require("custom.pins").ClearPins()')
+vim.cmd('command! ShowPins lua require("custom.pins").ShowPins()')
+vim.cmd('command! SplitPins lua require("custom.pins").SplitPins()')
+
 return {
   {
     -- Highlight, edit, and navigate code
@@ -97,6 +103,20 @@ return {
         vim.fn.system('kitty @ set-tab-bar visible yes')
       end,
     }
+  },
+
+  {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'ibhagwan/fzf-lua',
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function ()
+      require"octo".setup({
+        picker = "fzf-lua",
+      })
+    end
   },
 
   {

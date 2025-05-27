@@ -6,7 +6,7 @@ map{ key='<leader>wn',     cmd= ':lua require("custom/line_num").toggle()<CR>', 
 map{ key='<leader>wr',     cmd= ':lua require("custom/line_num").toggleRelative()<CR>', desc = "Toggle relative line numbers" }
 
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
-map{ key='ESC',     cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
+map{ key='ESC',            cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>',  desc = "Toggle AutoWidth" }
 map{ key='<leader>wm',     cmd= ':WindowsMaximize<cr>',         desc = "Maximize buffer" }
 map{ key='<leader>w=',     cmd= ':WindowsEqualize<cr>',         desc = "Equalize Buffer sizes" }
@@ -32,8 +32,17 @@ map{ key='<leader>r.',     cmd= ':RunRspec false<CR>',          desc = 'Run the 
 map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the whole test file' }
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
-map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',             desc = "Open/create side note" }
-map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',             desc = "Open/create side note" }
+map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',         desc = "Open/create side note" }
+map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',  desc = "Open/create side note" }
+
+map{ key='<leader>hh',     cmd= ":PinBuffer<CR>",               desc = "Pin current buffer" }
+map{ key='<leader>hx',     cmd= ":ClearPinned<CR>",             desc = "Clear all pinned buffers" }
+map{ key='<leader>H',      cmd= ":ShowPins<CR>",                desc = "Show pinned buffers" }
+map{ key='<leader>ha',     cmd= ":GoToPinned 1<CR>",            desc = "Go to pinned buffer 1" }
+map{ key='<leader>hb',     cmd= ":GoToPinned 2<CR>",            desc = "Go to pinned buffer 2" }
+map{ key='<leader>hc',     cmd= ":GoToPinned 3<CR>",            desc = "Go to pinned buffer 3" }
+map{ key='<leader>hd',     cmd= ":GoToPinned 4<CR>",            desc = "Go to pinned buffer 4" }
+map{ key='<leader>hv',     cmd= ":SplitPins<CR>",               desc = "Split pinned buffers" }
 
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }
