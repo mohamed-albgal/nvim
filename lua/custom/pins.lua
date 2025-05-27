@@ -1,10 +1,49 @@
 local pinned_buffers = {}
+local uv = vim.loop
+local json = vim.fn.json_encode
+local decode = vim.fn.json_decode
+local fname = vim.fn.stdpath("data") .. "/pinned_buffers.json"
+
+local function SavePinsFromDisk()
+  local paths = {}
+  for _, buf in ipairs(pinned_buffers) do
+    local path = vim.api.nvim_buf_get_name(buf)
+    if path and path ~= "" then table.insert(paths, path) end
+  end
+  local fd = assert(uv.fs_open(fname, "w", 438))
+  uv.fs_write(fd, json(paths), -1)
+  uv.fs_close(fd)
+end
+
+local function LoadPinsFromDisk()
+  local fd = uv.fs_open(fname, "r", 438)
+  if not fd then return end
+  local stat = uv.fs_fstat(fd)
+  local data = uv.fs_read(fd, stat.size, 0)
+  uv.fs_close(fd)
+
+  local paths = decode(data)
+  pinned_buffers = {}
+  for _, path in ipairs(paths) do
+    local bufnr = vim.fn.bufnr(path, true)
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      table.insert(pinned_buffers, bufnr)
+    end
+  end
+end
+
+-- remove the pinned_buffers.json file if it exists
+local function RemovePinsFile()
+  if uv.fs_stat(fname) then
+    uv.fs_unlink(fname)
+  end
+end
+
 
 local function PinBuffer(buf)
   -- Avoid duplicates
   for _, b in ipairs(pinned_buffers) do
     if b == buf then
-      print("Buffer already pinned")
       return
     end
   end
@@ -17,7 +56,6 @@ local function PinBuffer(buf)
     table.remove(pinned_buffers, 1) -- remove oldest
   end
 
-  print("Added buffer " .. buf .. " to pinned buffers")
 end
 
 local function GoToPinnedBuffer(index)
@@ -34,8 +72,6 @@ local function GoToPinnedBuffer(index)
   end
 end
 
-local fzf = require'fzf-lua'
-
 local function AddCurrentBufferToPinneds()
   local buf = vim.api.nvim_get_current_buf()
   PinBuffer(buf)
@@ -44,12 +80,15 @@ end
 -- Function to clear the pinned buffer table
 local function ClearPinnedBuffers()
   pinned_buffers = {}
-  print("Pinned buffers cleared")
+  RemovePinsFile()
 end
 
 local function ShowPinnedBuffers()
   if #pinned_buffers == 0 then
-    print("No pinned buffers")
+    LoadPinsFromDisk()
+  end
+
+  if #pinned_buffers == 0 then
     return
   end
 
@@ -87,7 +126,7 @@ end
 
 local function SplitPins()
   if #pinned_buffers == 0 then
-    return
+    LoadPinsFromDisk()
   end
 
   for i, buf in ipairs(pinned_buffers) do
@@ -95,7 +134,10 @@ local function SplitPins()
       -- hide all other buffers before splitting
       if i == 1 then
         vim.cmd("buffer " .. buf)
-        vim.cmd("only")
+        -- if there are splits, close them
+        if #vim.api.nvim_list_wins() > 1 then
+          vim.cmd("only")
+        end
       else
         vim.cmd("vsplit | buffer " .. buf)
       end
@@ -110,7 +152,11 @@ return {
   GoToPinned = GoToPinnedBuffer,
   ShowPins = ShowPinnedBuffers,
   ClearPins = ClearPinnedBuffers,
-  SplitPins = SplitPins
+  SplitPins = SplitPins,
+  SavePins = SavePinsFromDisk,
+  HasPins = function()
+    return #pinned_buffers > 0
+  end,
 }
 
 

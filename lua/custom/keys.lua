@@ -35,13 +35,13 @@ map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the
 map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',         desc = "Open/create side note" }
 map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',  desc = "Open/create side note" }
 
-map{ key='<leader>hh',     cmd= ":PinBuffer<CR>",               desc = "Pin current buffer" }
+map{ key='<leader>ha',     cmd= ":PinBuffer<CR>",               desc = "Pin current buffer" }
 map{ key='<leader>hx',     cmd= ":ClearPinned<CR>",             desc = "Clear all pinned buffers" }
 map{ key='<leader>H',      cmd= ":ShowPins<CR>",                desc = "Show pinned buffers" }
-map{ key='<leader>ha',     cmd= ":GoToPinned 1<CR>",            desc = "Go to pinned buffer 1" }
-map{ key='<leader>hb',     cmd= ":GoToPinned 2<CR>",            desc = "Go to pinned buffer 2" }
-map{ key='<leader>hc',     cmd= ":GoToPinned 3<CR>",            desc = "Go to pinned buffer 3" }
-map{ key='<leader>hd',     cmd= ":GoToPinned 4<CR>",            desc = "Go to pinned buffer 4" }
+map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",            desc = "Go to pinned buffer 1" }
+map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",            desc = "Go to pinned buffer 2" }
+map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",            desc = "Go to pinned buffer 3" }
+map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",            desc = "Go to pinned buffer 4" }
 map{ key='<leader>hv',     cmd= ":SplitPins<CR>",               desc = "Split pinned buffers" }
 
 -- mapping for page up and page down

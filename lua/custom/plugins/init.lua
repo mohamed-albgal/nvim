@@ -16,6 +16,16 @@ vim.cmd('command! ClearPinned lua require("custom.pins").ClearPins()')
 vim.cmd('command! ShowPins lua require("custom.pins").ShowPins()')
 vim.cmd('command! SplitPins lua require("custom.pins").SplitPins()')
 
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    local pins = require("custom.pins")
+    if pins.HasPins() then
+      pins.SavePins()
+    end
+  end,
+})
+
+
 return {
   {
     -- Highlight, edit, and navigate code
