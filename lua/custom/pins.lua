@@ -1,10 +1,11 @@
+M = {}
 local pinned_buffers = {}
 local uv = vim.loop
 local json = vim.fn.json_encode
 local decode = vim.fn.json_decode
 local fname = vim.fn.stdpath("data") .. "/pinned_buffers.json"
 
-local function SavePinsFromDisk()
+M.savePins = function()
   local paths = {}
   for _, buf in ipairs(pinned_buffers) do
     local path = vim.api.nvim_buf_get_name(buf)
@@ -15,7 +16,7 @@ local function SavePinsFromDisk()
   uv.fs_close(fd)
 end
 
-local function LoadPinsFromDisk()
+local function loadPinsFromDisk()
   local fd = uv.fs_open(fname, "r", 438)
   if not fd then return end
   local stat = uv.fs_fstat(fd)
@@ -58,7 +59,7 @@ local function PinBuffer(buf)
 
 end
 
-local function GoToPinnedBuffer(index)
+M.goToPinned = function(index)
   if not index or type(index) ~= "number" then
     print("Invalid buffer index")
     return
@@ -72,20 +73,20 @@ local function GoToPinnedBuffer(index)
   end
 end
 
-local function AddCurrentBufferToPinneds()
+M.pinThis = function()
   local buf = vim.api.nvim_get_current_buf()
   PinBuffer(buf)
 end
 
 -- Function to clear the pinned buffer table
-local function ClearPinnedBuffers()
+M.clearPins = function()
   pinned_buffers = {}
   RemovePinsFile()
 end
 
-local function ShowPinnedBuffers()
+M.showPins =  function()
   if #pinned_buffers == 0 then
-    LoadPinsFromDisk()
+    loadPinsFromDisk()
   end
 
   if #pinned_buffers == 0 then
@@ -118,15 +119,15 @@ local function ShowPinnedBuffers()
     actions = {
       default = function(selected)
         local index = tonumber(string.match(selected[1], "^(%d+):"))
-        if index then GoToPinnedBuffer(index) end
+        if index then GoToPinned(index) end
       end
     }
   })
 end
 
-local function SplitPins()
+M.splitPins = function()
   if #pinned_buffers == 0 then
-    LoadPinsFromDisk()
+    loadPinsFromDisk()
   end
 
   for i, buf in ipairs(pinned_buffers) do
@@ -147,16 +148,10 @@ local function SplitPins()
   end
 end
 
-return {
-  pinThis = AddCurrentBufferToPinneds,
-  GoToPinned = GoToPinnedBuffer,
-  ShowPins = ShowPinnedBuffers,
-  ClearPins = ClearPinnedBuffers,
-  SplitPins = SplitPins,
-  SavePins = SavePinsFromDisk,
-  HasPins = function()
-    return #pinned_buffers > 0
-  end,
-}
+M.hasPins = function()
+  return #pinned_buffers > 0
+end
+
+return M
 
 

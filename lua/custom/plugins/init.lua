@@ -11,16 +11,16 @@ vim.cmd('command! YankRspecFile lua require("custom.run_rspec").yankFile()')
 vim.cmd('command! YankRspecTest lua require("custom.run_rspec").yankTest()')
 
 vim.cmd('command! PinBuffer lua require("custom.pins").pinThis()')
-vim.cmd('command! -nargs=1 GoToPinned lua require("custom.pins").GoToPinned(tonumber(<f-args>))')
-vim.cmd('command! ClearPinned lua require("custom.pins").ClearPins()')
-vim.cmd('command! ShowPins lua require("custom.pins").ShowPins()')
-vim.cmd('command! SplitPins lua require("custom.pins").SplitPins()')
+vim.cmd('command! -nargs=1 GoToPinned lua require("custom.pins").goToPinned(tonumber(<f-args>))')
+vim.cmd('command! ClearPinned lua require("custom.pins").clearPins()')
+vim.cmd('command! ShowPins lua require("custom.pins").showPins()')
+vim.cmd('command! SplitPins lua require("custom.pins").splitPins()')
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
   callback = function()
     local pins = require("custom.pins")
-    if pins.HasPins() then
-      pins.SavePins()
+    if pins.hasPins() then
+      pins.savePins()
     end
   end,
 })

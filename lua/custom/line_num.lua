@@ -1,20 +1,15 @@
 M = {}
 M.toggle = function()
-  if vim.wo.number then
-    vim.wo.number = false
-    vim.wo.relativenumber = false
-  else
-    vim.wo.number = true
-  end
-end
-
-M.toggleRelative = function()
-  if vim.wo.relativenumber then
-    vim.wo.number = false
-    vim.wo.relativenumber = false
-  else
-    vim.wo.number = true
+  local rel_num = vim.wo.relativenumber
+  local num = vim.wo.number
+  if num then
     vim.wo.relativenumber = true
+    vim.wo.number = false
+  elseif rel_num then
+      vim.wo.relativenumber = false
+      vim.wo.number = false
+  else
+    vim.wo.number = true
   end
 end
 
