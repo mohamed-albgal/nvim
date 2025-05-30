@@ -76,67 +76,15 @@ else
     { "catppuccin/nvim",               name = "catppuccin", priority = 1000 },
     { 'ntpeters/vim-better-whitespace' },
 
-    {
-      -- Adds git related signs to the gutter, as well as utilities for managing changes
-      'lewis6991/gitsigns.nvim',
-      opts = {
-        -- See `:help gitsigns.txtissi`
-        signs = {
-          add = { text = '+' },
-          change = { text = '~' },
-          delete = { text = '_' },
-          topdelete = { text = '‾' },
-          changedelete = { text = '~' },
-        },
-        on_attach = function(bufnr)
-          vim.keymap.set('n', '<leader>gr', require('gitsigns').reset_hunk, { buffer = bufnr, desc = '[G]itSigns [R]eset Hunk' })
-          vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
-          vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
-          vim.keymap.set('n', '<leader>gh', require('gitsigns').preview_hunk_inline, { buffer = bufnr, desc = '[P]review [H]unk' })
-        end,
-      },
-    },
-    -- Add indentation guides even on blank lines
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    -- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
-    -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-    --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-    --    up-to-date with whatever is in the kickstart repo.
-    --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-    --
-    --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
     { import = 'custom.plugins' },
   }, {})
   require('custom.setup_config')
   require 'luasnip'.filetype_extend("ruby", { "rails" })
 
-  -- [[ Setting options ]]
-  -- See `:help vim.o`
-  -- NOTE: You can change these options as you wish!
   vim.opt.termguicolors = true
-  -- for tabline
-  -- require("bufferline").setup {}
-  -- require("ibl").setup()
-  -- local highlight = {
-  --     -- "CursorColumn",
-  --     "Whitespace",
-  -- }
-  -- require("ibl").setup {
-  --     indent = { highlight = highlight, char = "" },
-  --     whitespace = {
-  --         highlight = highlight,
-  --         remove_blankline_trail = false,
-  --     },
-  --     scope = { enabled = false },
-  -- }
-  --
 
   -- Set highlight on search
   vim.o.hlsearch = true
-
-  -- Make line numbers default
-  vim.wo.number = false
 
   -- enable mouse mode
   vim.o.mouse = 'a'
@@ -206,7 +154,9 @@ else
   require('nvim-treesitter.configs').setup({
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'lua', 'python', 'javascript', 'tsx', 'typescript', 'ruby', 'vimdoc', 'vim', 'html' },
-
+    modules = {},
+    sync_install = false, -- Install languages synchronously (will be slower)
+    ignore_install = {}, -- Ignore these languages when installing
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
 
@@ -354,21 +304,6 @@ else
         }
       }
     },
-    -- solargraph = {
-    --   filetypes = { 'ruby' },
-    --   settings = {
-    --     solargraph = {
-    --       diagnostics = true,
-    --       completion = true,
-    --       definitions = true,
-    --       hover = true,
-    --       references = true,
-    --       rename = true,
-    --       symbols = true,
-    --       formatting = true,
-    --     },
-    --   },
-    -- },
     eslint = {},
     html = { filetypes = { 'html', 'erb' } },
 
