@@ -33,6 +33,26 @@ local function loadPinsFromDisk()
   end
 end
 
+M.nextPin = function()
+  if #pinned_buffers == 0 then
+    loadPinsFromDisk()
+  end
+
+  if #pinned_buffers > 0 then
+    local current_buf = vim.api.nvim_get_current_buf()
+    for i, buf in ipairs(pinned_buffers) do
+      if buf == current_buf then
+        local next_index = (i % #pinned_buffers) + 1
+        local next_buf = pinned_buffers[next_index]
+        vim.api.nvim_set_current_buf(next_buf)
+        return
+      end
+    end
+    -- If current buffer is not pinned, default to the first one
+    vim.api.nvim_set_current_buf(pinned_buffers[1])
+  end
+end
+
 -- remove the pinned_buffers.json file if it exists
 local function RemovePinsFile()
   if uv.fs_stat(fname) then
@@ -111,15 +131,15 @@ M.showPins =  function()
   require('fzf-lua').fzf_exec(entries, {
     prompt = "Pinned Buffers> ",
     winopts = {
-      height = 0.1,
-      width = 0.2,
+      height = 0.15,
+      width = 0.45,
       row = 0.3,
       col = 0.5,
     },
     actions = {
       default = function(selected)
         local index = tonumber(string.match(selected[1], "^(%d+):"))
-        if index then GoToPinned(index) end
+        if index then M.goToPinned(index) end
       end
     }
   })

@@ -30,6 +30,7 @@ map{ key='<leader>jl',     cmd= ':OpenNextJournal<cr>',         desc = "Open nex
 map{ key='<leader>ja',     cmd= ":AddJournalTask<cr>",          desc = "Add task to journal" }
 map{ key='<leader>r.',     cmd= ':RunRspec false<CR>',          desc = 'Run the test under the cursor' }
 map{ key='<leader>rw',     cmd= ':RunRspec true<CR>',           desc = 'Run the whole test file' }
+map{ key='<leader>rx',     cmd= ':CleanFailures<CR>',           desc = 'Clean failing rspec lines' }
 map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',         desc = "Open/create side note" }
@@ -43,6 +44,7 @@ map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",            desc = "Go to pi
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",            desc = "Go to pinned buffer 3" }
 map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",            desc = "Go to pinned buffer 4" }
 map{ key='<leader>hv',     cmd= ":SplitPins<CR>",               desc = "Split pinned buffers" }
+map{ key='<leader>hh',     cmd= ":NextPin<CR>",                 desc = "Next pinned buffer" }
 
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }

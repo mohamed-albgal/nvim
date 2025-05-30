@@ -31,12 +31,12 @@ return {
       key = '<leader>ih',  desc = 'FZF HTML Files',
       cmd = ":lua require('fzf-lua').files({cwd='app/views/', previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})<cr>",
     }
-    -- map {
-    --   key = '<leader>ff',  desc = 'FZF grep',
-    --   cmd = ":lua require('fzf-lua').grep_project()<cr>",
-    -- }
     map {
-      key = '<leader>ff',  desc = 'FZF grep, include path queries RAW',
+      key = '<leader>fF',  desc = 'FZF grep lines (after path)',
+      cmd = ":lua require('fzf-lua').grep_project()<cr>",
+    }
+    map {
+      key = '<leader>ff',  desc = 'FZF grep RAW lines',
       cmd = ":lua require('fzf-lua').grep_project({ prompt = 'RAW❯❯ ', fzf_opts= { ['--nth']='1..'}})<cr>",
     }
     -- map {
