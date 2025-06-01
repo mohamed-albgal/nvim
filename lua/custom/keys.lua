@@ -35,6 +35,7 @@ map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',         desc = "Open/create side note" }
 map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',  desc = "Open/create side note" }
+map{ key='<Leader>e',     cmd= ':Oil --float<CR>',  desc = "Open Oil in float mode" }
 
 map{ key='<leader>ha',     cmd= ":PinBuffer<CR>",               desc = "Pin current buffer" }
 map{ key='<leader>hx',     cmd= ":ClearPinned<CR>",             desc = "Clear all pinned buffers" }
