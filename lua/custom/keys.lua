@@ -4,7 +4,6 @@ end
 
 map{ key='<leader>wn',     cmd= ':lua require("custom/line_num").toggle()<CR>',         desc = "Toggle line numbers" }
 map{ key='<leader>wr',     cmd= ':lua require("custom/line_num").toggleRelative()<CR>', desc = "Toggle relative line numbers" }
-
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
 map{ key='ESC',            cmd= ':nohlsearch<CR>',              desc = "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>',  desc = "Toggle AutoWidth" }
@@ -35,8 +34,7 @@ map{ key='<Leader>rf',     cmd= ':YankRspecFile<CR>',           desc = "Yank the
 map{ key='<Leader>ry',     cmd= ':YankRspecTest<CR>',           desc = "Yank the test signature under the cursor" }
 map{ key='<Leader>jf',     cmd= ':JournalSideNote<CR>',         desc = "Open/create side note" }
 map{ key='<Leader>jo',     cmd= ':JournalSideNoteContext<CR>',  desc = "Open/create side note" }
-map{ key='<Leader>e',     cmd= ':Oil --float<CR>',  desc = "Open Oil in float mode" }
-
+map{ key='<Leader>e',      cmd= ':Oil --float<CR>',             desc = "Open Oil in float mode" }
 map{ key='<leader>ha',     cmd= ":PinBuffer<CR>",               desc = "Pin current buffer" }
 map{ key='<leader>hx',     cmd= ":ClearPinned<CR>",             desc = "Clear all pinned buffers" }
 map{ key='<leader>H',      cmd= ":ShowPins<CR>",                desc = "Show pinned buffers" }
@@ -46,6 +44,7 @@ map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",            desc = "Go to pi
 map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",            desc = "Go to pinned buffer 4" }
 map{ key='<leader>hv',     cmd= ":SplitPins<CR>",               desc = "Split pinned buffers" }
 map{ key='<leader>hh',     cmd= ":NextPin<CR>",                 desc = "Next pinned buffer" }
+map{ key='<leader>be',     cmd= "ggVG=",                 desc = "Beautify (format) entire file" }
 
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }

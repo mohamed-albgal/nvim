@@ -11,7 +11,12 @@ return {
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = { "actions.close", mode = "n" },
         ["<C-l>"] = "actions.refresh",
+
+        ["<C-j>"] = { "actions.preview_scroll_down", mode = "n" },
+        ["<C-k>"] = { "actions.preview_scroll_up", mode = "n" },
+
         ["-"] = { "actions.parent", mode = "n" },
+        ["<BS>"] = { "actions.parent", mode = "n" },
         ["_"] = { "actions.open_cwd", mode = "n" },
         ["`"] = { "actions.cd", mode = "n" },
         ["~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
@@ -20,11 +25,9 @@ return {
         ["g."] = { "actions.toggle_hidden", mode = "n" },
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
 
-        -- make <Leader>ee close the window
         ["<Leader>e"] =  { "actions.close", mode = "n" },
         ["<Leader>;"] =  { "actions.close", mode = "n" },
-        -- make the escape key close the window
-        ["<Esc>"] = { "actions.close", mode = "n" },
+        ["q"] = { "actions.close", mode = "n" },
       },
       float = {
         -- Padding around the floating window
