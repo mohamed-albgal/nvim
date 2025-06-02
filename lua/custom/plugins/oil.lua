@@ -25,7 +25,7 @@ return {
         ["g."] = { "actions.toggle_hidden", mode = "n" },
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
 
-        ["<Leader>e"] =  { "actions.close", mode = "n" },
+        -- ["<Leader>e"] =  { "actions.close", mode = "n" },
         ["<Leader>;"] =  { "actions.close", mode = "n" },
         ["q"] = { "actions.close", mode = "n" },
       },

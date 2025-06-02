@@ -46,7 +46,8 @@ map{ key='<C-l>',          cmd= ':tabnext<CR>',                                 
 map{ key='<C-h>',          cmd= ':tabprevious<CR>',                                     desc = "Prev tab"}
 map{ key='<leader>T',      cmd= ':tabnew<CR>',                                          desc = "New tab" }
 map{ key='<leader>gg',     cmd= ":LazyGit<cr>",                                         desc = 'LazyGit window' }
-map{ key='<Leader>e',      cmd= ':Oil --float<CR>',                                     desc = "Open Oil in float mode" }
+-- map{ key='<Leader>e',      cmd= ':Oil --float<CR>',                                     desc = "Open Oil in float mode" }
+map{ key='<Leader>e',      cmd= require('oil').toggle_float,                            desc = "Open Oil in float mode" }
 map{ key='<leader>be',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
 map{ key='<leader>be',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
 
@@ -63,15 +64,20 @@ map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",         
 map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",                 desc = "Kill terminal in terminal mode" }
 
 -- lsp and diagnostics mappings
-map{ key='<leader>E',      cmd= "vim.diagnostic.open_float<CR>",                        desc = "Open floating diagnostic message" }
-map{ key='<leader>rn',     cmd= "vim.lsp.buf.rename<CR>",                               desc = "Buffer [R]e[n]ame" }
-map{ key='gi',             cmd= "vim.lsp.buf.implementation<CR>",                       desc = "[G]oto [I]mplementation" }
-map{ key='gI',             cmd= "vim.lsp.buf.type_definition",                          desc = "Type DefInition" }
+map{ key='<leader>E',      cmd= vim.diagnostic.open_float,                        desc = "Open floating diagnostic message" }
+map{ key='<leader>rn',     cmd= vim.lsp.buf.rename,                               desc = "Buffer [R]e[n]ame" }
+map{ key='gi',             cmd= vim.lsp.buf.implementation,                       desc = "[G]oto [I]mplementation" }
+map{ key='gI',             cmd= vim.lsp.buf.type_definition,                          desc = "Type DefInition" }
 map{ key='gd',             cmd= require('fzf-lua').lsp_definitions,                     desc = "[G]oto [D]efinition" }
 map{ key='gr',             cmd= require('fzf-lua').lsp_references,                      desc = "[G]oto [R]eferences" }
 map{ key='gr',             cmd= require('fzf-lua').lsp_references,                      desc = "[G]oto [R]eferences" }
 map{ key='<leader>bs',     cmd= require('fzf-lua').lsp_document_symbols,                desc = "[D]ocument [S]ymbols" }
 map{ key='<leader>ws',     cmd= require('fzf-lua').lsp_live_workspace_symbols,          desc = "[W]orkspace [S]ymbols" }
+
+map({ key='<leader>wl',    cmd= function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end,  desc = 'Toggle diagnostic virtual_lines' } )
 
 -- diagnostics toggle
 local toggle = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end

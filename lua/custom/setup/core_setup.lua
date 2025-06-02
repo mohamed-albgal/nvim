@@ -67,6 +67,3 @@ vim.diagnostic.config({
     severity = { min = vim.diagnostic.severity.ERROR },
   },
 })
--- keymaps
-vim.keymap.set('n', '<leader>E', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>Q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })

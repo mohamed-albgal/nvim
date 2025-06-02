@@ -1,5 +1,4 @@
 require("custom.commands")
-require("custom.autocmds")
 
 return {
   unpack(require("custom.plugins.themes")),
