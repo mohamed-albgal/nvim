@@ -9,6 +9,19 @@ local function cmdSplit(cmd)
 end
 
 M = {}
+
+M.rspecPaste = function()
+  local line_content = vim.fn.getline('.')
+  -- line_content should start with "spec"
+  if not string.match(line_content, '^spec') then
+    if not string.match(line_content, '^\'spec') then
+      return
+    end
+  end
+  local cmd = 'bundle exec rspec ' .. line_content
+  cmdSplit(cmd)
+end
+
 M.runRspec = function(wholeFile)
   -- Get the current file and line number
   local current_file = vim.fn.expand('%')
@@ -46,18 +59,6 @@ M.yankFile = function()
   local file_path = vim.fn.expand('%')
   local cmd = 'bundle exec rspec ' .. file_path
   vim.fn.setreg('+', cmd)
-end
-
-M.rspecPaste =function()
-  local line_content = vim.fn.getline('.')
-  -- line_content should start with "spec"
-  if not string.match(line_content, '^spec') then
-    if not string.match(line_content, '^\'spec') then
-      return
-    end
-  end
-  local cmd = 'bundle exec rspec ' .. line_content
-  cmdSplit(cmd)
 end
 
 M.yankTest = function()

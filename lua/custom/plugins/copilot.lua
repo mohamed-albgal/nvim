@@ -2,6 +2,7 @@ return {
   "zbirenbaum/copilot.lua",
   config = function()
     require('copilot').setup({
+      enable = true,
       panel = {
         auto_refresh = true,
         keymap = {
