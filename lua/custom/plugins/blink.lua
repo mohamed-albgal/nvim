@@ -27,14 +27,14 @@ return {
       ['<Enter>'] = { 'select_and_accept', 'fallback' },
 
       ['<Tab>'] = {
-        function(_)
+        function(cmp)
           local copilot = require('copilot.suggestion')
           if copilot.is_visible() then
             copilot.accept()
-            return
+          else
+            cmp.select_and_accept()
           end
-        end,
-        'select_and_accept',
+        end, 'fallback'
       },
     },
 

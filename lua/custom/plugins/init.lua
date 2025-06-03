@@ -1,8 +1,10 @@
-require("custom.commands")
-
 return {
-  unpack(require("custom.plugins.themes")),
-  unpack(require("custom.plugins.image-stuff")),
-  unpack(require("custom.plugins.git-stuff")),
-  unpack(require("custom.plugins.buffer-stuff")),
+  { 'tpope/vim-fugitive' },
+  { 'tpope/vim-rhubarb' },
+  { 'ntpeters/vim-better-whitespace' },
+  { 'nmac427/guess-indent.nvim' },
+  { 'rhysd/git-messenger.vim' },
+  { 'numToStr/Comment.nvim', opts = {}  },
+  { 'mason-org/mason.nvim',  opts = {} },
+  { "kdheepak/lazygit.nvim", dependencies = { "nvim-lua/plenary.nvim" }  },
 }

@@ -21,7 +21,7 @@ map{ key='<leader>ha',     cmd= require("custom.pins").pinThis,                 
 map{ key='<leader>hx',     cmd= require("custom.pins").clearPins,                       desc = "Clear all pinned buffers" }
 map{ key='<leader>H',      cmd= require("custom.pins").showPins,                        desc = "Show pinned buffers" }
 map{ key='<leader>hv',     cmd= require("custom.pins").splitPins,                       desc = "Split pinned buffers" }
-map{ key='<leader>hh',     cmd= require("custom.pins").nextPin,                         desc = "Next pinned buffer" }
+map{ key='<leader>p',     cmd= require("custom.pins").nextPin,                         desc = "Next pinned buffer" }
 map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",                                    desc = "Go to pinned buffer 1" }
 map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",                                    desc = "Go to pinned buffer 2" }
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",                                    desc = "Go to pinned buffer 3" }
@@ -48,8 +48,8 @@ map{ key='<leader>T',      cmd= ':tabnew<CR>',                                  
 map{ key='<leader>gg',     cmd= ":LazyGit<cr>",                                         desc = 'LazyGit window' }
 -- map{ key='<Leader>e',      cmd= ':Oil --float<CR>',                                     desc = "Open Oil in float mode" }
 map{ key='<Leader>e',      cmd= require('oil').toggle_float,                            desc = "Open Oil in float mode" }
-map{ key='<leader>be',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
-map{ key='<leader>be',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
+map{ key='<leader>bE',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
+map{ key='<leader>be',     cmd= "vap=",                                                desc = "Beautify (format) entire file" }
 
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }
@@ -74,11 +74,12 @@ map{ key='gr',             cmd= require('fzf-lua').lsp_references,              
 map{ key='<leader>bs',     cmd= require('fzf-lua').lsp_document_symbols,                desc = "[D]ocument [S]ymbols" }
 map{ key='<leader>ws',     cmd= require('fzf-lua').lsp_live_workspace_symbols,          desc = "[W]orkspace [S]ymbols" }
 
+-- toggle virtual text
 map({ key='<leader>wl',    cmd= function()
   local new_config = not vim.diagnostic.config().virtual_lines
   vim.diagnostic.config({ virtual_lines = new_config })
 end,  desc = 'Toggle diagnostic virtual_lines' } )
 
--- diagnostics toggle
+-- toggle underlines
 local toggle = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
-vim.keymap.set('n', '<leader>wd', toggle, { desc = 'Toggle diagnostics' })
+vim.keymap.set('n', '<leader>wd', toggle, { desc = 'Toggle diagnostics underlines' })

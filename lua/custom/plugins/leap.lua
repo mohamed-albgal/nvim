@@ -1,5 +1,4 @@
 return {
-
   {'ggandor/leap.nvim',
     config = function()
       leap = require('leap')
@@ -10,9 +9,6 @@ return {
           ch0:match('%a') and ch1:match('%a') and ch2:match('%a')
         )
       end
-    end,
+    end
   },
-  {'nmac427/guess-indent.nvim'},
-  {'ntpeters/vim-better-whitespace' },
-  {'numToStr/Comment.nvim', opts = {} },
 }

@@ -38,18 +38,28 @@ M.nextPin = function()
     loadPinsFromDisk()
   end
 
-  if #pinned_buffers > 0 then
-    local current_buf = vim.api.nvim_get_current_buf()
-    for i, buf in ipairs(pinned_buffers) do
-      if buf == current_buf then
-        local next_index = (i % #pinned_buffers) + 1
-        local next_buf = pinned_buffers[next_index]
-        vim.api.nvim_set_current_buf(next_buf)
-        return
-      end
+  local current_buf_nr = vim.api.nvim_get_current_buf()
+  local current_found_at_idx = 0
+  for i, buf_nr in ipairs(pinned_buffers) do
+    if buf_nr == current_buf_nr then
+      current_found_at_idx = i
+      break
     end
-    -- If current buffer is not pinned, default to the first one
-    vim.api.nvim_set_current_buf(pinned_buffers[1])
+  end
+
+  local next_index
+  if current_found_at_idx > 0 then
+    next_index = (current_found_at_idx % #pinned_buffers) + 1
+  else
+    next_index = 1
+  end
+
+  local next_buf_nr = pinned_buffers[next_index]
+
+  if vim.api.nvim_buf_is_valid(next_buf_nr) then
+    vim.api.nvim_set_current_buf(next_buf_nr)
+  else
+    table.remove(pinned_buffers, next_index)
   end
 end
 
