@@ -1,95 +1,198 @@
-M = {}
-local pinned_buffers = {}
+local M = {}
 local uv = vim.loop
 local json = vim.fn.json_encode
 local decode = vim.fn.json_decode
 local fname = vim.fn.stdpath("data") .. "/pinned_buffers.json"
 
-M.savePins = function()
-  local paths = {}
-  for _, buf in ipairs(pinned_buffers) do
-    local path = vim.api.nvim_buf_get_name(buf)
-    if path and path ~= "" then table.insert(paths, path) end
-  end
-  local fd = assert(uv.fs_open(fname, "w", 438))
-  uv.fs_write(fd, json(paths), -1)
-  uv.fs_close(fd)
+local pinned_buffers = {}
+-- current_project_root tracks which project's pins are loaded in memory.
+local current_project_root = nil
+
+
+-- =============================================================================
+-- Core Project-Aware Helper Functions (NEW)
+-- =============================================================================
+
+--- Gets the root directory for the current project.
+-- Uses the current working directory as the project identifier.
+-- @return string: The absolute path of the current working directory.
+local function get_project_root()
+  return vim.loop.cwd()
 end
 
-local function loadPinsFromDisk()
+--- Loads the entire pin database from the JSON file.
+-- The database is a table where keys are project paths and values are lists of file paths.
+-- @return table: The decoded table of all pins for all projects.
+local function load_all_pins_from_disk()
   local fd = uv.fs_open(fname, "r", 438)
-  if not fd then return end
+  if not fd then return {} end
+
   local stat = uv.fs_fstat(fd)
+  -- If file is empty or stat fails, close and return an empty table.
+  if not stat or stat.size == 0 then
+    uv.fs_close(fd)
+    return {}
+  end
+
   local data = uv.fs_read(fd, stat.size, 0)
   uv.fs_close(fd)
 
-  local paths = decode(data)
+  -- Use pcall for safety against malformed or empty JSON data.
+  local ok, all_pins_data = pcall(decode, data)
+  if ok and type(all_pins_data) == 'table' then
+    return all_pins_data
+  end
+
+  return {}
+end
+
+--- Loads the pins for the current project into the `pinned_buffers` variable.
+local function load_pins_for_current_project()
+  local project_root = get_project_root()
+  local all_pins = load_all_pins_from_disk()
+  local project_paths = all_pins[project_root] or {}
+
+  -- Clear any previously loaded pins.
   pinned_buffers = {}
-  for _, path in ipairs(paths) do
+  for _, path in ipairs(project_paths) do
+    -- Create a buffer for the path if one doesn't exist yet.
     local bufnr = vim.fn.bufnr(path, true)
+    -- We only load pins for which the buffer could be successfully created/found.
     if vim.api.nvim_buf_is_valid(bufnr) then
       table.insert(pinned_buffers, bufnr)
     end
   end
 end
 
-M.nextPin = function()
-  if #pinned_buffers == 0 then
-    loadPinsFromDisk()
-  end
-
-  local current_buf_nr = vim.api.nvim_get_current_buf()
-  local current_found_at_idx = 0
-  for i, buf_nr in ipairs(pinned_buffers) do
-    if buf_nr == current_buf_nr then
-      current_found_at_idx = i
-      break
-    end
-  end
-
-  local next_index
-  if current_found_at_idx > 0 then
-    next_index = (current_found_at_idx % #pinned_buffers) + 1
-  else
-    next_index = 1
-  end
-
-  local next_buf_nr = pinned_buffers[next_index]
-
-  if vim.api.nvim_buf_is_valid(next_buf_nr) then
-    vim.api.nvim_set_current_buf(next_buf_nr)
-  else
-    table.remove(pinned_buffers, next_index)
+--- Ensures that the pins loaded in memory are for the current project directory.
+-- If the project directory has changed, it reloads the pins.
+-- This is the core function that makes the plugin context-aware.
+local function ensure_correct_project_context()
+  local project_root = get_project_root()
+  if current_project_root ~= project_root then
+    current_project_root = project_root
+    load_pins_for_current_project()
   end
 end
 
--- remove the pinned_buffers.json file if it exists
-local function RemovePinsFile()
+
+-- =============================================================================
+-- Internal Helper Functions
+-- =============================================================================
+
+--- Removes the pins file from disk.
+-- Used when the last project's pins are cleared.
+local function remove_pins_file()
   if uv.fs_stat(fname) then
     uv.fs_unlink(fname)
   end
 end
 
-
-local function PinBuffer(buf)
-  -- Avoid duplicates
+--- Pins a buffer, adding it to the in-memory list for the current project.
+-- @param buf (number): The buffer number to pin.
+local function pin_buffer(buf)
+  -- Avoid duplicate pins.
   for _, b in ipairs(pinned_buffers) do
     if b == buf then
       return
     end
   end
 
-  -- Append new buffer
   table.insert(pinned_buffers, buf)
 
-  -- Trim list to max 4
+  -- Optional: Trim the list to a maximum size.
   if #pinned_buffers > 4 then
-    table.remove(pinned_buffers, 1) -- remove oldest
+    table.remove(pinned_buffers, 1) -- remove the oldest pin
   end
-
 end
 
+
+-- =============================================================================
+-- Public API Functions (Exported in M)
+-- =============================================================================
+
+--- Saves the in-memory pins for the current project to the JSON file.
+-- This function now intelligently updates only the entry for the current project.
+M.savePins = function()
+  ensure_correct_project_context()
+  local project_root = get_project_root()
+  local all_pins = load_all_pins_from_disk()
+
+  local current_project_paths = {}
+  for _, buf in ipairs(pinned_buffers) do
+    local path = vim.api.nvim_buf_get_name(buf)
+    if path and path ~= "" then
+      table.insert(current_project_paths, path)
+    end
+  end
+
+  if #current_project_paths > 0 then
+    -- Update the pins for the current project.
+    all_pins[project_root] = current_project_paths
+  else
+    -- If there are no pins for the current project, remove its entry from the table.
+    all_pins[project_root] = nil
+  end
+
+  -- Check if the all_pins table is now empty.
+  if not next(all_pins) then
+    remove_pins_file()
+  else
+    local file_content = json(all_pins)
+    local fd = assert(uv.fs_open(fname, "w", 438))
+    uv.fs_write(fd, file_content, -1)
+    uv.fs_close(fd)
+  end
+end
+
+--- Pins the current buffer.
+M.pinThis = function()
+  ensure_correct_project_context()
+  local buf = vim.api.nvim_get_current_buf()
+  pin_buffer(buf)
+  -- Note: This function doesn't save automatically. Call savePins on an autocommand.
+end
+
+--- Clears all pins for the CURRENT project.
+M.clearPins = function()
+  ensure_correct_project_context()
+  pinned_buffers = {}
+  -- Save the state to remove the project's entry from the JSON file.
+  M.savePins()
+end
+
+--- Shows the list of pinned buffers for the current project using fzf-lua.
+M.showPins = function()
+  ensure_correct_project_context()
+
+  if #pinned_buffers == 0 then
+    print("No pinned buffers for this project.")
+    return
+  end
+
+  local entries = {}
+  for i, buf in ipairs(pinned_buffers) do
+    local fullpath = vim.api.nvim_buf_get_name(buf)
+    local relpath = (fullpath and fullpath ~= "") and vim.fn.fnamemodify(fullpath, ":.") or "[No Name]"
+    table.insert(entries, string.format("%d: %s", i, relpath))
+  end
+
+  require('fzf-lua').fzf_exec(entries, {
+    prompt = "Pinned Buffers> ",
+    winopts = { height = 0.15, width = 0.45, row = 0.3, col = 0.5 },
+    actions = {
+      default = function(selected)
+        local index = tonumber(string.match(selected[1], "^(%d+):"))
+        if index then M.goToPinned(index) end
+      end
+    }
+  })
+end
+
+--- Jumps to the pinned buffer at the given index.
+-- @param index (number): The 1-based index of the pin to jump to.
 M.goToPinned = function(index)
+  ensure_correct_project_context()
   if not index or type(index) ~= "number" then
     print("Invalid buffer index")
     return
@@ -103,72 +206,42 @@ M.goToPinned = function(index)
   end
 end
 
-M.pinThis = function()
-  local buf = vim.api.nvim_get_current_buf()
-  PinBuffer(buf)
-end
+--- Cycles to the next pinned buffer.
+M.nextPin = function()
+  ensure_correct_project_context()
 
--- Function to clear the pinned buffer table
-M.clearPins = function()
-  pinned_buffers = {}
-  RemovePinsFile()
-end
+  if #pinned_buffers == 0 then return end
 
-M.showPins =  function()
-  if #pinned_buffers == 0 then
-    loadPinsFromDisk()
-  end
-
-  if #pinned_buffers == 0 then
-    return
-  end
-
-  local entries = {}
-
-  for i, buf in ipairs(pinned_buffers) do
-    local fullpath = vim.api.nvim_buf_get_name(buf)
-    local relpath
-
-    if fullpath and fullpath ~= "" then
-      relpath = vim.fn.fnamemodify(fullpath, ":.")
-    else
-      relpath = "[No Name]"
+  local current_buf_nr = vim.api.nvim_get_current_buf()
+  local current_found_at_idx = 0
+  for i, buf_nr in ipairs(pinned_buffers) do
+    if buf_nr == current_buf_nr then
+      current_found_at_idx = i
+      break
     end
-
-    table.insert(entries, string.format("%d: %s", i, relpath))
   end
 
-  require('fzf-lua').fzf_exec(entries, {
-    prompt = "Pinned Buffers> ",
-    winopts = {
-      height = 0.15,
-      width = 0.45,
-      row = 0.3,
-      col = 0.5,
-    },
-    actions = {
-      default = function(selected)
-        local index = tonumber(string.match(selected[1], "^(%d+):"))
-        if index then M.goToPinned(index) end
-      end
-    }
-  })
+  local next_index = (current_found_at_idx > 0) and (current_found_at_idx % #pinned_buffers) + 1 or 1
+  local next_buf_nr = pinned_buffers[next_index]
+
+  if vim.api.nvim_buf_is_valid(next_buf_nr) then
+    vim.api.nvim_set_current_buf(next_buf_nr)
+  else
+    table.remove(pinned_buffers, next_index)
+  end
 end
 
+--- Opens all pinned buffers in vertical splits.
 M.splitPins = function()
-  if #pinned_buffers == 0 then
-    loadPinsFromDisk()
-  end
+  ensure_correct_project_context()
+
+  if #pinned_buffers == 0 then return end
 
   for i, buf in ipairs(pinned_buffers) do
     if vim.api.nvim_buf_is_valid(buf) then
-      -- hide all other buffers before splitting
       if i == 1 then
         vim.cmd("buffer " .. buf)
-        -- if there are splits, close them
-        if #vim.api.nvim_list_wins() > 1 then
-          vim.cmd("only")
-        end
+        if #vim.api.nvim_list_wins() > 1 then vim.cmd("only") end
       else
         vim.cmd("vsplit | buffer " .. buf)
       end
@@ -178,7 +251,10 @@ M.splitPins = function()
   end
 end
 
+--- Checks if there are any pins for the current project.
+-- @return boolean: True if pins exist, false otherwise.
 M.hasPins = function()
+  ensure_correct_project_context()
   return #pinned_buffers > 0
 end
 

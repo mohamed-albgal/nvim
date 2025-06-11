@@ -33,8 +33,8 @@ return {
         -- Padding around the floating window
         padding = 2,
         -- max_width and max_height can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
-        max_width = 0.89,
-        max_height = 0.89,
+        max_width = 0.30,
+        max_height = 0.85,
         border = "rounded",
         -- preview_split: Split direction: "auto", "left", "right", "above", "below".
         preview_split = "right",
