@@ -258,6 +258,17 @@ M.hasPins = function()
   return #pinned_buffers > 0
 end
 
+M.removePin = function(index)
+  ensure_correct_project_context()
+
+  if not index or type(index) ~= "number" or index < 1 or index > #pinned_buffers then
+    return
+  end
+
+  table.remove(pinned_buffers, index)
+  M.savePins() -- Save the updated state after removing a pin.
+end
+
 return M
 
 

@@ -27,6 +27,11 @@ map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",                            
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",                                    desc = "Go to pinned buffer 3" }
 map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",                                    desc = "Go to pinned buffer 4" }
 
+map{ key='<leader>hd1',     cmd= ":DelPin 1<CR>",                                    desc = "Go to pinned buffer 1" }
+map{ key='<leader>hd2',     cmd= ":DelPin 2<CR>",                                    desc = "Go to pinned buffer 2" }
+map{ key='<leader>hd3',     cmd= ":DelPin 3<CR>",                                    desc = "Go to pinned buffer 3" }
+map{ key='<leader>hd4',     cmd= ":DelPin 4<CR>",                                    desc = "Go to pinned buffer 4" }
+
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',                                      desc = "Clear search highlights" }
 map{ key='ESC',            cmd= ':nohlsearch<CR>',                                      desc = "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>',                          desc = "Toggle AutoWidth" }
@@ -69,8 +74,7 @@ map{ key='<leader>rn',     cmd= vim.lsp.buf.rename,                             
 map{ key='gi',             cmd= vim.lsp.buf.implementation,                       desc = "[G]oto [I]mplementation" }
 map{ key='gI',             cmd= vim.lsp.buf.type_definition,                          desc = "Type DefInition" }
 map{ key='gd',             cmd= require('fzf-lua').lsp_definitions,                     desc = "[G]oto [D]efinition" }
-map{ key='gr',             cmd= require('fzf-lua').lsp_references,                      desc = "[G]oto [R]eferences" }
-map{ key='gr',             cmd= require('fzf-lua').lsp_references,                      desc = "[G]oto [R]eferences" }
+-- map{ key='gr',             cmd= require('fzf-lua').lsp_references,                      desc = "[G]oto [R]eferences" }
 map{ key='<leader>bs',     cmd= require('fzf-lua').lsp_document_symbols,                desc = "[D]ocument [S]ymbols" }
 map{ key='<leader>ws',     cmd= require('fzf-lua').lsp_live_workspace_symbols,          desc = "[W]orkspace [S]ymbols" }
 
