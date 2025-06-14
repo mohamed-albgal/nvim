@@ -73,16 +73,15 @@ return {
       end,
     }
     map {
-      key = '<leader>fd', desc = 'Grep for "debugger" in changed files',
-      cmd = function()
-        require('fzf-lua').grep({
-          raw_cmd = [[
-            git status -su |
-            rg '^\s*M' |
-            cut -d ' ' -f3 |
-            xargs rg --hidden --column --line-number --no-heading --color=always --with-filename -e 'debugger' -e 'save_and_open_page'
-          ]] })
-      end,
+      key  = '<leader>fd',
+      desc = 'Grep debugger in changed files',
+      cmd  =  require('custom.zap').zap_debuggers,
+    }
+
+    map {
+      key  = '<leader>fx',
+      desc = 'Grep with TAB to zap',
+      cmd  =  require('custom.zap').grep_zap,
     }
 
     map {

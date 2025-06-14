@@ -1,16 +1,3 @@
--- this isnt working for some, come back at some point and debug
-local white = '#ffffff'
-local black = '#000000'
-local other_blue = '#49a6fd'
-local yellow = '#ffff00'
-local text_color = 'fg:'
-local highlight = 'hl:'
-local selected_highlight = 'hl+:'
-local selected_text = 'fg+:'
-local selected_bg = 'bg+:'
-local pointer = 'pointer:'
-local cyan = '#00ffff'
-
 return {
     'fzf-native',
   winopts = {
@@ -37,14 +24,21 @@ return {
       ['--pointer']     = '❯',
       ['--marker']      = '❯ ',
       ['--delimiter']      = ':',
-      ['--color'] = table.concat({
-        text_color .. white,               -- Normal text color
-        highlight .. yellow,               -- Highlighted match color
-        selected_highlight .. other_blue,  -- Highlighted match in selected item
-        selected_text .. white,            -- Selected item text color
-        selected_bg .. black,              -- Selected item background color
-        pointer .. cyan                    -- Pointer color
-      }, ',')
+  },fzf_colors = {
+      true,
+      ["fg"]          = { "fg", "CursorLine" },
+      ["bg"]          = { "bg", "Normal" },
+      ["hl"]          = { "fg", "Comment" },
+      ["fg+"]         = { "fg", "Normal", "underline" },
+      ["bg+"]         = { "bg", { "CursorLine", "Normal" } },
+      ["hl+"]         = { "fg", "Statement" },
+      ["info"]        = { "fg", "PreProc" },
+      ["prompt"]      = { "fg", "Conditional" },
+      ["pointer"]     = { "fg", "Exception" },
+      ["marker"]      = { "fg", "Keyword" },
+      ["spinner"]     = { "fg", "Label" },
+      ["header"]      = { "fg", "Comment" },
+      ["gutter"]      = "-1",
   },
   previewers = {
     bat = {
