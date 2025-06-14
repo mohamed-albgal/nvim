@@ -1,14 +1,15 @@
-return { 'folke/which-key.nvim',
-  event = "VeryLazy",
-  init = function()
-    vim.o.timeout = true
-    vim.o.timeoutlen = 50
-  end,
-  opts = {
-    triggers = {
-      { "<leader>", mode = { "n", "v" } },
-    },
-    icons = { mappings = false },
-    delay = 500,
-  }
-}
+return {}
+-- return { 'folke/which-key.nvim',
+--   event = "VeryLazy",
+--   init = function()
+--     vim.o.timeout = true
+--     vim.o.timeoutlen = 50
+--   end,
+--   opts = {
+--     triggers = {
+--       { "<leader>", mode = { "n", "v" } },
+--     },
+--     icons = { mappings = false },
+--     delay = 500,
+--   }
+-- }
