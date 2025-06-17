@@ -38,7 +38,7 @@ map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>',                  
 map{ key='<leader>wm',     cmd= ':WindowsMaximize<cr>',                                 desc = "Maximize buffer" }
 map{ key='<leader>w=',     cmd= ':WindowsEqualize<cr>',                                 desc = "Equalize Buffer sizes" }
 map{ key='<leader>w',      cmd= '<C-w>',                                                desc = "Window navigation" }
-map{ key='<leader>z',      cmd= ':Z<cr>',                                               desc = "Zen mode" }
+map{ key='<leader>z',      cmd= function() Snacks.zen() end,                                               desc = "Zen mode" }
 map{ key='<leader>l',      cmd= ':wincmd l<cr>',                                        desc = "Go right" }
 map{ key='<leader>a',      cmd= ':wincmd h<cr>',                                        desc = "Go left" }
 map{ key='<leader>/',      cmd= 'g*',                                                   desc = "Search for word under cursor" }
