@@ -1,6 +1,4 @@
-local function map(arg)
-  vim.keymap.set(arg.mode or 'n', arg.key, arg.cmd, { noremap = true, silent = true, desc = arg.desc })
-end
+local map = require('custom.helpers').map
 
 map{ key='<leader>jt',     cmd= require("custom.jou_funcs").openToday,                  desc = "Open today's journal" }
 map{ key='<leader>jh',     cmd= require("custom.jou_funcs").openPrev,                   desc = "Open previous journal entry" }
@@ -21,16 +19,16 @@ map{ key='<leader>ha',     cmd= require("custom.pins").pinThis,                 
 map{ key='<leader>hx',     cmd= require("custom.pins").clearPins,                       desc = "Clear all pinned buffers" }
 map{ key='<leader>H',      cmd= require("custom.pins").showPins,                        desc = "Show pinned buffers" }
 map{ key='<leader>hv',     cmd= require("custom.pins").splitPins,                       desc = "Split pinned buffers" }
-map{ key='<leader>p',     cmd= require("custom.pins").nextPin,                         desc = "Next pinned buffer" }
+map{ key='<leader>p',     cmd= require("custom.pins").nextPin,                          desc = "Next pinned buffer" }
 map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",                                    desc = "Go to pinned buffer 1" }
 map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",                                    desc = "Go to pinned buffer 2" }
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",                                    desc = "Go to pinned buffer 3" }
 map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",                                    desc = "Go to pinned buffer 4" }
 
-map{ key='<leader>hd1',     cmd= ":DelPin 1<CR>",                                    desc = "Go to pinned buffer 1" }
-map{ key='<leader>hd2',     cmd= ":DelPin 2<CR>",                                    desc = "Go to pinned buffer 2" }
-map{ key='<leader>hd3',     cmd= ":DelPin 3<CR>",                                    desc = "Go to pinned buffer 3" }
-map{ key='<leader>hd4',     cmd= ":DelPin 4<CR>",                                    desc = "Go to pinned buffer 4" }
+map{ key='<leader>hd1',     cmd= ":DelPin 1<CR>",                                       desc = "Go to pinned buffer 1" }
+map{ key='<leader>hd2',     cmd= ":DelPin 2<CR>",                                       desc = "Go to pinned buffer 2" }
+map{ key='<leader>hd3',     cmd= ":DelPin 3<CR>",                                       desc = "Go to pinned buffer 3" }
+map{ key='<leader>hd4',     cmd= ":DelPin 4<CR>",                                       desc = "Go to pinned buffer 4" }
 
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',                                      desc = "Clear search highlights" }
 map{ key='ESC',            cmd= ':nohlsearch<CR>',                                      desc = "Clear search highlights" }
@@ -51,12 +49,10 @@ map{ key='<C-l>',          cmd= ':tabnext<CR>',                                 
 map{ key='<C-h>',          cmd= ':tabprevious<CR>',                                     desc = "Prev tab"}
 map{ key='<leader>T',      cmd= ':tabnew<CR>',                                          desc = "New tab" }
 map{ key='<leader>gg',     cmd= ":LazyGit<cr>",                                         desc = 'LazyGit window' }
--- map{ key='<leader>gg',     cmd= function() Snacks.lazygit() end,                                         desc = 'LazyGit window' }
 map{ key='<Leader>e',      cmd= ':Oil --float<CR>',                                     desc = "Open Oil in float mode" }
 map{ key='<Leader>e',      cmd= require('oil').toggle_float,                            desc = "Open Oil in float mode" }
-map{ key='<leader>bE',     cmd= "ggVG=",                                                desc = "Beautify (format) entire file" }
-map{ key='<leader>be',     cmd= "vap=",                                                desc = "Beautify (format) entire file" }
-
+map{ key='<leader>be',     cmd= require('custom.helpers').bufFormat,                           desc = "Beautify (format) entire file" }
+map{ key='<leader>bE',     cmd= function() require('custom.helpers').bufFormat(true) end,      desc = "Beautify (format) entire file" }
 -- mapping for page up and page down
 map{ key='<Leader>sf', cmd='<C-f>', desc = 'Scroll half page up' }
 map{ key='<Leader>sb', cmd='<C-b>', desc = 'Scroll half page down' }
@@ -78,12 +74,6 @@ map{ key='gd',             cmd= require('fzf-lua').lsp_definitions,             
 map{ key='<leader>bs',     cmd= require('fzf-lua').lsp_document_symbols,                desc = "[D]ocument [S]ymbols" }
 map{ key='<leader>ws',     cmd= require('fzf-lua').lsp_live_workspace_symbols,          desc = "[W]orkspace [S]ymbols" }
 
--- toggle virtual text
-map({ key='<leader>wl',    cmd= function()
-  local new_config = not vim.diagnostic.config().virtual_lines
-  vim.diagnostic.config({ virtual_lines = new_config })
-end,  desc = 'Toggle diagnostic virtual_lines' } )
-
--- toggle underlines
-local toggle = function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
-vim.keymap.set('n', '<leader>wd', toggle, { desc = 'Toggle diagnostics underlines' })
+-- toggle virtual diagnostics
+map({ key='<leader>wl',    cmd= require('custom.helpers').toggleVirtualLines,  desc = 'Toggle diagnostic virtual_lines' } )
+map({ key='<leader>wd',    cmd= require('custom.helpers').toggleVirtualUnderlines,  desc = 'Toggle diagnostics underlines'  } )
