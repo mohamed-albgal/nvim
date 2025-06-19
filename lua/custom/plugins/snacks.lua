@@ -16,7 +16,7 @@ return {
     lazygit = { enabled = false },
 
     input = { enabled = true },
-    zen = { enabled = true },
+    zen = { toggles = { dim = false}},
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     image = {},

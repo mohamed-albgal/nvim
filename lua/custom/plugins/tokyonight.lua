@@ -11,7 +11,7 @@ return {
       },
       style = "night",
       light_style = "day",
-      -- transparent = true,
+      transparent = true,
       terminal_colors = true,
       styles = {
         comments   = { italic = true },

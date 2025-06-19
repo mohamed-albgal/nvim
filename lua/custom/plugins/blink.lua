@@ -30,11 +30,15 @@ return {
         function(cmp)
           local copilot = require('copilot.suggestion')
           if copilot.is_visible() then
-            copilot.accept()
+            return copilot.accept()
+          elseif cmp.snippet_active then
+            return cmp.accept()
           else
-            cmp.select_and_accept()
+            return cmp.select_and_accept()
           end
-        end, 'fallback'
+        end,
+        'snippet_forward',
+        'fallback'
       },
     },
 
