@@ -14,10 +14,11 @@ map{ key='<leader>rx',     cmd= require("custom.run_rspec").cleanLines,         
 map{ key='<Leader>rf',     cmd= require("custom.run_rspec").yankFile,                   desc = "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= require("custom.run_rspec").yankTest,                   desc = "Yank the test signature under the cursor" }
 map{ key='<leader>S',      cmd= require("custom.story").story,                          desc = "Beautify (format) entire file" }
-map{ key='<leader>ha',     cmd= require("custom.pins").pinThis,                         desc = "Pin current buffer" }
+map{ key='<leader>h.',     cmd= require("custom.pins").pinThis,                         desc = "Pin current buffer" }
 
-map{ key='<leader>hx',     cmd= require("custom.pins").clearPins,                       desc = "Clear all pinned buffers" }
-map{ key='<leader>hu',      cmd= require("custom.pins").showPins,                        desc = "Show pinned buffers" }
+map{ key='<leader>hx',     cmd= require("custom.pins").unpinThis,                       desc = "Clear all pinned buffers" }
+map{ key='<leader>hD',     cmd= require("custom.pins").clearPins,                       desc = "Clear all pinned buffers" }
+map{ key='<leader>hh',      cmd= require("custom.pins").showPins,                        desc = "Show pinned buffers" }
 map{ key='<leader>hv',     cmd= require("custom.pins").splitPins,                       desc = "Split pinned buffers" }
 map{ key='<leader>p',     cmd= require("custom.pins").nextPin,                          desc = "Next pinned buffer" }
 map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",                                    desc = "Go to pinned buffer 1" }
@@ -25,7 +26,7 @@ map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",                            
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",                                    desc = "Go to pinned buffer 3" }
 map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",                                    desc = "Go to pinned buffer 4" }
 
-map{ key='<leader>hd1',     cmd= ":DelPin 1<CR>",                                       desc = "Go to pinned buffer 1" }
+map{ key='<leader>hd',     cmd= ":DelPin 1<CR>",                                       desc = "Go to pinned buffer 1" }
 map{ key='<leader>hd2',     cmd= ":DelPin 2<CR>",                                       desc = "Go to pinned buffer 2" }
 map{ key='<leader>hd3',     cmd= ":DelPin 3<CR>",                                       desc = "Go to pinned buffer 3" }
 map{ key='<leader>hd4',     cmd= ":DelPin 4<CR>",                                       desc = "Go to pinned buffer 4" }

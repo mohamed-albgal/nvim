@@ -145,6 +145,18 @@ M.savePins = function()
   end
 end
 
+--- Unpin the current buffer.
+M.unpinThis = function()
+  ensure_correct_project_context()
+  local buf = vim.api.nvim_get_current_buf()
+  for i, b in ipairs(pinned_buffers) do
+    if b == buf then
+      require('custom.pins').removePin(i)
+      break
+    end
+  end
+end
+
 --- Pins the current buffer.
 M.pinThis = function()
   ensure_correct_project_context()
