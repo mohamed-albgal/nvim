@@ -187,9 +187,12 @@ M.showPins = function()
 
   local entries = {}
   for i, buf in ipairs(pinned_buffers) do
+    -- make sure the buffer is valid before trying to get its name
+    if not vim.api.nvim_buf_is_valid(buf) then  goto continue end
     local fullpath = vim.api.nvim_buf_get_name(buf)
     local relpath = (fullpath and fullpath ~= "") and vim.fn.fnamemodify(fullpath, ":.") or "[No Name]"
     table.insert(entries, string.format("%d: %s", i, relpath))
+    ::continue::
   end
 
   require('fzf-lua').fzf_exec(entries, {
@@ -201,7 +204,7 @@ M.showPins = function()
         if index then M.goToPinned(index) end
       end,
       -- Action to remove selected pins.
-      ["ctrl-x"] = {
+      ["tab"] = {
         fn = function(selected)
           local indices_to_remove = {}
           for _, sel in ipairs(selected) do
@@ -229,24 +232,12 @@ M.showPins = function()
   })
 end
 
-local rspec_command =  function()
-  local current_file = vim.fn.expand('%')
-  local current_line = vim.fn.line('.')
-
-  if not string.match(current_file, '_spec.rb') then
-    return
-  end
-
-  return 'bundle exec rspec ' .. current_file .. ':' .. current_line
-
-end
-
 --- Runs a command in a new, unfocused terminal buffer and pins it.
 -- @param cmd (string): The shell command to execute.
 --
 --
 --
-M.runAndPin = function()
+M.runAndPin = function(whole)
   ensure_correct_project_context()
 
   -- This new approach uses a one-time autocommand to reliably capture
@@ -287,7 +278,7 @@ M.runAndPin = function()
 
   -- 2. Now, call your function that opens the terminal.
   -- The autocommand we just created will be listening for it.
-  require('custom.run_rspec').runRspec(false)
+  require('custom.run_rspec').runRspec(whole)
 end
 
 --- Jumps to the pinned buffer at the given index.

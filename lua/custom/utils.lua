@@ -23,5 +23,26 @@ M.map = function(arg)
   vim.keymap.set(arg.mode or 'n', arg.key, arg.cmd, { noremap = true, silent = true, desc = arg.desc })
 end
 
+M.toggleLineNums = function()
+  local rel_num = vim.wo.relativenumber
+  local num = vim.wo.number
+  if num then
+    vim.wo.relativenumber = true
+    vim.wo.number = false
+  elseif rel_num then
+      vim.wo.relativenumber = false
+      vim.wo.number = false
+  else
+    vim.wo.number = true
+  end
+end
+
+M.ff = function(f, ...)
+  local args = {...}
+  return function()
+    f(unpack(args))
+  end
+end
+
 return M
 
