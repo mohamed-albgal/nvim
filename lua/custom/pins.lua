@@ -120,9 +120,12 @@ M.savePins = function()
 
   local current_project_paths = {}
   for _, buf in ipairs(pinned_buffers) do
-    local path = vim.api.nvim_buf_get_name(buf)
-    if path and path ~= "" then
-      table.insert(current_project_paths, path)
+    -- Check if the buffer is not a terminal buffer before saving.
+    if vim.bo[buf].buftype ~= 'terminal' then
+      local path = vim.api.nvim_buf_get_name(buf)
+      if path and path ~= "" then
+        table.insert(current_project_paths, path)
+      end
     end
   end
 
@@ -196,9 +199,95 @@ M.showPins = function()
       default = function(selected)
         local index = tonumber(string.match(selected[1], "^(%d+):"))
         if index then M.goToPinned(index) end
-      end
+      end,
+      -- Action to remove selected pins.
+      ["ctrl-x"] = {
+        fn = function(selected)
+          local indices_to_remove = {}
+          for _, sel in ipairs(selected) do
+            local index = tonumber(string.match(sel, "^(%d+):"))
+            if index then table.insert(indices_to_remove, index) end
+          end
+
+          -- Sort indices in descending order to avoid messing up indices
+          -- of subsequent items to be removed.
+          table.sort(indices_to_remove, function(a, b) return a > b end)
+
+          for _, index in ipairs(indices_to_remove) do
+            table.remove(pinned_buffers, index)
+            table.remove(entries, index)
+          end
+
+          M.savePins()
+        end,
+        -- This tells fzf-lua to re-run the provider function (get_pin_entries)
+        -- to refresh the list that is displayed.
+        reload = true,
+        desc = "Remove Pin",
+      },
     }
   })
+end
+
+local rspec_command =  function()
+  local current_file = vim.fn.expand('%')
+  local current_line = vim.fn.line('.')
+
+  if not string.match(current_file, '_spec.rb') then
+    return
+  end
+
+  return 'bundle exec rspec ' .. current_file .. ':' .. current_line
+
+end
+
+--- Runs a command in a new, unfocused terminal buffer and pins it.
+-- @param cmd (string): The shell command to execute.
+--
+--
+--
+M.runAndPin = function()
+  ensure_correct_project_context()
+
+  -- This new approach uses a one-time autocommand to reliably capture
+  -- the terminal buffer created by your external `runRspec` function.
+
+  -- 1. Create a one-time autocommand that waits for the rspec terminal.
+  vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "*", -- Listen for any terminal opening.
+    once = true,   -- This autocommand will delete itself after running once.
+    callback = function(args)
+      -- args.buf is the buffer number of the newly opened terminal.
+      local term_bufnr = args.buf
+      local bufname = vim.api.nvim_buf_get_name(term_bufnr)
+
+      -- Check if it's the rspec terminal we're looking for.
+      -- You may need to adjust this pattern to match the exact buffer name
+      -- created by your `runRspec` script.
+      if bufname and string.match(bufname, "rspec") then
+        -- Defer the rest of the logic to ensure the window layout is stable.
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_valid(term_bufnr) then return end
+
+          -- Find the window that contains our terminal buffer.
+          local win_id = vim.fn.bufwinid(term_bufnr)
+          if win_id and win_id ~= -1 then
+            -- Hide the specific window.
+            vim.api.nvim_win_hide(win_id)
+          end
+
+          -- Pin the buffer and save.
+          pin_buffer(term_bufnr)
+          M.savePins()
+          vim.notify("Pinned rspec terminal: " .. term_bufnr, vim.log.levels.INFO)
+        end)
+      end
+    end,
+  })
+
+  -- 2. Now, call your function that opens the terminal.
+  -- The autocommand we just created will be listening for it.
+  require('custom.run_rspec').runRspec(false)
 end
 
 --- Jumps to the pinned buffer at the given index.

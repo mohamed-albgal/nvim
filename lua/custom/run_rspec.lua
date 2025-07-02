@@ -27,7 +27,7 @@ M.runRspec = function(wholeFile)
   local current_file = vim.fn.expand('%')
   local current_line = vim.fn.line('.')
 
-  -- if current_file has _spec.rb then proceed, otherwise find the corresponding _spec.rb file in /Users/mohamedalbgal/dev/health-teams/spec/
+  -- run the current line as rspec input if not a spec file (line is an rspec paste command)
   if not string.match(current_file, '_spec.rb') then
     M.rspecPaste()
     return
