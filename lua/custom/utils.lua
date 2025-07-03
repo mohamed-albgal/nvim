@@ -44,5 +44,16 @@ M.ff = function(f, ...)
   end
 end
 
+M.rspecTermToggle = function()
+	local floatTermBufnr = vim.fn["floaterm#terminal#get_bufnr"]("rspec")
+
+	if floatTermBufnr ~= -1 then
+		vim.cmd(":FloatermToggle rspec")
+	else
+		vim.cmd(":FloatermNew --width=0.99 --borderchars=─ --height=0.98 --silent --name=rspec --title=❯❯❯TERM")
+		vim.cmd(":FloatermToggle rspec")
+	end
+end
+
 return M
 

@@ -22,7 +22,7 @@ M.rspecPaste = function()
   cmdSplit(cmd)
 end
 
-M.runRspec = function(wholeFile)
+M.rspec_command = function(wholeFile)
   -- Get the current file and line number
   local current_file = vim.fn.expand('%')
   local current_line = vim.fn.line('.')
@@ -33,12 +33,16 @@ M.runRspec = function(wholeFile)
     return
   end
 
-  local rspec_command = 'bundle exec rspec ' .. current_file
+  local cmd = 'bundle exec rspec ' .. current_file
   -- if wholeFile is false then append the : and current_line
-  if wholeFile == 'false' then
-    rspec_command = rspec_command .. ':' .. current_line
+  if not wholeFile then
+    cmd = cmd .. ':' .. current_line
   end
 
+  return cmd
+end
+
+M.runRspec = function(wholeFile)
   -- Delete existing rspec terminal buffers (buffers whose name is like  "term://.*rspec .*")
   local term_buffers = vim.fn.getbufinfo({ buftype = 'terminal' })
   for _, buf in ipairs(term_buffers) do
@@ -52,7 +56,7 @@ M.runRspec = function(wholeFile)
     ::continue::
   end
 
-  cmdSplit(rspec_command)
+  cmdSplit(M.rspec_command())
 end
 
 M.yankFile = function()
