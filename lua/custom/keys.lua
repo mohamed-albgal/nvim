@@ -14,7 +14,6 @@ map{ key='<Leader>jf',     cmd= journal.sideNote,              desc= "Open/creat
 map{ key='<Leader>jo',     cmd= journal.sideNoteContext,       desc= "Open/create side note" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
-map{ key='<leader>r;',     cmd= ":FloatermShow rspec",         desc= 'Show rspec floatterm' }
 map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= rspec.yankTest,                desc= "Yank the test signature under the cursor" }
 map{ key='<leader>S',      cmd= require("custom.story").story, desc= "Beautify (format) entire file" }
