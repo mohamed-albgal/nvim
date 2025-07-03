@@ -231,7 +231,12 @@ end
 
 M.runAndPin = function(whole)
   ensure_correct_project_context()
+  -- make sure  file ends with _spec.rb
   local cmd = require("custom.run_rspec").rspec_command(whole)
+  if not cmd then
+    print("Not a test file.")
+    return
+  end
   require('custom.utils').rspecTermToggle()
   vim.cmd("FloatermSend! --name=rspec " .. cmd)
 end
@@ -275,26 +280,6 @@ M.nextPin = function()
     vim.api.nvim_set_current_buf(next_buf_nr)
   else
     table.remove(pinned_buffers, next_index)
-  end
-end
-
---- Opens all pinned buffers in vertical splits.
-M.splitPins = function()
-  ensure_correct_project_context()
-
-  if #pinned_buffers == 0 then return end
-
-  for i, buf in ipairs(pinned_buffers) do
-    if vim.api.nvim_buf_is_valid(buf) then
-      if i == 1 then
-        vim.cmd("buffer " .. buf)
-        if #vim.api.nvim_list_wins() > 1 then vim.cmd("only") end
-      else
-        vim.cmd("vsplit | buffer " .. buf)
-      end
-    else
-      print("Invalid buffer at index " .. tostring(i))
-    end
   end
 end
 

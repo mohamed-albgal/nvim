@@ -14,17 +14,15 @@ map{ key='<Leader>jf',     cmd= journal.sideNote,              desc= "Open/creat
 map{ key='<Leader>jo',     cmd= journal.sideNoteContext,       desc= "Open/create side note" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
-map{ key='<leader>r;',     cmd= ":FloatermShow rspec",         desc= 'Show rspec floatterm' }
 map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= rspec.yankTest,                desc= "Yank the test signature under the cursor" }
 map{ key='<leader>S',      cmd= require("custom.story").story, desc= "Beautify (format) entire file" }
-map{ key='<leader>ha',     cmd= pins.pinThis,                  desc= "Pin current buffer" }
 map{ key='<leader>r.',     cmd= ff(pins.runAndPin,false),      desc= "Pin current buffer" }
 map{ key='<leader>rw',     cmd= ff(pins.runAndPin,true),       desc= "Pin current buffer" }
+map{ key='<leader>ha',     cmd= pins.pinThis,                  desc= "Pin current buffer" }
 map{ key='<leader>hx',     cmd= pins.unpinThis,                desc= "Clear all pinned buffers" }
 map{ key='<leader>hD',     cmd= pins.clearPins,                desc= "Clear all pinned buffers" }
 map{ key='<leader>hh',     cmd= pins.showPins,                 desc= "Show pinned buffers" }
-map{ key='<leader>hv',     cmd= pins.splitPins,                desc= "Split pinned buffers" }
 map{ key='<leader>p',      cmd= pins.nextPin,                  desc= "Next pinned buffer" }
 map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",           desc= "Go to pinned buffer 1" }
 map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",           desc= "Go to pinned buffer 2" }
