@@ -5,13 +5,13 @@ local journal = require("custom.jou_funcs")
 local rspec = require("custom.run_rspec")
 local fzf = require("fzf-lua")
 local ff = utils.ff
+local side_note = require("custom.side_note").side_note
 
 map{ key='<leader>jt',     cmd= journal.openToday,             desc= "Open today's journal" }
 map{ key='<leader>jh',     cmd= journal.openPrev,              desc= "Open previous journal entry" }
 map{ key='<leader>jl',     cmd= journal.openNext,              desc= "Open next journal entry" }
 map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task to journal" }
-map{ key='<Leader>jf',     cmd= journal.sideNote,              desc= "Open/create side note" }
-map{ key='<Leader>jo',     cmd= journal.sideNoteContext,       desc= "Open/create side note" }
+map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
 map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }

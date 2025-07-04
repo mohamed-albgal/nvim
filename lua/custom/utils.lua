@@ -50,7 +50,7 @@ M.rspecTermToggle = function()
 	if floatTermBufnr ~= -1 then
 		vim.cmd(":FloatermToggle rspec")
 	else
-		vim.cmd(":FloatermNew --width=0.99 --borderchars=─ --silent --name=rspec --title=⚡")
+		vim.cmd(":FloatermNew --width=0.99 --position=bottom --borderchars=─ --name=rspec --title=⚡")
 		vim.cmd(":FloatermToggle rspec")
 	end
 end
