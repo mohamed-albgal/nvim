@@ -13,6 +13,7 @@ map{ key='<leader>jl',     cmd= journal.openNext,              desc= "Open next 
 map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task to journal" }
 map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
+map{ key='<leader>we', cmd= ":RenderMarkdown buf_toggle<CR>",  desc= "Toggle line numbers" }
 map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
 map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }
 map{ key='<Leader>ry',     cmd= rspec.yankTest,                desc= "Yank the test signature under the cursor" }
