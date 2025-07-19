@@ -2,7 +2,6 @@ local utils = require('custom.utils')
 local map = utils.map
 local pins = require("custom.pins")
 local journal = require("custom.jou_funcs")
-local rspec = require("custom.run_rspec")
 local fzf = require("fzf-lua")
 local ff = utils.ff
 local side_note = require("custom.side_note").side_note
@@ -14,10 +13,6 @@ map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task t
 map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>we', cmd= ":RenderMarkdown buf_toggle<CR>",  desc= "Toggle line numbers" }
-map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
-map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }
-map{ key='<Leader>ry',     cmd= rspec.yankTest,                desc= "Yank the test signature under the cursor" }
-map{ key='<leader>S',      cmd= require("custom.story").story, desc= "Beautify (format) entire file" }
 map{ key='<leader>r.',     cmd= ff(pins.runAndPin,false),      desc= "Pin current buffer" }
 map{ key='<leader>rw',     cmd= ff(pins.runAndPin,true),       desc= "Pin current buffer" }
 map{ key='<leader>ha',     cmd= pins.pinThis,                  desc= "Pin current buffer" }
