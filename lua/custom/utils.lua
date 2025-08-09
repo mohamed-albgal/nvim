@@ -55,5 +55,10 @@ M.rspecTermToggle = function()
 	end
 end
 
+M.escape_highlights = function()
+  vim.cmd('nohlsearch')
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', true)
+end
+
 return M
 

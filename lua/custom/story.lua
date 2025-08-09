@@ -23,7 +23,7 @@ return {
       :gsub("[-]+", "-")   -- Collapse multiple dashes into one
       :lower()             -- Convert to lowercase
 
-    local formatted_output = string.format("%s - %s\n[Story](https://myhealthteam.atlassian.net/browse/%s)\nwip/%s-%s", num, title, num, branch_name, num)
+    local formatted_output = string.format("%s - %s\n[Story](https://myhealthteam.atlassian.net/browse/%s)\nwip/%s-%s", num, title, num, num, branch_name)
 
     local journal_path = require("custom.jou_funcs").journalPath()
     local journal_file = io.open(journal_path, "a")

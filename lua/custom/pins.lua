@@ -177,11 +177,11 @@ end
 M.showPins = function()
   ensure_correct_project_context()
 
-  if #pinned_buffers == 0 then
-    print("No pinned buffers for this project.")
-    return
-  end
-
+  -- if #pinned_buffers == 0 then
+  --   print("No pinned buffers for this project.")
+  --   return
+  -- end
+  --
   local entries = {}
   for i, buf in ipairs(pinned_buffers) do
     -- make sure the buffer is valid before trying to get its name

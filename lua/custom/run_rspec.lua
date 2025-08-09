@@ -10,7 +10,7 @@ end
 
 M = {}
 
-M.rspecPaste = function()
+M.rspecPaste = function(just_cmd)
   local line_content = vim.fn.getline('.')
   -- line_content should start with "spec"
   if not string.match(line_content, '^spec') then
@@ -19,6 +19,9 @@ M.rspecPaste = function()
     end
   end
   local cmd = 'bundle exec rspec ' .. line_content
+  if just_cmd then
+    return cmd
+  end
   cmdSplit(cmd)
 end
 
@@ -29,8 +32,7 @@ M.rspec_command = function(wholeFile)
 
   -- run the current line as rspec input if not a spec file (line is an rspec paste command)
   if not string.match(current_file, '_spec.rb') then
-    M.rspecPaste()
-    return
+    return M.rspecPaste(true)
   end
 
   local cmd = 'bundle exec rspec ' .. current_file
@@ -85,7 +87,7 @@ end
 
 M.cleanLines = function()
   vim.cmd([[silent! %s/ #.*$//g ]])         -- Delete from " #" to end of line
-  -- vim.cmd([[silent! %s/rspec //g ]])        -- Remove "rspec "
+  vim.cmd([[silent! %s/rspec //g ]])        -- Remove "rspec "
   vim.cmd([[silent! %s/\.\///g ]])          -- Remove "./"
 end
 return M

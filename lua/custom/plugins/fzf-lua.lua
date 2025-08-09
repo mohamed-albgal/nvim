@@ -206,7 +206,7 @@ return {
     }
     map {
       key = '<leader>gs',  desc = 'fzf git status',
-      cmd = function() require('fzf-lua').git_status() end,
+      cmd = function() require('fzf-lua').git_status( { prompt = 'Git Changes❯❯ '}) end,
     }
     map {
       key = '<leader>x',  desc = 'FZF builtins',

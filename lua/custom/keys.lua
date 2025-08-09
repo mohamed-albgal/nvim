@@ -34,7 +34,7 @@ map{ key='<leader>hd2',    cmd= ":DelPin 2<CR>",               desc= "Go to pinn
 map{ key='<leader>hd3',    cmd= ":DelPin 3<CR>",               desc= "Go to pinned buffer 3" }
 map{ key='<leader>hd4',    cmd= ":DelPin 4<CR>",               desc= "Go to pinned buffer 4" }
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',             desc= "Clear search highlights" }
-map{ key='<ESC>',          cmd= ':nohlsearch<CR>',             desc= "Clear search highlights" }
+map{ key='<ESC>',          cmd= utils.escape_highlights,             desc= "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>', desc= "Toggle AutoWidth" }
 map{ key='<leader>wm',     cmd= ':WindowsMaximize<cr>',        desc= "Maximize buffer" }
 map{ key='<leader>w=',     cmd= ':WindowsEqualize<cr>',        desc= "Equalize Buffer sizes" }
