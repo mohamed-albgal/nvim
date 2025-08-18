@@ -31,14 +31,15 @@ return {
         },
         lualine_c = {},
         lualine_x = {},
-        lualine_y = {},
+        lualine_y = { "location" },
         lualine_b = {},
       }
     end)(),
 
     inactive_sections = {
       lualine_z = { { 'filename', path = 0 } },
-      lualine_b = {}, lualine_c = {}, lualine_x = {}, lualine_y = {}, lualine_a = {}
+      lualine_y = { "location" },
+      lualine_b = {}, lualine_c = {}, lualine_x = {}, lualine_a = {}
     },
 
     -- You can drop winbar entirely if you don't use it

@@ -86,8 +86,9 @@ end
 
 
 M.cleanLines = function()
-  vim.cmd([[silent! %s/ #.*$//g ]])         -- Delete from " #" to end of line
-  vim.cmd([[silent! %s/rspec //g ]])        -- Remove "rspec "
-  vim.cmd([[silent! %s/\.\///g ]])          -- Remove "./"
-end
+   vim.cmd([[silent! %s/ #.*$//g ]])      -- Delete from " #" to end of line
+   vim.cmd([[silent! %s/rspec //g ]])      -- Remove "rspec "
+   vim.cmd([[silent! %s/\.\///g ]])      -- Remove "./"
+   vim.cmd([[silent! %s/\(\[\d\+\(:\d\+\)*\]\)/'\1'/g]])
+ end
 return M

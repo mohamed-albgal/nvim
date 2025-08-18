@@ -25,6 +25,8 @@ map{ key='<leader>hx',     cmd= pins.unpinThis,                desc= "Clear all 
 map{ key='<leader>hD',     cmd= pins.clearPins,                desc= "Clear all pinned buffers" }
 map{ key='<leader>hh',     cmd= pins.showPins,                 desc= "Show pinned buffers" }
 map{ key='<leader>p',      cmd= pins.nextPin,                  desc= "Next pinned buffer" }
+map{ key='<leader>tn',     cmd= ":tabn<CR>",                   desc= "Next tab " }
+map{ key='<leader>tp',     cmd= ":tabp<CR>",                   desc= "Previous tab " }
 map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",           desc= "Go to pinned buffer 1" }
 map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",           desc= "Go to pinned buffer 2" }
 map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",           desc= "Go to pinned buffer 3" }
