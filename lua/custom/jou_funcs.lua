@@ -215,10 +215,34 @@ local function open_or_create_journal()
   vim.cmd("e " .. journal_path)
 end
 
+-- function to create and open a scratch file for the current month
+local function open_monthly_scratch_file()
+  local current_year = os.date("%Y")
+  local current_month = os.date("%m")
+  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
+  local expanded_directory = vim.fn.expand(journal_directory)
+
+  -- Ensure the target directory exists so the scratch file can be created
+  vim.fn.mkdir(expanded_directory, "p")
+
+  local scratch_filename = string.format("scratch_%s.md", os.date("%H%M%S"))
+  local scratch_path = expanded_directory .. scratch_filename
+  local header = string.format("-- scratch file %s --\n\n", os.date("%A, %B %d %Y"))
+
+  local file = io.open(scratch_path, "w")
+  file:write(header)
+  file:close()
+
+  vim.cmd("e " .. scratch_path)
+
+  return scratch_path
+end
+
 return {
   openNext = open_next_journal_entry,
   openPrev = open_previous_journal_entry,
   openToday = open_or_create_journal,
   addTask = add_task_to_journal,
   journalPath = get_or_create_journal_path,
+  openScratch = open_monthly_scratch_file,
 }

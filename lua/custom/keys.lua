@@ -6,12 +6,14 @@ local rspec = require("custom.run_rspec")
 local fzf = require("fzf-lua")
 local ff = utils.ff
 local side_note = require("custom.side_note").side_note
+local pasteBufferPath = require("custom.utils").pasteBufferPath
 
 map{ key='<leader>jt',     cmd= journal.openToday,             desc= "Open today's journal" }
 map{ key='<leader>jh',     cmd= journal.openPrev,              desc= "Open previous journal entry" }
 map{ key='<leader>jl',     cmd= journal.openNext,              desc= "Open next journal entry" }
 map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task to journal" }
 map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
+map{ key='<Leader>jS',     cmd= journal.openScratch,           desc= "Create a new scratch file" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>we', cmd= ":RenderMarkdown buf_toggle<CR>",  desc= "Toggle line numbers" }
 map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
@@ -67,6 +69,7 @@ map{ key='<leader>wl',     cmd= utils.toggleVirtualLines,      desc= 'Toggle dia
 map{ key='<leader>wd',     cmd= utils.toggleVirtualUnderlines, desc= 'Toggle diagnostics underlines'  }
 map{ key='gi',             cmd= vim.lsp.buf.implementation,    desc= "[G]oto [I]mplementation" }
 map{ key='gd',             cmd= fzf.lsp_definitions,           desc= "[G]oto [D]efinition" }
+map{ key='<leader>re',     cmd=  pasteBufferPath,              desc= "Put the path in the + register for pasting" }
 
 map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",              desc= "Exit normal mode" }
 map{ mode='t', key='<leader>;',     cmd="<C-\\><C-n>:FloatermToggle<CR>",   desc= "Toggle terminal in terminal mode" }
@@ -74,4 +77,5 @@ map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",      desc
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",     desc= "Next terminal in terminal mode" }
 map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",     desc= "Previous terminal in terminal mode" }
 map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",     desc= "Kill terminal in terminal mode" }
+
 
