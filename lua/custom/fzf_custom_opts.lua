@@ -1,5 +1,5 @@
 return {
-    'ivy',
+    'fzf-native',
   winopts = {
     height           = 0.95,            -- window height
     width            = 0.98,            -- window width

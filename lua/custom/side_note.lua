@@ -109,8 +109,7 @@ function M.side_note()
     vim.cmd("edit " .. note_filename)
 
     if not file_exists then
-      local pre_word = "< " .. link_display_text .. " from "
-      vim.api.nvim_buf_set_lines(0, 0, 0, false, {pre_word .. original_journal_file .. ":" .. original_line_num .. " >"})
+      vim.api.nvim_buf_set_lines(0, 0, 0, false, {"< " .. original_journal_file .. ":" .. original_line_num .. " >"})
     end
   end
 end

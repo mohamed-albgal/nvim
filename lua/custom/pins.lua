@@ -99,11 +99,6 @@ local function pin_buffer(buf)
   end
 
   table.insert(pinned_buffers, buf)
-
-  -- Optional: Trim the list to a maximum size.
-  if #pinned_buffers > 4 then
-    table.remove(pinned_buffers, 1) -- remove the oldest pin
-  end
 end
 
 
@@ -177,20 +172,23 @@ end
 M.showPins = function()
   ensure_correct_project_context()
 
-  if #pinned_buffers == 0 then
-    print("No pinned buffers for this project.")
-    return
+  local function populate_entries(entries)
+    for i = #entries, 1, -1 do
+      entries[i] = nil
+    end
+
+    for i, buf in ipairs(pinned_buffers) do
+      if vim.api.nvim_buf_is_valid(buf) then
+        local fullpath = vim.api.nvim_buf_get_name(buf)
+        local relpath = (fullpath and fullpath ~= "") and vim.fn.fnamemodify(fullpath, ":.") or "[No Name]"
+        table.insert(entries, string.format("%d: %s", i, relpath))
+      end
+    end
+
+    return entries
   end
 
-  local entries = {}
-  for i, buf in ipairs(pinned_buffers) do
-    -- make sure the buffer is valid before trying to get its name
-    if not vim.api.nvim_buf_is_valid(buf) then  goto continue end
-    local fullpath = vim.api.nvim_buf_get_name(buf)
-    local relpath = (fullpath and fullpath ~= "") and vim.fn.fnamemodify(fullpath, ":.") or "[No Name]"
-    table.insert(entries, string.format("%d: %s", i, relpath))
-    ::continue::
-  end
+  local entries = populate_entries({})
 
   require('fzf-lua').fzf_exec(entries, {
     prompt = "Pinned Buffers> ",
@@ -215,10 +213,10 @@ M.showPins = function()
 
           for _, index in ipairs(indices_to_remove) do
             table.remove(pinned_buffers, index)
-            table.remove(entries, index)
           end
 
           M.savePins()
+          populate_entries(entries)
         end,
         -- This tells fzf-lua to re-run the provider function (get_pin_entries)
         -- to refresh the list that is displayed.
@@ -259,8 +257,7 @@ M.goToPinned = function(index)
 end
 
 --- Cycles to the next pinned buffer.
-M.nextPin = function()
-  ensure_correct_project_context()
+M.nextPin = function() ensure_correct_project_context()
 
   if #pinned_buffers == 0 then return end
 
@@ -302,5 +299,3 @@ M.removePin = function(index)
 end
 
 return M
-
-

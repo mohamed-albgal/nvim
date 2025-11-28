@@ -69,7 +69,7 @@ return {
     map {
       key = '<leader>fy',  desc = 'FZF specs',
       cmd = function()
-        require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/** *.yml*', fzf_opts = { ['--nth'] = '3..' }})
+        require('fzf-lua').grep({prompt= 'YAML❯❯ ', search = ' -- config/locales/*.yml', fzf_opts = { ['--nth'] = '3..' }})
       end,
     }
     map {
@@ -206,7 +206,7 @@ return {
     }
     map {
       key = '<leader>gs',  desc = 'fzf git status',
-      cmd = function() require('fzf-lua').git_status() end,
+      cmd = function() require('fzf-lua').git_status( { prompt = 'Git Changes❯❯ '}) end,
     }
     map {
       key = '<leader>x',  desc = 'FZF builtins',

@@ -19,6 +19,12 @@ M.toggleVirtualUnderlines = function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end
 
+M.pasteBufferPath = function()
+  local buf_path = vim.api.nvim_buf_get_name(0)
+  vim.fn.setreg('+', buf_path)
+  print("Copied to clipboard: " .. buf_path)
+end
+
 M.map = function(arg)
   vim.keymap.set(arg.mode or 'n', arg.key, arg.cmd, { noremap = true, silent = true, desc = arg.desc })
 end
@@ -53,6 +59,11 @@ M.rspecTermToggle = function()
 		vim.cmd(":FloatermNew --width=0.99 --position=bottom --borderchars=─ --name=rspec --title=⚡")
 		vim.cmd(":FloatermToggle rspec")
 	end
+end
+
+M.escape_highlights = function()
+  vim.cmd('nohlsearch')
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', true)
 end
 
 return M

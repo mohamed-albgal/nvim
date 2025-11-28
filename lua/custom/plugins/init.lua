@@ -1,6 +1,7 @@
 return {
   { 'tpope/vim-fugitive' },
   { 'tpope/vim-rhubarb' },
+  { 'marko-cerovac/material.nvim' },
   { 'ntpeters/vim-better-whitespace' },
   { 'nmac427/guess-indent.nvim' },
   { 'rhysd/git-messenger.vim' },
