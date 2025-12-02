@@ -1,16 +1,18 @@
+local function get_current_month_directory()
+  local current_year = os.date("%Y")
+  local current_month = os.date("%m")
+  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
+  return vim.fn.expand(journal_directory)
+end
+
 local function get_or_create_journal_path()
   -- Get the current date
   local current_date = os.date("%A, %B %d %Y")
-  local current_year = os.date("%Y")
-  local current_month = os.date("%m")
   local current_day = os.date("%d")
 
   -- Define the journal directory and file path
-  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
+  local journal_directory = get_current_month_directory()
   local journal_filename = string.format("%s.md", current_day)
-
-  -- Expand the tilde (~) to the home directory
-  journal_directory = vim.fn.expand(journal_directory)
 
   -- Combine the directory and filename to create the full journal path
   local journal_path = journal_directory .. journal_filename
@@ -217,10 +219,7 @@ end
 
 -- function to create and open a scratch file for the current month
 local function open_monthly_scratch_file()
-  local current_year = os.date("%Y")
-  local current_month = os.date("%m")
-  local journal_directory = string.format("~/VSCodeJournal/%s/%s/", current_year, current_month)
-  local expanded_directory = vim.fn.expand(journal_directory)
+  local expanded_directory = get_current_month_directory()
 
   -- Ensure the target directory exists so the scratch file can be created
   vim.fn.mkdir(expanded_directory, "p")
@@ -238,6 +237,12 @@ local function open_monthly_scratch_file()
   return scratch_path
 end
 
+local function open_journal_directory_in_oil()
+  local directory = get_current_month_directory()
+  vim.fn.mkdir(directory, "p")
+  require("oil").open_float(directory)
+end
+
 return {
   openNext = open_next_journal_entry,
   openPrev = open_previous_journal_entry,
@@ -245,4 +250,5 @@ return {
   addTask = add_task_to_journal,
   journalPath = get_or_create_journal_path,
   openScratch = open_monthly_scratch_file,
+  openJournalDir = open_journal_directory_in_oil,
 }
