@@ -61,10 +61,21 @@ M.rspecTermToggle = function()
 	end
 end
 
+M.ensureRspecTermVisible = function()
+  local floatTermBufnr = vim.fn["floaterm#terminal#get_bufnr"]("rspec")
+  if floatTermBufnr == -1 then
+    vim.cmd(":FloatermNew --width=0.99 --position=bottom --borderchars=─ --name=rspec --title=⚡")
+    return
+  end
+
+  if vim.fn.bufwinid(floatTermBufnr) == -1 then
+    vim.cmd(":FloatermShow rspec")
+  end
+end
+
 M.escape_highlights = function()
   vim.cmd('nohlsearch')
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', true)
 end
 
 return M
-

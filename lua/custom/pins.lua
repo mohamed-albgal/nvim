@@ -235,7 +235,7 @@ M.runAndPin = function(whole)
     print("Not a test file.")
     return
   end
-  require('custom.utils').rspecTermToggle()
+  require('custom.utils').ensureRspecTermVisible()
   vim.cmd("FloatermSend! --name=rspec " .. cmd)
 end
 
