@@ -22,7 +22,16 @@ local function get_or_create_journal_path()
     -- If the file doesn't exist, create it with default content
     vim.fn.mkdir(journal_directory, "p")  -- Create the directory if it doesn't exist
     -- vscode mermaid uses triple colon ':::' to separate tasks and notes, while neovim mermaid uses triple backtick '```' keep this in mind in case I need to port this to vscode
-    local initial_content = string.format("# %s\n\n:::mermaid\nflowchart RL\nid1>Tasks]\n::: \n\n\n:::mermaid\nflowchart RL\nid1>Notes]\n:::  \n\n\n", current_date)
+    local dashes = string.rep("-", 22)
+    local underlines = string.rep("_", 22)
+    local initial_content = string.format(
+      "# %s\n\n%s\n%s\n::: \n\n\n:::  \n%s\n%s\n",
+      current_date,
+      dashes,
+      underlines,
+      dashes,
+      underlines
+    )
     local file = io.open(journal_path, "w")
     file:write(initial_content)
     file:close()
@@ -84,34 +93,130 @@ local function open_previous_journal_entry(just_return_path)
   end
 end
 
--- resume this when i have time.........
-local function get_previous_todos()
-  -- if a journal entry has todos, they are marked with '- [ ]' in the journal file
-  -- check the last journal, and extract the todos from it, and append them to today's journal todos
-  -- todos are always located after the first line that starts with '::: ' (triple colon and a space) when the line that starts with :::mermaid is encountered, the todos are over
-  local last_journal_path = open_previous_journal_entry(true)
-  local todos = {}
-  local in_todos = false
-  for line in io.lines(last_journal_path) do
-    if in_todos then
-      if line:match(":::mermaid") then
-        break
-      end
-      if line:match("- %[%s%]") then
-        table.insert(todos, line)
+local function get_previous_todos(opts)
+  -- Gather unfinished todos (lines starting with "- [ ]") from the previous five
+  -- journal entries and append them to today's todo list. Todos are expected to
+  -- live between the first line that equals "::: " and the next ":::mermaid".
+  local sentinel_file = vim.fn.stdpath("data") .. "/journal_rollover"
+  local today_key = os.date("%Y-%m-%d")
+  local last_rollover = nil
+  if vim.fn.filereadable(sentinel_file) == 1 then
+    local contents = vim.fn.readfile(sentinel_file)
+    last_rollover = contents[1]
+  end
+
+  if last_rollover == today_key then
+    if not (opts and opts.silent) then
+      print("Todos already rolled over for today.")
+    end
+    return
+  end
+
+  local function journal_path_for(date_tbl)
+    local dir = string.format("~/VSCodeJournal/%d/%02d/", date_tbl.year, date_tbl.month)
+    return dir .. string.format("%02d.md", date_tbl.day)
+  end
+
+  local function extract_todos_from_file(path)
+    local expanded = vim.fn.expand(path)
+    if vim.fn.filereadable(expanded) == 0 then return {} end
+
+    local contents = {}
+    for line in io.lines(expanded) do
+      table.insert(contents, line)
+    end
+
+    if #contents == 0 then return {} end
+
+    local todos, rewritten = {}, {}
+    local in_todo_block = false
+    local todo_section_consumed = false
+
+    for _, line in ipairs(contents) do
+      if not in_todo_block then
+        table.insert(rewritten, line)
+        if not todo_section_consumed and line:match("^::: %s*$") then
+          in_todo_block = true
+        end
+      else
+        if line:match("^:::mermaid") then
+          table.insert(rewritten, line)
+          in_todo_block = false
+          todo_section_consumed = true
+        elseif line:match("^%- %[%s*%]") then
+          table.insert(todos, line)
+        else
+          table.insert(rewritten, line)
+        end
       end
     end
-    if line:match("::: $") then
-      in_todos = true
+
+    if #todos > 0 then
+      local file = io.open(expanded, "w")
+      for _, line in ipairs(rewritten) do
+        file:write(line .. "\n")
+      end
+      file:close()
+    end
+
+    return todos
+  end
+
+  local collected = {}
+  for offset = 5, 1, -1 do
+    local target_date = os.date("*t", os.time() - (offset * 24 * 60 * 60))
+    local candidate_path = journal_path_for(target_date)
+    local todos = extract_todos_from_file(candidate_path)
+    for _, todo in ipairs(todos) do
+      local label = string.format(" -- ⬅️ %02d/%02d", target_date.month, target_date.day)
+      if not todo:find("↺") then
+        todo = todo .. label
+      end
+      table.insert(collected, todo)
     end
   end
 
-  -- append the todos to today's journal (there may already be todos in today's journal, so prepend lines as needed and insert them after the first line that starts with '::: ')
-  local journal_path = get_or_create_journal_path()
-  local file_contents = {}
-  for line in io.lines(journal_path) do
-    table.insert(file_contents, line)
+  if #collected == 0 then
+    print("No unfinished todos found in the last five days.")
+    return
   end
+
+  local today_path = get_or_create_journal_path()
+  local expanded_today = vim.fn.expand(today_path)
+  local today_contents = {}
+  for line in io.lines(expanded_today) do
+    table.insert(today_contents, line)
+  end
+
+  local insert_at = nil
+  for idx, line in ipairs(today_contents) do
+    if line:match("^::: %s*$") then
+      insert_at = idx
+      break
+    end
+  end
+
+  if not insert_at then
+    insert_at = #today_contents
+  end
+
+  for i = #collected, 1, -1 do
+    table.insert(today_contents, insert_at + 1, collected[i])
+  end
+
+  local today_file = io.open(expanded_today, "w")
+  for _, line in ipairs(today_contents) do
+    today_file:write(line .. "\n")
+  end
+  today_file:close()
+
+  local sentinel = io.open(vim.fn.expand(sentinel_file), "w")
+  if sentinel then
+    sentinel:write(today_key)
+    sentinel:close()
+  end
+
+  print(string.format("Rolled over %d todo(s) into today's journal.", #collected))
 end
 
 
@@ -212,6 +317,7 @@ end
 -- function to open or create today's journal
 local function open_or_create_journal()
   local journal_path = get_or_create_journal_path()
+  get_previous_todos({ silent = true })
 
   -- Open the journal file in a new buffer
   vim.cmd("e " .. journal_path)
@@ -237,6 +343,32 @@ local function open_monthly_scratch_file()
   return scratch_path
 end
 
+local function open_most_recent_scratch_file()
+  local journal_root = vim.fn.expand("~/VSCodeJournal/")
+  local scratch_files = vim.fn.glob(journal_root .. "**/scratch_*.md", false, true)
+
+  if not scratch_files or vim.tbl_isempty(scratch_files) then
+    return open_monthly_scratch_file()
+  end
+
+  local uv = vim.loop
+  local latest_file, latest_mtime = nil, -1
+
+  for _, path in ipairs(scratch_files) do
+    local stat = uv.fs_stat(path)
+    if stat and stat.mtime and stat.mtime.sec and stat.mtime.sec > latest_mtime then
+      latest_mtime = stat.mtime.sec
+      latest_file = path
+    end
+  end
+
+  if latest_file then
+    vim.cmd("e " .. latest_file)
+  else
+    open_monthly_scratch_file()
+  end
+end
+
 local function open_journal_directory_in_oil()
   local directory = get_current_month_directory()
   vim.fn.mkdir(directory, "p")
@@ -248,7 +380,9 @@ return {
   openPrev = open_previous_journal_entry,
   openToday = open_or_create_journal,
   addTask = add_task_to_journal,
+  rolloverTodos = get_previous_todos,
   journalPath = get_or_create_journal_path,
   openScratch = open_monthly_scratch_file,
+  openLatestScratch = open_most_recent_scratch_file,
   openJournalDir = open_journal_directory_in_oil,
 }

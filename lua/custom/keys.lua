@@ -12,8 +12,10 @@ map{ key='<leader>jt',     cmd= journal.openToday,             desc= "Open today
 map{ key='<leader>jh',     cmd= journal.openPrev,              desc= "Open previous journal entry" }
 map{ key='<leader>jl',     cmd= journal.openNext,              desc= "Open next journal entry" }
 map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task to journal" }
+map{ key='<leader>jr',     cmd= journal.rolloverTodos,         desc= "Rollover unfinished todos" }
 map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
 map{ key='<Leader>jS',     cmd= journal.openScratch,           desc= "Create a new scratch file" }
+map{ key='<Leader>js',     cmd= journal.openLatestScratch,     desc= "Open the most recent scratch file" }
 map{ key='<Leader>jo',     cmd= journal.openJournalDir,        desc= "Browse journal directory in Oil" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>we', cmd= ":RenderMarkdown buf_toggle<CR>",  desc= "Toggle line numbers" }
@@ -78,4 +80,3 @@ map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",      desc
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",     desc= "Next terminal in terminal mode" }
 map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",     desc= "Previous terminal in terminal mode" }
 map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",     desc= "Kill terminal in terminal mode" }
-
