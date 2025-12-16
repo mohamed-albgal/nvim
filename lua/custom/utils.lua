@@ -21,8 +21,10 @@ end
 
 M.pasteBufferPath = function()
   local buf_path = vim.api.nvim_buf_get_name(0)
-  vim.fn.setreg('+', buf_path)
-  print("Copied to clipboard: " .. buf_path)
+  local line_number = vim.api.nvim_win_get_cursor(0)[1]
+  local path_with_line = buf_path .. ":" .. line_number
+  vim.fn.setreg('+', path_with_line)
+  print("Copied to clipboard: " .. path_with_line)
 end
 
 M.map = function(arg)
