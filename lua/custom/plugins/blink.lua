@@ -30,15 +30,15 @@ return {
         function(cmp)
           local copilot = require('copilot.suggestion')
           if copilot.is_visible() then
-            return copilot.accept()
+            copilot.accept()
           elseif cmp.snippet_active then
-            return cmp.accept()
+            cmp.accept()
           else
-            return cmp.select_and_accept()
+            cmp.select_and_accept()
           end
+          return true -- stop processing so <Tab> doesn't fall through and insert spaces
         end,
         'snippet_forward',
-        'fallback'
       },
     },
 

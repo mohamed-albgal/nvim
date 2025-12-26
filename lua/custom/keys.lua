@@ -11,12 +11,19 @@ map{ key='<leader>jt',     cmd= journal.openToday,             desc= "Open today
 map{ key='<leader>jh',     cmd= journal.openPrev,              desc= "Open previous journal entry" }
 map{ key='<leader>jl',     cmd= journal.openNext,              desc= "Open next journal entry" }
 map{ key='<leader>ja',     cmd= journal.addTask,               desc= "Add task to journal" }
+map{ key='<leader>jr',     cmd= journal.rolloverTodos,         desc= "Rollover unfinished todos" }
 map{ key='<Leader>jf',     cmd= side_note,                     desc= "Open/create side note" }
 map{ key='<Leader>jS',     cmd= journal.openScratch,           desc= "Create a new scratch file" }
+map{ key='<Leader>js',     cmd= journal.openLatestScratch,     desc= "Open the most recent scratch file" }
+map{ key='<Leader>jo',     cmd= journal.openJournalDir,        desc= "Browse journal directory in Oil" }
 map{ key='<leader>wn',     cmd= utils.toggleLineNums,          desc= "Toggle line numbers" }
 map{ key='<leader>we', cmd= ":RenderMarkdown buf_toggle<CR>",  desc= "Toggle line numbers" }
-map{ key='<leader>r.',     cmd= ff(pins.runAndPin,false),      desc= "Pin current buffer" }
-map{ key='<leader>rw',     cmd= ff(pins.runAndPin,true),       desc= "Pin current buffer" }
+map{ key='<leader>rx',     cmd= rspec.cleanLines,              desc= 'Clean failing rspec lines' }
+map{ key='<Leader>rf',     cmd= rspec.yankFile,                desc= "Yank the test file signature" }
+map{ key='<Leader>ry',     cmd= rspec.yankTest,                desc= "Yank the test signature under the cursor" }
+map{ key='<leader>S',      cmd= require("custom.story").story, desc= "Paste story details in today's journal" }
+map{ key='<leader>rr',     cmd= ff(pins.runAndPin,false),      desc= "Run spec under cursor" }
+map{ key='<leader>rw',     cmd= ff(pins.runAndPin,true),       desc= "Run spec file" }
 map{ key='<leader>ha',     cmd= pins.pinThis,                  desc= "Pin current buffer" }
 map{ key='<leader>hx',     cmd= pins.unpinThis,                desc= "Clear all pinned buffers" }
 map{ key='<leader>hD',     cmd= pins.clearPins,                desc= "Clear all pinned buffers" }
@@ -72,5 +79,3 @@ map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",      desc
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",     desc= "Next terminal in terminal mode" }
 map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",     desc= "Previous terminal in terminal mode" }
 map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",     desc= "Kill terminal in terminal mode" }
-
-
