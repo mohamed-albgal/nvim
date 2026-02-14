@@ -80,4 +80,33 @@ M.escape_highlights = function()
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', true)
 end
 
+M.resizeCurrentFloat = function(width_ratio, height_ratio)
+  local win = vim.api.nvim_get_current_win()
+  local config = vim.api.nvim_win_get_config(win)
+  if config.relative == "" then
+    return false
+  end
+
+  local total_width = vim.o.columns
+  local total_height = vim.o.lines - vim.o.cmdheight
+
+  local width = math.floor(total_width * (width_ratio or 0.9))
+  local height = math.floor(total_height * (height_ratio or 0.9))
+  width = math.max(1, math.min(width, total_width))
+  height = math.max(1, math.min(height, total_height))
+
+  local row = math.floor((total_height - height) / 2)
+  local col = math.floor((total_width - width) / 2) - 1
+
+  vim.api.nvim_win_set_config(win, vim.tbl_extend("force", config, {
+    relative = "editor",
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+  }))
+
+  return true
+end
+
 return M

@@ -1,0 +1,3 @@
+WRN 2026-02-13T17:42:22.245 ?.90041    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/HE5Om3/nvim.90041.0
+WRN 2026-02-13T17:42:22.280 ?.90041    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/HE5Om3/fzf-lua.1771033342.90041.1
+WRN 2026-02-13T17:42:27.588 ?.90153    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/7MUFJf/nvim.90153.0

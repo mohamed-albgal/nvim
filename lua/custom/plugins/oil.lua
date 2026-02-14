@@ -1,6 +1,8 @@
 return {
   'stevearc/oil.nvim',
   opts = function()
+    local utils = require("custom.utils")
+
     return {
       keymaps = {
         ["g?"] = { "actions.show_help", mode = "n" },
@@ -8,7 +10,18 @@ return {
         ["<C-s>"] = { "actions.select", opts = { vertical = true } },
         ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
         ["<C-t>"] = { "actions.select", opts = { tab = true } },
-        ["<C-p>"] = "actions.preview",
+        ["<C-p>"] = {
+          callback = function()
+            utils.resizeCurrentFloat(0.94, 0.92)
+            require("oil").open_preview({}, function(err)
+              if err then
+                vim.notify(err, vim.log.levels.ERROR)
+              end
+            end)
+          end,
+          mode = "n",
+          desc = "Open preview in a large float",
+        },
         ["<C-c>"] = { "actions.close", mode = "n" },
         ["<C-l>"] = "actions.refresh",
 
