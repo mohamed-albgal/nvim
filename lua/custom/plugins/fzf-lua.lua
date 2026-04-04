@@ -7,9 +7,9 @@ return {
   config = function()
 
     map {
-      key = '<leader>k',  desc = 'FZF Files',
+      key = '<leader>k',  desc = 'Frecency files (cwd)',
       cmd = function()
-        require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})
+        require('fzf-lua-frecency').frecency({ cwd_only=true, previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})
       end,
     }
     map {
