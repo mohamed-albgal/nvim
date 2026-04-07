@@ -28,26 +28,19 @@ map{ key='<leader>rw',     cmd= ff(pins.runAndPin,true),       desc= "Run spec f
 map{ key='<leader>ha',     cmd= pins.pinThis,                  desc= "Pin current buffer" }
 map{ key='<leader>hx',     cmd= pins.unpinThis,                desc= "Clear all pinned buffers" }
 map{ key='<leader>hD',     cmd= pins.clearPins,                desc= "Clear all pinned buffers" }
-map{ key='<leader>hh',     cmd= pins.showPins,                 desc= "Show pinned buffers" }
-map{ key='<leader>p',      cmd= pins.nextPin,                  desc= "Next pinned buffer" }
+map{ key='<leader>hk',     cmd= pins.showPins,                 desc= "Show pinned buffers" }
+map{ key='<leader>hh',      cmd= pins.nextPin,                  desc= "Next pinned buffer" }
+map{ key='<leader>hl',      cmd= pins.prevPin,                  desc= "Previous pinned buffer" }
 map{ key='<leader>tn',     cmd= ":tabn<CR>",                   desc= "Next tab " }
 map{ key='<leader>tp',     cmd= ":tabp<CR>",                   desc= "Previous tab " }
-map{ key='<leader>h1',     cmd= ":GoToPinned 1<CR>",           desc= "Go to pinned buffer 1" }
-map{ key='<leader>h2',     cmd= ":GoToPinned 2<CR>",           desc= "Go to pinned buffer 2" }
-map{ key='<leader>h3',     cmd= ":GoToPinned 3<CR>",           desc= "Go to pinned buffer 3" }
-map{ key='<leader>h4',     cmd= ":GoToPinned 4<CR>",           desc= "Go to pinned buffer 4" }
-map{ key='<leader>hd1',    cmd= ":DelPin 1<CR>",               desc= "Go to pinned buffer 1" }
-map{ key='<leader>hd2',    cmd= ":DelPin 2<CR>",               desc= "Go to pinned buffer 2" }
-map{ key='<leader>hd3',    cmd= ":DelPin 3<CR>",               desc= "Go to pinned buffer 3" }
-map{ key='<leader>hd4',    cmd= ":DelPin 4<CR>",               desc= "Go to pinned buffer 4" }
 map{ key='<leader>wh',     cmd= ':nohlsearch<CR>',             desc= "Clear search highlights" }
 map{ key='<ESC>',          cmd= utils.escape_highlights,             desc= "Clear search highlights" }
 map{ key='<leader>wt',     cmd= ':WindowsToggleAutowidth<cr>', desc= "Toggle AutoWidth" }
 map{ key='<leader>wm',     cmd= ':WindowsMaximize<cr>',        desc= "Maximize buffer" }
 map{ key='<leader>w=',     cmd= ':WindowsEqualize<cr>',        desc= "Equalize Buffer sizes" }
 map{ key='<leader>z',      cmd= ff(Snacks.zen),                desc= "Zen mode" }
-map{ key='<leader>l',      cmd= ':wincmd l<cr>',               desc= "Go to split right" }
-map{ key='<leader>a',      cmd= ':wincmd h<cr>',               desc= "Go to split left" }
+-- map{ key='<leader>l',      cmd= ':wincmd l<cr>',               desc= "Go to split right" }
+-- map{ key='<leader>a',      cmd= ':wincmd h<cr>',               desc= "Go to split left" }
 map{ key='<leader>/',      cmd= 'g*',                          desc= "Search for word under cursor" }
 map{ key='<leader>d',      cmd= ':bd!<CR>',                    desc= "Close buffer"}
 map{ key='<leader>w/',     cmd= ':vertical sb<CR>',            desc= "Open vertical split" }
@@ -76,7 +69,7 @@ map{ key='<leader>re',     cmd=  pasteBufferPath,              desc= "Put the pa
 
 map{ mode='t', key='<leader><leader><ESC>', cmd="<C-\\><C-n>",              desc= "Exit normal mode" }
 map{ mode='t', key='<leader>;',     cmd="<C-\\><C-n>:FloatermToggle<CR>",   desc= "Toggle terminal in terminal mode" }
-map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",      desc= "New terminal in terminal mode" }
+-- map{ mode='t', key='<leader>\\',    cmd="<C-\\><C-n>:FloatermNew<CR>",      desc= "New terminal in terminal mode" }
 map{ mode='t', key='<leader>]',     cmd="<C-\\><C-n>:FloatermNext<CR>",     desc= "Next terminal in terminal mode" }
 map{ mode='t', key='<leader>[',     cmd="<C-\\><C-n>:FloatermPrev<CR>",     desc= "Previous terminal in terminal mode" }
-map{ mode='t', key='<leader><BS>',  cmd="<C-\\><C-n>:FloatermKill<CR>",     desc= "Kill terminal in terminal mode" }
+map{ mode='t', key='<leader>\\',  cmd="<C-\\><C-n>:FloatermKill<CR>",     desc= "Kill terminal in terminal mode" }

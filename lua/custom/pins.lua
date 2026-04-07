@@ -256,28 +256,44 @@ M.goToPinned = function(index)
   end
 end
 
---- Cycles to the next pinned buffer.
-M.nextPin = function() ensure_correct_project_context()
-
+local function cycle_pin(direction)
+  ensure_correct_project_context()
   if #pinned_buffers == 0 then return end
 
   local current_buf_nr = vim.api.nvim_get_current_buf()
-  local current_found_at_idx = 0
+  local current_index
+
   for i, buf_nr in ipairs(pinned_buffers) do
     if buf_nr == current_buf_nr then
-      current_found_at_idx = i
+      current_index = i
       break
     end
   end
 
-  local next_index = (current_found_at_idx > 0) and (current_found_at_idx % #pinned_buffers) + 1 or 1
-  local next_buf_nr = pinned_buffers[next_index]
-
-  if vim.api.nvim_buf_is_valid(next_buf_nr) then
-    vim.api.nvim_set_current_buf(next_buf_nr)
+  local target_index
+  if current_index then
+    target_index = ((current_index - 1 + direction) % #pinned_buffers) + 1
   else
-    table.remove(pinned_buffers, next_index)
+    target_index = direction > 0 and 1 or #pinned_buffers
   end
+
+  local target_buf_nr = pinned_buffers[target_index]
+
+  if vim.api.nvim_buf_is_valid(target_buf_nr) then
+    vim.api.nvim_set_current_buf(target_buf_nr)
+  else
+    table.remove(pinned_buffers, target_index)
+  end
+end
+
+--- Cycles to the next pinned buffer.
+M.nextPin = function()
+  cycle_pin(1)
+end
+
+--- Cycles to the previous pinned buffer.
+M.prevPin = function()
+  cycle_pin(-1)
 end
 
 --- Checks if there are any pins for the current project.

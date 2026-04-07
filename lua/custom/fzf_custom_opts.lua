@@ -1,5 +1,5 @@
 return {
-    'fzf-native',
+    'border-fused',
   winopts = {
     height           = 0.95,            -- window height
     width            = 0.98,            -- window width
