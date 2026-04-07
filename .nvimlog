@@ -7,3 +7,7 @@ WRN 2026-04-07T12:45:46.613 ?.69383    server_start:193: Failed to start server:
 WRN 2026-04-07T12:45:46.636 ?.69384    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/iGSRvu/fzf-lua.1775591146.69384.1
 WRN 2026-04-07T12:46:05.060 ?.69730    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/Jj1qTG/nvim.69730.0
 WRN 2026-04-07T12:46:05.060 ?.69729    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/IMLlVz/nvim.69729.0
+WRN 2026-04-07T12:49:09.821 ?.71220    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/62FAQ0/nvim.71220.0
+WRN 2026-04-07T13:24:05.907 ?.75731    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/4jo5Ai/nvim.75731.0
+WRN 2026-04-07T13:25:59.798 ?.76667    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/g4iz4u/nvim.76667.0
+WRN 2026-04-07T13:25:59.798 ?.76668    server_start:193: Failed to start server: operation not permitted: /var/folders/d8/0hl9wz8n5cz_wc1yn9mq6m2h0000gp/T/nvim.mohamedalbgal/eVMprm/nvim.76668.0

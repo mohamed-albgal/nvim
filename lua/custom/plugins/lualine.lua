@@ -9,12 +9,16 @@ return {
     },
 
     sections = (function()
+      local pins = require("custom.pins")
       -- Helpers
       local function is_single_window()
         return #vim.api.nvim_tabpage_list_wins(0) == 1
       end
       local function wide_enough()
         return vim.api.nvim_win_get_width(0) > 70
+      end
+      local function pin_indicator()
+        return pins.isPinned() and "📌" or ""
       end
 
       return {
@@ -24,6 +28,7 @@ return {
         },
         -- Only show branch when there’s a single window AND it’s not super narrow
         lualine_z = {
+          { pin_indicator, cond = pins.isPinned },
           { 'filename', path = 0, -- 0 = just the tail
             --  use dot icon and lock icon for modified and readonly files, respectively
             symbols = { modified = '●', readonly = ' ' },

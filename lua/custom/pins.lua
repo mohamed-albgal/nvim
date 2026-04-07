@@ -1,12 +1,28 @@
 local M = {}
-local uv = vim.loop
-local json = vim.fn.json_encode
-local decode = vim.fn.json_decode
-local fname = vim.fn.stdpath("data") .. "/pinned_buffers.json"
+local uv = vim.uv
+local json = vim.json
+local state_dir = vim.fs.joinpath(vim.fn.stdpath("state"), "custom-pins")
+local fname = vim.fs.joinpath(state_dir, "pins.json")
+local legacy_fname = vim.fs.joinpath(vim.fn.stdpath("data"), "pinned_buffers.json")
 
 local pinned_buffers = {}
 -- current_project_root tracks which project's pins are loaded in memory.
 local current_project_root = nil
+
+local function notify(message, level)
+  vim.notify(message, level or vim.log.levels.WARN, { title = "custom.pins" })
+end
+
+local function flash(message, highlight)
+  vim.api.nvim_echo({ { message, highlight or "ModeMsg" } }, false, {})
+end
+
+local function refresh_statusline()
+  local ok, lualine = pcall(require, "lualine")
+  if ok then
+    lualine.refresh({ scope = "window", place = { "statusline" } })
+  end
+end
 
 
 -- =============================================================================
@@ -17,51 +33,129 @@ local current_project_root = nil
 -- Uses the current working directory as the project identifier.
 -- @return string: The absolute path of the current working directory.
 local function get_project_root()
-  return vim.loop.cwd()
+  return uv.cwd()
 end
 
---- Loads the entire pin database from the JSON file.
--- The database is a table where keys are project paths and values are lists of file paths.
--- @return table: The decoded table of all pins for all projects.
-local function load_all_pins_from_disk()
-  local fd = uv.fs_open(fname, "r", 438)
-  if not fd then return {} end
+local function read_file(path)
+  local fd = uv.fs_open(path, "r", 438)
+  if not fd then
+    return nil
+  end
 
   local stat = uv.fs_fstat(fd)
-  -- If file is empty or stat fails, close and return an empty table.
   if not stat or stat.size == 0 then
     uv.fs_close(fd)
-    return {}
+    return ""
   end
 
   local data = uv.fs_read(fd, stat.size, 0)
   uv.fs_close(fd)
+  return data
+end
 
-  -- Use pcall for safety against malformed or empty JSON data.
-  local ok, all_pins_data = pcall(decode, data)
-  if ok and type(all_pins_data) == 'table' then
-    return all_pins_data
+local function ensure_state_dir()
+  local ok, err = uv.fs_mkdir(state_dir, 448)
+  if ok or (err and err:match("EEXIST")) then
+    return true
+  end
+
+  notify("Failed to create pin state directory: " .. err, vim.log.levels.ERROR)
+  return false
+end
+
+local function decode_pin_data(raw, path)
+  if not raw or raw == "" then
+    return {}
+  end
+
+  local ok, decoded = pcall(json.decode, raw)
+  if ok and type(decoded) == "table" then
+    return decoded
+  end
+
+  notify("Failed to decode pin database: " .. path, vim.log.levels.ERROR)
+  return {}
+end
+
+--- Loads the entire pin database from disk.
+-- The database is a table where keys are project paths and values are lists of file paths.
+-- @return table: The decoded table of all pins for all projects.
+local function load_all_pins_from_disk()
+  local raw = read_file(fname)
+  if raw ~= nil then
+    return decode_pin_data(raw, fname)
+  end
+
+  local legacy_raw = read_file(legacy_fname)
+  if legacy_raw ~= nil then
+    return decode_pin_data(legacy_raw, legacy_fname)
   end
 
   return {}
+end
+
+local function write_file_atomic(path, content)
+  if not ensure_state_dir() then
+    return false
+  end
+
+  local tmp_path = path .. ".tmp"
+  local fd, open_err = uv.fs_open(tmp_path, "w", 420)
+  if not fd then
+    notify("Failed to open temp pin file: " .. open_err, vim.log.levels.ERROR)
+    return false
+  end
+
+  local ok, write_err = uv.fs_write(fd, content, 0)
+  uv.fs_close(fd)
+
+  if not ok then
+    uv.fs_unlink(tmp_path)
+    notify("Failed to write temp pin file: " .. write_err, vim.log.levels.ERROR)
+    return false
+  end
+
+  local renamed, rename_err = uv.fs_rename(tmp_path, path)
+  if not renamed then
+    uv.fs_unlink(tmp_path)
+    notify("Failed to replace pin file: " .. rename_err, vim.log.levels.ERROR)
+    return false
+  end
+
+  return true
+end
+
+local function get_current_project_paths()
+  local paths = {}
+
+  for _, buf in ipairs(pinned_buffers) do
+    local path = vim.api.nvim_buf_get_name(buf)
+    if path ~= "" then
+      paths[#paths + 1] = path
+    end
+  end
+
+  return paths
+end
+
+local function rebuild_pinned_buffers(project_paths)
+  local buffers = {}
+
+  for _, path in ipairs(project_paths) do
+    local bufnr = vim.fn.bufnr(path, true)
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      buffers[#buffers + 1] = bufnr
+    end
+  end
+
+  pinned_buffers = buffers
 end
 
 --- Loads the pins for the current project into the `pinned_buffers` variable.
 local function load_pins_for_current_project()
   local project_root = get_project_root()
   local all_pins = load_all_pins_from_disk()
-  local project_paths = all_pins[project_root] or {}
-
-  -- Clear any previously loaded pins.
-  pinned_buffers = {}
-  for _, path in ipairs(project_paths) do
-    -- Create a buffer for the path if one doesn't exist yet.
-    local bufnr = vim.fn.bufnr(path, true)
-    -- We only load pins for which the buffer could be successfully created/found.
-    if vim.api.nvim_buf_is_valid(bufnr) then
-      table.insert(pinned_buffers, bufnr)
-    end
-  end
+  rebuild_pinned_buffers(all_pins[project_root] or {})
 end
 
 --- Ensures that the pins loaded in memory are for the current project directory.
@@ -86,6 +180,10 @@ local function remove_pins_file()
   if uv.fs_stat(fname) then
     uv.fs_unlink(fname)
   end
+
+  if uv.fs_stat(legacy_fname) then
+    uv.fs_unlink(legacy_fname)
+  end
 end
 
 --- Pins a buffer, adding it to the in-memory list for the current project.
@@ -94,11 +192,12 @@ local function pin_buffer(buf)
   -- Avoid duplicate pins.
   for _, b in ipairs(pinned_buffers) do
     if b == buf then
-      return
+      return false
     end
   end
 
   table.insert(pinned_buffers, buf)
+  return true
 end
 
 
@@ -112,32 +211,23 @@ M.savePins = function()
   ensure_correct_project_context()
   local project_root = get_project_root()
   local all_pins = load_all_pins_from_disk()
-
-  local current_project_paths = {}
-  for _, buf in ipairs(pinned_buffers) do
-    local path = vim.api.nvim_buf_get_name(buf)
-    if path and path ~= "" then
-      table.insert(current_project_paths, path)
-    end
-  end
+  local current_project_paths = get_current_project_paths()
 
   if #current_project_paths > 0 then
-    -- Update the pins for the current project.
     all_pins[project_root] = current_project_paths
   else
-    -- If there are no pins for the current project, remove its entry from the table.
     all_pins[project_root] = nil
   end
 
-  -- Check if the all_pins table is now empty.
   if not next(all_pins) then
     remove_pins_file()
   else
-    local file_content = json(all_pins)
-    local fd = assert(uv.fs_open(fname, "w", 438))
-    uv.fs_write(fd, file_content, -1)
-    uv.fs_close(fd)
+    if write_file_atomic(fname, json.encode(all_pins)) and uv.fs_stat(legacy_fname) then
+      uv.fs_unlink(legacy_fname)
+    end
   end
+
+  refresh_statusline()
 end
 
 --- Unpin the current buffer.
@@ -156,8 +246,12 @@ end
 M.pinThis = function()
   ensure_correct_project_context()
   local buf = vim.api.nvim_get_current_buf()
-  pin_buffer(buf)
-  -- Note: This function doesn't save automatically. Call savePins on an autocommand.
+  if pin_buffer(buf) then
+    flash("[pin]")
+    refresh_statusline()
+  else
+    flash("[pin exists]", "Comment")
+  end
 end
 
 --- Clears all pins for the CURRENT project.
@@ -301,6 +395,19 @@ end
 M.hasPins = function()
   ensure_correct_project_context()
   return #pinned_buffers > 0
+end
+
+M.isPinned = function(bufnr)
+  ensure_correct_project_context()
+  local target = bufnr or vim.api.nvim_get_current_buf()
+
+  for _, pinned in ipairs(pinned_buffers) do
+    if pinned == target then
+      return true
+    end
+  end
+
+  return false
 end
 
 M.removePin = function(index)
