@@ -9,7 +9,7 @@ return {
     map {
       key = '<leader>k',  desc = 'Frecency files (cwd)',
       cmd = function()
-        require('fzf-lua-frecency').frecency({ cwd_only=true, previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})
+        require('fzf-lua').files({ previewer=false, fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen=false, vertical = 'down:25%', height=0.50,width=0.35,row=0.09,col=0.47 }})
       end,
     }
     map {
@@ -57,7 +57,7 @@ return {
     map {
       key = '<leader>fk',  desc = 'Glob support',
       cmd = function()
-        require('fzf-lua').live_grep_glob({ prompt = '❯❯ '})
+        require('fzf-lua').live_grep({ prompt = '❯❯ '})
       end,
     }
     map {
@@ -201,8 +201,8 @@ return {
       cmd = function() require('fzf-lua').quickfix() end,
     }
     map {
-      key = '<leader>ob',  desc = '[o]ld [b]uffers',
-      cmd = function() require('fzf-lua').oldfiles() end,
+      key = '<leader>oo',  desc = '[o]ld buffers',
+      cmd = function() require('fzf-lua-frecency').frecency() end,
     }
     map {
       key = '<leader>gs',  desc = 'fzf git status',

@@ -64,6 +64,7 @@ function M.side_note()
   todays_file:close()
 
   vim.cmd("edit " .. note_filename)
+  vim.cmd("write")
 end
 
 return M

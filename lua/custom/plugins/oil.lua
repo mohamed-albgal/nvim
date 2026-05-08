@@ -50,7 +50,7 @@ return {
         max_height = 0.85,
         border = "rounded",
         -- preview_split: Split direction: "auto", "left", "right", "above", "below".
-        preview_split = "right",
+        preview_split = "above",
       }
     }
   end,

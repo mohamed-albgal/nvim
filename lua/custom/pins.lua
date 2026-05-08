@@ -282,11 +282,24 @@ M.showPins = function()
     return entries
   end
 
+  local function picker_height(entry_count)
+    local available_lines = math.max(vim.o.lines - 6, 1)
+    local desired_lines = math.max(10, math.min(entry_count + 4, math.floor(available_lines * 0.8)))
+    return math.max(0.35, math.min(0.8, desired_lines / available_lines))
+  end
+
   local entries = populate_entries({})
 
   require('fzf-lua').fzf_exec(entries, {
     prompt = "Pinned Buffers> ",
-    winopts = { height = 0.15, width = 0.45, row = 0.3, col = 0.5 },
+    previewer = false,
+    winopts = {
+      height = picker_height(#entries),
+      width = 0.7,
+      row = 0.5,
+      col = 0.5,
+      preview = { hidden = "hidden" },
+    },
     actions = {
       default = function(selected)
         local index = tonumber(string.match(selected[1], "^(%d+):"))
