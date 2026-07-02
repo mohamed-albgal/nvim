@@ -5,6 +5,7 @@ end
 return {
   "ibhagwan/fzf-lua",
   config = function()
+    local git_file_history = require("custom.git_file_history")
 
     map {
       key = '<leader>k',  desc = 'Frecency files (cwd)',
@@ -209,6 +210,10 @@ return {
       cmd = function() require('fzf-lua').git_status( { prompt = 'Git Changes❯❯ '}) end,
     }
     map {
+      key = '<leader>ga',  desc = 'git add/introduction commits for current file',
+      cmd = git_file_history.add_commits_for_current_file,
+    }
+    map {
       key = '<leader>x',  desc = 'FZF builtins',
       cmd = function()
         require('fzf-lua').builtin({ fzf_opts = {['--layout'] = 'reverse'}, winopts = { fullscreen = false, height=0.50,width=0.45,row=0.09,col=0.47, preview = { hidden = 'hidden' } }})
@@ -218,4 +223,3 @@ return {
     require('fzf-lua').setup(require('custom.fzf_custom_opts'))
   end,
 }
-
